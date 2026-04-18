@@ -54,6 +54,10 @@ type Middleware struct {
 	WAF               *WAF               `json:"waf,omitempty" toml:"waf,omitempty" yaml:"waf,omitempty" export:"true"`
 	DistributedRateLimit *DistributedRateLimit `json:"distributedRateLimit,omitempty" toml:"distributedRateLimit,omitempty" yaml:"distributedRateLimit,omitempty" export:"true"`
 	HTTPCache         *HTTPCache         `json:"httpCache,omitempty" toml:"httpCache,omitempty" yaml:"httpCache,omitempty" export:"true"`
+	JWTAuth           *JWTAuth           `json:"jwtAuth,omitempty" toml:"jwtAuth,omitempty" yaml:"jwtAuth,omitempty" export:"true"`
+	OAuthIntrospect   *OAuthIntrospect   `json:"oauthIntrospect,omitempty" toml:"oauthIntrospect,omitempty" yaml:"oauthIntrospect,omitempty" export:"true"`
+	OAuthClientCreds  *OAuthClientCreds  `json:"oauthClientCreds,omitempty" toml:"oauthClientCreds,omitempty" yaml:"oauthClientCreds,omitempty" export:"true"`
+	OIDC              *OIDC              `json:"oidc,omitempty" toml:"oidc,omitempty" yaml:"oidc,omitempty" export:"true"`
 
 	Plugin map[string]PluginConf `json:"plugin,omitempty" toml:"plugin,omitempty" yaml:"plugin,omitempty" export:"true"`
 
@@ -1055,4 +1059,52 @@ type HTTPCache struct {
 	StatusCodes []int           `json:"statusCodes,omitempty" toml:"statusCodes,omitempty" yaml:"statusCodes,omitempty"`
 	VaryHeaders []string        `json:"varyHeaders,omitempty" toml:"varyHeaders,omitempty" yaml:"varyHeaders,omitempty"`
 	MaxEntries  int             `json:"maxEntries,omitempty" toml:"maxEntries,omitempty" yaml:"maxEntries,omitempty" export:"true"`
+}
+
+// +k8s:deepcopy-gen=true
+
+// JWTAuth holds the JWT authentication middleware configuration.
+type JWTAuth struct {
+	Secret        string            `json:"secret,omitempty" toml:"secret,omitempty" yaml:"secret,omitempty"`
+	JWKSURL       string            `json:"jwksUrl,omitempty" toml:"jwksUrl,omitempty" yaml:"jwksUrl,omitempty"`
+	Issuer        string            `json:"issuer,omitempty" toml:"issuer,omitempty" yaml:"issuer,omitempty" export:"true"`
+	Audience      string            `json:"audience,omitempty" toml:"audience,omitempty" yaml:"audience,omitempty" export:"true"`
+	HeaderField   string            `json:"headerField,omitempty" toml:"headerField,omitempty" yaml:"headerField,omitempty" export:"true"`
+	ClaimsHeaders map[string]string `json:"claimsHeaders,omitempty" toml:"claimsHeaders,omitempty" yaml:"claimsHeaders,omitempty"`
+}
+
+// +k8s:deepcopy-gen=true
+
+// OAuthIntrospect holds the OAuth 2.0 Token Introspection middleware configuration.
+type OAuthIntrospect struct {
+	IntrospectURL  string   `json:"introspectUrl" toml:"introspectUrl" yaml:"introspectUrl"`
+	ClientID       string   `json:"clientId,omitempty" toml:"clientId,omitempty" yaml:"clientId,omitempty"`
+	ClientSecret   string   `json:"clientSecret,omitempty" toml:"clientSecret,omitempty" yaml:"clientSecret,omitempty"`
+	RequiredScopes []string `json:"requiredScopes,omitempty" toml:"requiredScopes,omitempty" yaml:"requiredScopes,omitempty"`
+}
+
+// +k8s:deepcopy-gen=true
+
+// OAuthClientCreds holds the OAuth 2.0 Client Credentials middleware configuration.
+type OAuthClientCreds struct {
+	TokenURL       string              `json:"tokenUrl" toml:"tokenUrl" yaml:"tokenUrl"`
+	ValidClients   []OAuthClientEntry  `json:"validClients,omitempty" toml:"validClients,omitempty" yaml:"validClients,omitempty"`
+	RequiredScopes []string            `json:"requiredScopes,omitempty" toml:"requiredScopes,omitempty" yaml:"requiredScopes,omitempty"`
+}
+
+// OAuthClientEntry holds a valid client ID/secret pair.
+type OAuthClientEntry struct {
+	ClientID     string `json:"clientId" toml:"clientId" yaml:"clientId"`
+	ClientSecret string `json:"clientSecret" toml:"clientSecret" yaml:"clientSecret"`
+}
+
+// +k8s:deepcopy-gen=true
+
+// OIDC holds the OpenID Connect authentication middleware configuration.
+type OIDC struct {
+	IssuerURL     string            `json:"issuerUrl" toml:"issuerUrl" yaml:"issuerUrl"`
+	JWKSURL       string            `json:"jwksUrl,omitempty" toml:"jwksUrl,omitempty" yaml:"jwksUrl,omitempty"`
+	Audience      string            `json:"audience,omitempty" toml:"audience,omitempty" yaml:"audience,omitempty" export:"true"`
+	HeaderField   string            `json:"headerField,omitempty" toml:"headerField,omitempty" yaml:"headerField,omitempty" export:"true"`
+	ClaimsHeaders map[string]string `json:"claimsHeaders,omitempty" toml:"claimsHeaders,omitempty" yaml:"claimsHeaders,omitempty"`
 }
