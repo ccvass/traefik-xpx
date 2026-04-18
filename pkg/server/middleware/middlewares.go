@@ -12,6 +12,11 @@ import (
 	"github.com/traefik/traefik/v3/pkg/config/runtime"
 	"github.com/traefik/traefik/v3/pkg/middlewares/addprefix"
 	"github.com/traefik/traefik/v3/pkg/middlewares/apikey"
+	"github.com/traefik/traefik/v3/pkg/middlewares/distributedratelimiter"
+	"github.com/traefik/traefik/v3/pkg/middlewares/httpcache"
+	"github.com/traefik/traefik/v3/pkg/middlewares/ldapauth"
+	"github.com/traefik/traefik/v3/pkg/middlewares/opa"
+	"github.com/traefik/traefik/v3/pkg/middlewares/waf"
 	"github.com/traefik/traefik/v3/pkg/middlewares/auth"
 	"github.com/traefik/traefik/v3/pkg/middlewares/buffering"
 	"github.com/traefik/traefik/v3/pkg/middlewares/chain"
@@ -257,6 +262,56 @@ func (b *Builder) buildConstructor(ctx context.Context, middlewareName string) (
 		}
 		middleware = func(next http.Handler) (http.Handler, error) {
 			return hmacmw.New(ctx, next, *config.HMAC, middlewareName)
+		}
+	}
+
+	// LDAP
+	if config.LDAP != nil {
+		if middleware != nil {
+			return nil, badConf
+		}
+		middleware = func(next http.Handler) (http.Handler, error) {
+			return ldapauth.New(ctx, next, *config.LDAP, middlewareName)
+		}
+	}
+
+	// OPA
+	if config.OPA != nil {
+		if middleware != nil {
+			return nil, badConf
+		}
+		middleware = func(next http.Handler) (http.Handler, error) {
+			return opa.New(ctx, next, *config.OPA, middlewareName)
+		}
+	}
+
+	// WAF
+	if config.WAF != nil {
+		if middleware != nil {
+			return nil, badConf
+		}
+		middleware = func(next http.Handler) (http.Handler, error) {
+			return waf.New(ctx, next, *config.WAF, middlewareName)
+		}
+	}
+
+	// DistributedRateLimit
+	if config.DistributedRateLimit != nil {
+		if middleware != nil {
+			return nil, badConf
+		}
+		middleware = func(next http.Handler) (http.Handler, error) {
+			return distributedratelimiter.New(ctx, next, *config.DistributedRateLimit, middlewareName)
+		}
+	}
+
+	// HTTPCache
+	if config.HTTPCache != nil {
+		if middleware != nil {
+			return nil, badConf
+		}
+		middleware = func(next http.Handler) (http.Handler, error) {
+			return httpcache.New(ctx, next, *config.HTTPCache, middlewareName)
 		}
 	}
 
