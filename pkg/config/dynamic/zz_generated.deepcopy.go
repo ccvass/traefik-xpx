@@ -1194,6 +1194,26 @@ func (in *Middleware) DeepCopyInto(out *Middleware) {
 		*out = new(HTTPCache)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.JWTAuth != nil {
+		in, out := &in.JWTAuth, &out.JWTAuth
+		*out = new(JWTAuth)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.OAuthIntrospect != nil {
+		in, out := &in.OAuthIntrospect, &out.OAuthIntrospect
+		*out = new(OAuthIntrospect)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.OAuthClientCreds != nil {
+		in, out := &in.OAuthClientCreds, &out.OAuthClientCreds
+		*out = new(OAuthClientCreds)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.OIDC != nil {
+		in, out := &in.OIDC, &out.OIDC
+		*out = new(OIDC)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.Plugin != nil {
 		in, out := &in.Plugin, &out.Plugin
 		*out = make(map[string]PluginConf, len(*in))
@@ -2983,3 +3003,28 @@ func (in *HTTPCache) DeepCopyInto(out *HTTPCache) {
 	if in.VaryHeaders != nil { t := make([]string, len(in.VaryHeaders)); copy(t, in.VaryHeaders); out.VaryHeaders = t }
 }
 func (in *HTTPCache) DeepCopy() *HTTPCache { if in == nil { return nil }; out := new(HTTPCache); in.DeepCopyInto(out); return out }
+
+func (in *JWTAuth) DeepCopyInto(out *JWTAuth) {
+	*out = *in
+	if in.ClaimsHeaders != nil { m := make(map[string]string, len(in.ClaimsHeaders)); for k, v := range in.ClaimsHeaders { m[k] = v }; out.ClaimsHeaders = m }
+}
+func (in *JWTAuth) DeepCopy() *JWTAuth { if in == nil { return nil }; out := new(JWTAuth); in.DeepCopyInto(out); return out }
+
+func (in *OAuthIntrospect) DeepCopyInto(out *OAuthIntrospect) {
+	*out = *in
+	if in.RequiredScopes != nil { t := make([]string, len(in.RequiredScopes)); copy(t, in.RequiredScopes); out.RequiredScopes = t }
+}
+func (in *OAuthIntrospect) DeepCopy() *OAuthIntrospect { if in == nil { return nil }; out := new(OAuthIntrospect); in.DeepCopyInto(out); return out }
+
+func (in *OAuthClientCreds) DeepCopyInto(out *OAuthClientCreds) {
+	*out = *in
+	if in.ValidClients != nil { t := make([]OAuthClientEntry, len(in.ValidClients)); copy(t, in.ValidClients); out.ValidClients = t }
+	if in.RequiredScopes != nil { t := make([]string, len(in.RequiredScopes)); copy(t, in.RequiredScopes); out.RequiredScopes = t }
+}
+func (in *OAuthClientCreds) DeepCopy() *OAuthClientCreds { if in == nil { return nil }; out := new(OAuthClientCreds); in.DeepCopyInto(out); return out }
+
+func (in *OIDC) DeepCopyInto(out *OIDC) {
+	*out = *in
+	if in.ClaimsHeaders != nil { m := make(map[string]string, len(in.ClaimsHeaders)); for k, v := range in.ClaimsHeaders { m[k] = v }; out.ClaimsHeaders = m }
+}
+func (in *OIDC) DeepCopy() *OIDC { if in == nil { return nil }; out := new(OIDC); in.DeepCopyInto(out); return out }
