@@ -10,7 +10,7 @@ import fetch from './libs/fetch'
 import { VersionProvider } from 'contexts/version'
 import { useIsDarkMode } from 'hooks/use-theme'
 import ErrorSuspenseWrapper from 'layout/ErrorSuspenseWrapper'
-import { Dashboard, HTTPPages, NotFound, TCPPages, UDPPages, CertificatesPages } from 'pages'
+import { Dashboard, HTTPPages, NotFound, TCPPages, UDPPages, CertificatesPages, AIGateway, Security, MCPGateway, APIManagement } from 'pages'
 import { DashboardSkeleton } from 'pages/dashboard/Dashboard'
 import { HubDemoContext, HubDemoProvider } from 'pages/hub-demo/demoNavContext'
 
@@ -69,6 +69,15 @@ export const Routes = () => {
           <Route path="/http" element={<Navigate to="/http/routers" replace />} />
           <Route path="/tcp" element={<Navigate to="/tcp/routers" replace />} />
           <Route path="/udp" element={<Navigate to="/udp/routers" replace />} />
+
+          {/* AI Gateway */}
+          <Route path="/ai" element={<AIGateway />} />
+          {/* MCP Gateway */}
+          <Route path="/mcp" element={<MCPGateway />} />
+          {/* Security */}
+          <Route path="/security" element={<Security />} />
+          {/* API Management */}
+          <Route path="/api-management" element={<APIManagement />} />
 
           {/* Hub Dashboard demo content */}
           {hubDemoRoutes?.map((route, idx) => <Route key={`hub-${idx}`} path={route.path} element={route.element} />)}
