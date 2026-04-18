@@ -1,5 +1,5 @@
 import { Card, Flex, Grid, H2, Text, Badge } from '@traefik-labs/faency'
-import PageTitle from 'layout/PageTitle'
+import useSWR from 'swr'
 
 const StatCard = ({ title, value, subtitle }: { title: string; value: string; subtitle?: string }) => (
   <Card css={{ p: '$4' }}>
@@ -11,40 +11,52 @@ const StatCard = ({ title, value, subtitle }: { title: string; value: string; su
   </Card>
 )
 
-export const MCPGateway = () => {
-  return (
-    <Flex direction="column" gap={6}>
-      <PageTitle title="MCP Gateway" />
+export function MCPGateway() {
+  const { data: middlewares } = useSWR('/http/middlewares')
+  const { data: services } = useSWR('/http/services')
 
-      <Grid gap={4} css={{ gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))' }}>
-        <StatCard title="MCP Servers" value="0" subtitle="Registered" />
-        <StatCard title="Active Sessions" value="0" />
-        <StatCard title="Tool Invocations" value="0" subtitle="Last 24h" />
-        <StatCard title="Policy Denials" value="0" subtitle="Last 24h" />
+  const mcpMiddlewares = Array.isArray(middlewares)
+    ? middlewares.filter((m: any) => ['tbac', 'mcpgovernance', 'mcppolicy', 'mcpaudit'].includes(m.type))
+    : []
+  const mcpServices = Array.isArray(services)
+    ? services.filter((s: any) => s.name?.includes('mcp'))
+    : []
+
+  return (
+    <Flex direction="column" gap={4}>
+      <H2>MCP Gateway</H2>
+
+      <Grid columns={{ '@initial': 2, '@md': 4 }} gap={3}>
+        <StatCard title="MCP Middlewares" value={String(mcpMiddlewares.length)} subtitle="TBAC/Governance/Policy/Audit" />
+        <StatCard title="MCP Services" value={String(mcpServices.length)} subtitle="MCP server backends" />
+        <StatCard title="TBAC Engine" value={mcpMiddlewares.filter((m: any) => m.type === 'tbac').length > 0 ? 'Active' : 'Inactive'} />
+        <StatCard title="Audit Logger" value={mcpMiddlewares.filter((m: any) => m.type === 'mcpaudit').length > 0 ? 'Active' : 'Inactive'} />
       </Grid>
 
-      <Flex direction="column" gap={4}>
-        <H2 css={{ fontSize: '$8' }}>Server Registry</H2>
+      {mcpMiddlewares.length > 0 && (
         <Card css={{ p: '$4' }}>
-          <Text css={{ color: '$textSubtle' }}>No MCP servers registered. Configure servers in the MCP gateway settings.</Text>
+          <Flex direction="column" gap={2}>
+            <Text css={{ fontWeight: 600 }}>MCP Middlewares</Text>
+            {mcpMiddlewares.map((m: any) => (
+              <Flex key={m.name} justify="between" align="center">
+                <Text>{m.name}</Text>
+                <Flex gap={1}>
+                  <Badge>{m.type}</Badge>
+                  <Badge variant={m.status === 'enabled' ? 'green' : 'red'}>{m.status}</Badge>
+                </Flex>
+              </Flex>
+            ))}
+          </Flex>
         </Card>
-      </Flex>
+      )}
 
-      <Flex direction="column" gap={4}>
-        <H2 css={{ fontSize: '$8' }}>TBAC Policies</H2>
+      {mcpMiddlewares.length === 0 && (
         <Card css={{ p: '$4' }}>
-          <Text css={{ color: '$textSubtle' }}>No task-based access control policies configured.</Text>
+          <Text css={{ color: '$textSubtle' }}>
+            No MCP Gateway middlewares configured. Add tbac, mcpgovernance, mcppolicy, or mcpaudit middlewares to your dynamic configuration.
+          </Text>
         </Card>
-      </Flex>
-
-      <Flex direction="column" gap={4}>
-        <H2 css={{ fontSize: '$8' }}>Audit Log</H2>
-        <Card css={{ p: '$4' }}>
-          <Text css={{ color: '$textSubtle' }}>No audit events recorded.</Text>
-        </Card>
-      </Flex>
+      )}
     </Flex>
   )
 }
-
-export default MCPGateway
