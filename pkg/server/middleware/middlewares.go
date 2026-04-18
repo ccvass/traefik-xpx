@@ -24,6 +24,7 @@ import (
 	"github.com/traefik/traefik/v3/pkg/middlewares/gatewayapi/urlrewrite"
 	"github.com/traefik/traefik/v3/pkg/middlewares/grpcweb"
 	"github.com/traefik/traefik/v3/pkg/middlewares/headers"
+	hmacmw "github.com/traefik/traefik/v3/pkg/middlewares/hmac"
 	"github.com/traefik/traefik/v3/pkg/middlewares/inflightreq"
 	"github.com/traefik/traefik/v3/pkg/middlewares/ingressnginx/authtlspasscertificatetoupstream"
 	"github.com/traefik/traefik/v3/pkg/middlewares/ingressnginx/rewritetarget"
@@ -235,6 +236,16 @@ func (b *Builder) buildConstructor(ctx context.Context, middlewareName string) (
 		}
 		middleware = func(next http.Handler) (http.Handler, error) {
 			return headers.New(ctx, next, *config.Headers, middlewareName)
+		}
+	}
+
+	// HMAC
+	if config.HMAC != nil {
+		if middleware != nil {
+			return nil, badConf
+		}
+		middleware = func(next http.Handler) (http.Handler, error) {
+			return hmacmw.New(ctx, next, *config.HMAC, middlewareName)
 		}
 	}
 

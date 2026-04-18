@@ -47,6 +47,7 @@ type Middleware struct {
 	Retry             *Retry             `json:"retry,omitempty" toml:"retry,omitempty" yaml:"retry,omitempty" export:"true"`
 	ContentType       *ContentType       `json:"contentType,omitempty" toml:"contentType,omitempty" yaml:"contentType,omitempty" label:"allowEmpty" file:"allowEmpty" kv:"allowEmpty" export:"true"`
 	GrpcWeb           *GrpcWeb           `json:"grpcWeb,omitempty" toml:"grpcWeb,omitempty" yaml:"grpcWeb,omitempty" export:"true"`
+	HMAC              *HMAC              `json:"hmac,omitempty" toml:"hmac,omitempty" yaml:"hmac,omitempty" export:"true"`
 
 	Plugin map[string]PluginConf `json:"plugin,omitempty" toml:"plugin,omitempty" yaml:"plugin,omitempty" export:"true"`
 
@@ -930,4 +931,22 @@ type RewriteTarget struct {
 	Replacement string `json:"replacement,omitempty"`
 	// XForwardedPrefix defines the value of the X-Forwarded-Prefix header.
 	XForwardedPrefix string `json:"xForwardedPrefix,omitempty"`
+}
+
+// +k8s:deepcopy-gen=true
+
+// HMAC holds the HMAC authentication middleware configuration.
+type HMAC struct {
+	// Secret is the shared secret for HMAC computation.
+	Secret string `json:"secret" toml:"secret" yaml:"secret"`
+	// Algorithm is the HMAC hash algorithm. Defaults to sha256.
+	Algorithm string `json:"algorithm,omitempty" toml:"algorithm,omitempty" yaml:"algorithm,omitempty" export:"true"`
+	// SignatureHeader is the header containing the request signature. Defaults to X-Signature.
+	SignatureHeader string `json:"signatureHeader,omitempty" toml:"signatureHeader,omitempty" yaml:"signatureHeader,omitempty" export:"true"`
+	// TimestampHeader is the header containing the request timestamp for replay protection.
+	TimestampHeader string `json:"timestampHeader,omitempty" toml:"timestampHeader,omitempty" yaml:"timestampHeader,omitempty" export:"true"`
+	// MaxSkew is the maximum allowed time difference for replay protection.
+	MaxSkew ptypes.Duration `json:"maxSkew,omitempty" toml:"maxSkew,omitempty" yaml:"maxSkew,omitempty" export:"true"`
+	// SignedHeaders lists headers included in the signature computation.
+	SignedHeaders []string `json:"signedHeaders,omitempty" toml:"signedHeaders,omitempty" yaml:"signedHeaders,omitempty"`
 }
