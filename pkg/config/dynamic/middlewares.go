@@ -47,6 +47,7 @@ type Middleware struct {
 	Retry             *Retry             `json:"retry,omitempty" toml:"retry,omitempty" yaml:"retry,omitempty" export:"true"`
 	ContentType       *ContentType       `json:"contentType,omitempty" toml:"contentType,omitempty" yaml:"contentType,omitempty" label:"allowEmpty" file:"allowEmpty" kv:"allowEmpty" export:"true"`
 	GrpcWeb           *GrpcWeb           `json:"grpcWeb,omitempty" toml:"grpcWeb,omitempty" yaml:"grpcWeb,omitempty" export:"true"`
+	LDAP              *LDAP              `json:"ldap,omitempty" toml:"ldap,omitempty" yaml:"ldap,omitempty" export:"true"`
 
 	Plugin map[string]PluginConf `json:"plugin,omitempty" toml:"plugin,omitempty" yaml:"plugin,omitempty" export:"true"`
 
@@ -930,4 +931,34 @@ type RewriteTarget struct {
 	Replacement string `json:"replacement,omitempty"`
 	// XForwardedPrefix defines the value of the X-Forwarded-Prefix header.
 	XForwardedPrefix string `json:"xForwardedPrefix,omitempty"`
+}
+
+// +k8s:deepcopy-gen=true
+
+// LDAP holds the LDAP authentication middleware configuration.
+type LDAP struct {
+	// URL is the LDAP server URL (e.g. ldap://ldap.example.com:389 or ldaps://...).
+	URL string `json:"url" toml:"url" yaml:"url"`
+	// BaseDN is the base distinguished name for user searches.
+	BaseDN string `json:"baseDn" toml:"baseDn" yaml:"baseDn"`
+	// BindDN is the service account DN for initial bind.
+	BindDN string `json:"bindDn,omitempty" toml:"bindDn,omitempty" yaml:"bindDn,omitempty"`
+	// BindPassword is the service account password.
+	BindPassword string `json:"bindPassword,omitempty" toml:"bindPassword,omitempty" yaml:"bindPassword,omitempty"`
+	// SearchFilter is the LDAP search filter. Use {{username}} as placeholder.
+	SearchFilter string `json:"searchFilter,omitempty" toml:"searchFilter,omitempty" yaml:"searchFilter,omitempty" export:"true"`
+	// UsernameAttr is the LDAP attribute for the username. Defaults to uid.
+	UsernameAttr string `json:"usernameAttr,omitempty" toml:"usernameAttr,omitempty" yaml:"usernameAttr,omitempty" export:"true"`
+	// GroupFilter is the LDAP filter for group membership lookup.
+	GroupFilter string `json:"groupFilter,omitempty" toml:"groupFilter,omitempty" yaml:"groupFilter,omitempty" export:"true"`
+	// GroupAttr is the attribute containing group names. Defaults to cn.
+	GroupAttr string `json:"groupAttr,omitempty" toml:"groupAttr,omitempty" yaml:"groupAttr,omitempty" export:"true"`
+	// StartTLS enables STARTTLS for the LDAP connection.
+	StartTLS bool `json:"startTls,omitempty" toml:"startTls,omitempty" yaml:"startTls,omitempty" export:"true"`
+	// InsecureSkipVerify disables TLS certificate verification.
+	InsecureSkipVerify bool `json:"insecureSkipVerify,omitempty" toml:"insecureSkipVerify,omitempty" yaml:"insecureSkipVerify,omitempty" export:"true"`
+	// CacheDuration is the duration to cache successful authentications.
+	CacheDuration ptypes.Duration `json:"cacheDuration,omitempty" toml:"cacheDuration,omitempty" yaml:"cacheDuration,omitempty" export:"true"`
+	// ForwardHeaders maps LDAP attributes to HTTP headers forwarded to the backend.
+	ForwardHeaders map[string]string `json:"forwardHeaders,omitempty" toml:"forwardHeaders,omitempty" yaml:"forwardHeaders,omitempty"`
 }
