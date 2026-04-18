@@ -981,7 +981,7 @@ type RewriteTarget struct {
 // HMAC holds the HMAC authentication middleware configuration.
 type HMAC struct {
 	// Secret is the shared secret for HMAC computation.
-	Secret string `json:"secret" toml:"secret" yaml:"secret"`
+	Secret string `json:"secret" toml:"secret" yaml:"secret" loggable:"false"`
 	// Algorithm is the HMAC hash algorithm. Defaults to sha256.
 	Algorithm string `json:"algorithm,omitempty" toml:"algorithm,omitempty" yaml:"algorithm,omitempty" export:"true"`
 	// SignatureHeader is the header containing the request signature. Defaults to X-Signature.
@@ -1001,7 +1001,7 @@ type LDAP struct {
 	URL                string            `json:"url" toml:"url" yaml:"url"`
 	BaseDN             string            `json:"baseDn" toml:"baseDn" yaml:"baseDn"`
 	BindDN             string            `json:"bindDn,omitempty" toml:"bindDn,omitempty" yaml:"bindDn,omitempty"`
-	BindPassword       string            `json:"bindPassword,omitempty" toml:"bindPassword,omitempty" yaml:"bindPassword,omitempty"`
+	BindPassword       string            `json:"bindPassword,omitempty" toml:"bindPassword,omitempty" yaml:"bindPassword,omitempty" loggable:"false"`
 	SearchFilter       string            `json:"searchFilter,omitempty" toml:"searchFilter,omitempty" yaml:"searchFilter,omitempty" export:"true"`
 	UsernameAttr       string            `json:"usernameAttr,omitempty" toml:"usernameAttr,omitempty" yaml:"usernameAttr,omitempty" export:"true"`
 	GroupFilter        string            `json:"groupFilter,omitempty" toml:"groupFilter,omitempty" yaml:"groupFilter,omitempty" export:"true"`
@@ -1045,7 +1045,7 @@ type DistributedRateLimit struct {
 	Burst         int64           `json:"burst,omitempty" toml:"burst,omitempty" yaml:"burst,omitempty" export:"true"`
 	Period        ptypes.Duration `json:"period,omitempty" toml:"period,omitempty" yaml:"period,omitempty" export:"true"`
 	RedisURL      string          `json:"redisUrl" toml:"redisUrl" yaml:"redisUrl"`
-	RedisPassword string          `json:"redisPassword,omitempty" toml:"redisPassword,omitempty" yaml:"redisPassword,omitempty"`
+	RedisPassword string          `json:"redisPassword,omitempty" toml:"redisPassword,omitempty" yaml:"redisPassword,omitempty" loggable:"false"`
 	KeyFunc       string          `json:"keyFunc,omitempty" toml:"keyFunc,omitempty" yaml:"keyFunc,omitempty" export:"true"`
 	KeyHeader     string          `json:"keyHeader,omitempty" toml:"keyHeader,omitempty" yaml:"keyHeader,omitempty" export:"true"`
 }
@@ -1065,7 +1065,7 @@ type HTTPCache struct {
 
 // JWTAuth holds the JWT authentication middleware configuration.
 type JWTAuth struct {
-	Secret        string            `json:"secret,omitempty" toml:"secret,omitempty" yaml:"secret,omitempty"`
+	Secret        string            `json:"secret,omitempty" toml:"secret,omitempty" yaml:"secret,omitempty" loggable:"false"`
 	JWKSURL       string            `json:"jwksUrl,omitempty" toml:"jwksUrl,omitempty" yaml:"jwksUrl,omitempty"`
 	Issuer        string            `json:"issuer,omitempty" toml:"issuer,omitempty" yaml:"issuer,omitempty" export:"true"`
 	Audience      string            `json:"audience,omitempty" toml:"audience,omitempty" yaml:"audience,omitempty" export:"true"`
@@ -1079,7 +1079,7 @@ type JWTAuth struct {
 type OAuthIntrospect struct {
 	IntrospectURL  string   `json:"introspectUrl" toml:"introspectUrl" yaml:"introspectUrl"`
 	ClientID       string   `json:"clientId,omitempty" toml:"clientId,omitempty" yaml:"clientId,omitempty"`
-	ClientSecret   string   `json:"clientSecret,omitempty" toml:"clientSecret,omitempty" yaml:"clientSecret,omitempty"`
+	ClientSecret   string   `json:"clientSecret,omitempty" toml:"clientSecret,omitempty" yaml:"clientSecret,omitempty" loggable:"false"`
 	RequiredScopes []string `json:"requiredScopes,omitempty" toml:"requiredScopes,omitempty" yaml:"requiredScopes,omitempty"`
 }
 
@@ -1095,7 +1095,7 @@ type OAuthClientCreds struct {
 // OAuthClientEntry holds a valid client ID/secret pair.
 type OAuthClientEntry struct {
 	ClientID     string `json:"clientId" toml:"clientId" yaml:"clientId"`
-	ClientSecret string `json:"clientSecret" toml:"clientSecret" yaml:"clientSecret"`
+	ClientSecret string `json:"clientSecret" toml:"clientSecret" yaml:"clientSecret" loggable:"false"`
 }
 
 // +k8s:deepcopy-gen=true
