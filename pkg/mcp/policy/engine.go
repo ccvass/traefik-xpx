@@ -3,6 +3,8 @@ package policy
 import (
 	"fmt"
 	"regexp"
+	"sort"
+	"strings"
 	"time"
 
 	"github.com/rs/zerolog/log"
@@ -53,7 +55,7 @@ type compiledRule struct {
 	pattern *regexp.Regexp
 }
 
-// NewEngine creates a policy engine from rules.
+// NewEngine creates a policy engine from rules sorted by priority (highest first).
 func NewEngine(rules []Rule) (*Engine, error) {
 	compiled := make([]compiledRule, 0, len(rules))
 	for _, r := range rules {
@@ -63,6 +65,9 @@ func NewEngine(rules []Rule) (*Engine, error) {
 		}
 		compiled = append(compiled, compiledRule{rule: r, pattern: re})
 	}
+	sort.Slice(compiled, func(i, j int) bool {
+		return compiled[i].rule.Priority > compiled[j].rule.Priority
+	})
 	return &Engine{rules: compiled}, nil
 }
 
@@ -132,10 +137,23 @@ func evalCondition(op, actual, expected string) bool {
 		return actual == expected
 	case "neq":
 		return actual != expected
+	case "in":
+		for _, v := range strings.Split(expected, ",") {
+			if strings.TrimSpace(v) == actual {
+				return true
+			}
+		}
+		return false
+	case "gt":
+		return actual > expected
+	case "lt":
+		return actual < expected
 	case "matches":
 		matched, _ := regexp.MatchString(expected, actual)
 		return matched
 	default:
-		return true
+		// Fail-closed: unknown operators deny access.
+		log.Warn().Str("operator", op).Msg("Unknown policy operator, denying")
+		return false
 	}
 }
