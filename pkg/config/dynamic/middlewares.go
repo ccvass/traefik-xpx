@@ -47,6 +47,7 @@ type Middleware struct {
 	Retry             *Retry             `json:"retry,omitempty" toml:"retry,omitempty" yaml:"retry,omitempty" export:"true"`
 	ContentType       *ContentType       `json:"contentType,omitempty" toml:"contentType,omitempty" yaml:"contentType,omitempty" label:"allowEmpty" file:"allowEmpty" kv:"allowEmpty" export:"true"`
 	GrpcWeb           *GrpcWeb           `json:"grpcWeb,omitempty" toml:"grpcWeb,omitempty" yaml:"grpcWeb,omitempty" export:"true"`
+	WAF               *WAF               `json:"waf,omitempty" toml:"waf,omitempty" yaml:"waf,omitempty" export:"true"`
 
 	Plugin map[string]PluginConf `json:"plugin,omitempty" toml:"plugin,omitempty" yaml:"plugin,omitempty" export:"true"`
 
@@ -930,4 +931,20 @@ type RewriteTarget struct {
 	Replacement string `json:"replacement,omitempty"`
 	// XForwardedPrefix defines the value of the X-Forwarded-Prefix header.
 	XForwardedPrefix string `json:"xForwardedPrefix,omitempty"`
+}
+
+// +k8s:deepcopy-gen=true
+
+// WAF holds the Web Application Firewall middleware configuration using Coraza engine.
+type WAF struct {
+	// RuleFiles is a list of paths to SecRule files (OWASP CRS compatible).
+	RuleFiles []string `json:"ruleFiles,omitempty" toml:"ruleFiles,omitempty" yaml:"ruleFiles,omitempty"`
+	// InlineRules contains inline SecLang directives.
+	InlineRules string `json:"inlineRules,omitempty" toml:"inlineRules,omitempty" yaml:"inlineRules,omitempty"`
+	// AuditLog enables WAF audit logging.
+	AuditLog bool `json:"auditLog,omitempty" toml:"auditLog,omitempty" yaml:"auditLog,omitempty" export:"true"`
+	// AuditLogPath is the file path for audit log output.
+	AuditLogPath string `json:"auditLogPath,omitempty" toml:"auditLogPath,omitempty" yaml:"auditLogPath,omitempty"`
+	// MaxBodySize is the maximum request body size to inspect in bytes. Defaults to 13MB.
+	MaxBodySize int64 `json:"maxBodySize,omitempty" toml:"maxBodySize,omitempty" yaml:"maxBodySize,omitempty" export:"true"`
 }
