@@ -54,6 +54,7 @@ type Middleware struct {
 	WAF               *WAF               `json:"waf,omitempty" toml:"waf,omitempty" yaml:"waf,omitempty" export:"true"`
 	DistributedRateLimit *DistributedRateLimit `json:"distributedRateLimit,omitempty" toml:"distributedRateLimit,omitempty" yaml:"distributedRateLimit,omitempty" export:"true"`
 	HTTPCache         *HTTPCache         `json:"httpCache,omitempty" toml:"httpCache,omitempty" yaml:"httpCache,omitempty" export:"true"`
+	APIMock           *APIMock           `json:"apiMock,omitempty" toml:"apiMock,omitempty" yaml:"apiMock,omitempty" export:"true"`
 	JWTAuth           *JWTAuth           `json:"jwtAuth,omitempty" toml:"jwtAuth,omitempty" yaml:"jwtAuth,omitempty" export:"true"`
 	OAuthIntrospect   *OAuthIntrospect   `json:"oauthIntrospect,omitempty" toml:"oauthIntrospect,omitempty" yaml:"oauthIntrospect,omitempty" export:"true"`
 	OAuthClientCreds  *OAuthClientCreds  `json:"oauthClientCreds,omitempty" toml:"oauthClientCreds,omitempty" yaml:"oauthClientCreds,omitempty" export:"true"`
@@ -1107,4 +1108,11 @@ type OIDC struct {
 	Audience      string            `json:"audience,omitempty" toml:"audience,omitempty" yaml:"audience,omitempty" export:"true"`
 	HeaderField   string            `json:"headerField,omitempty" toml:"headerField,omitempty" yaml:"headerField,omitempty" export:"true"`
 	ClaimsHeaders map[string]string `json:"claimsHeaders,omitempty" toml:"claimsHeaders,omitempty" yaml:"claimsHeaders,omitempty"`
+}
+
+// APIMock holds the API mocking middleware configuration.
+type APIMock struct {
+	SpecFile      string        `json:"specFile,omitempty" toml:"specFile,omitempty" yaml:"specFile,omitempty" export:"true"`
+	DefaultStatus int           `json:"defaultStatus,omitempty" toml:"defaultStatus,omitempty" yaml:"defaultStatus,omitempty" export:"true"`
+	AddDelay      ptypes.Duration `json:"addDelay,omitempty" toml:"addDelay,omitempty" yaml:"addDelay,omitempty" export:"true"`
 }
