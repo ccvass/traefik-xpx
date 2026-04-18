@@ -165,4 +165,26 @@ export const ROUTES: RouteSections[] = [
       },
     ],
   },
+  {
+    section: 'distributed',
+    sectionLabel: 'Distributed',
+    items: [
+      {
+        path: '/distributed',
+        label: 'Distributed',
+        icon: <MdOutlineHub color="currentColor" size={20} />,
+      },
+    ],
+  },
+  {
+    section: 'clusters',
+    sectionLabel: 'Clusters',
+    items: [
+      {
+        path: '/clusters',
+        label: 'Multi-Cluster',
+        icon: <MdOutlineApi color="currentColor" size={20} />,
+      },
+    ],
+  },
 ]

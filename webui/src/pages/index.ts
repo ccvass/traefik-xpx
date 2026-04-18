@@ -10,4 +10,6 @@ export { Security } from './security'
 export { MCPGateway } from './mcp'
 export { APIManagement } from './apimgmt'
 export { ConfigManager } from './config'
+export { Distributed } from './distributed'
+export { Clusters } from './clusters'
 export { HTTPPages, TCPPages, UDPPages, CertificatesPages }
