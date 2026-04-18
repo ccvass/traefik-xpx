@@ -2,6 +2,7 @@ package portal
 
 import (
 	"crypto/rand"
+	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
@@ -18,6 +19,7 @@ type Config struct {
 	Description  string `json:"description,omitempty" toml:"description,omitempty" yaml:"description,omitempty"`
 	BasePath     string `json:"basePath,omitempty" toml:"basePath,omitempty" yaml:"basePath,omitempty"`
 	AuthRequired bool   `json:"authRequired,omitempty" toml:"authRequired,omitempty" yaml:"authRequired,omitempty"`
+	AuthSecret   string `json:"authSecret,omitempty" toml:"authSecret,omitempty" yaml:"authSecret,omitempty"`
 }
 
 // APICatalogEntry represents an API in the portal catalog.
@@ -42,19 +44,12 @@ type Developer struct {
 // APIKey represents a developer's API key.
 type APIKey struct {
 	ID        string    `json:"id"`
-	Key       string    `json:"key,omitempty"` // only shown on creation
+	KeyHash   string    `json:"keyHash,omitempty"`
+	KeyPrefix string    `json:"keyPrefix,omitempty"`
 	Name      string    `json:"name"`
 	CreatedAt time.Time `json:"createdAt"`
 	LastUsed  time.Time `json:"lastUsed,omitempty"`
 	Requests  int64     `json:"requests"`
-}
-
-// UsageStats holds usage analytics for a developer/key.
-type UsageStats struct {
-	TotalRequests int64            `json:"totalRequests"`
-	ErrorCount    int64            `json:"errorCount"`
-	AvgLatencyMs  float64          `json:"avgLatencyMs"`
-	ByAPI         map[string]int64 `json:"byApi,omitempty"`
 }
 
 // Handler serves the developer portal API.
@@ -62,7 +57,7 @@ type Handler struct {
 	mu         sync.RWMutex
 	config     Config
 	catalog    []APICatalogEntry
-	developers map[string]*Developer // id -> developer
+	developers map[string]*Developer
 	basePath   string
 }
 
@@ -87,8 +82,16 @@ func (h *Handler) SetCatalog(entries []APICatalogEntry) {
 	h.catalog = entries
 }
 
-// ServeHTTP routes portal API requests.
+// ServeHTTP routes portal API requests with auth enforcement.
 func (h *Handler) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
+	// Enforce authentication on write operations when AuthRequired is set.
+	if h.config.AuthRequired && req.Method != http.MethodGet {
+		if !h.checkAuth(req) {
+			writeJSON(rw, http.StatusUnauthorized, map[string]string{"error": "authentication required"})
+			return
+		}
+	}
+
 	path := strings.TrimPrefix(req.URL.Path, h.basePath)
 	path = strings.TrimPrefix(path, "/api")
 
@@ -106,6 +109,15 @@ func (h *Handler) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 	default:
 		http.NotFound(rw, req)
 	}
+}
+
+func (h *Handler) checkAuth(req *http.Request) bool {
+	if h.config.AuthSecret == "" {
+		return false
+	}
+	token := req.Header.Get("Authorization")
+	token = strings.TrimPrefix(token, "Bearer ")
+	return token == h.config.AuthSecret
 }
 
 func (h *Handler) handleCatalog(rw http.ResponseWriter, req *http.Request) {
@@ -134,15 +146,19 @@ func (h *Handler) handleRegister(rw http.ResponseWriter, req *http.Request) {
 		writeJSON(rw, http.StatusBadRequest, map[string]string{"error": "invalid request"})
 		return
 	}
-	if input.Email == "" {
-		writeJSON(rw, http.StatusBadRequest, map[string]string{"error": "email required"})
+	if input.Email == "" || !strings.Contains(input.Email, "@") {
+		writeJSON(rw, http.StatusBadRequest, map[string]string{"error": "valid email required"})
 		return
 	}
 
 	h.mu.Lock()
 	defer h.mu.Unlock()
 
-	id := generateID()
+	id, err := generateID()
+	if err != nil {
+		writeJSON(rw, http.StatusInternalServerError, map[string]string{"error": "internal error"})
+		return
+	}
 	dev := &Developer{
 		ID:        id,
 		Email:     input.Email,
@@ -164,16 +180,34 @@ func (h *Handler) handleCreateKey(rw http.ResponseWriter, _ *http.Request, devID
 		return
 	}
 
-	key := generateAPIKey()
+	key, err := generateAPIKey()
+	if err != nil {
+		writeJSON(rw, http.StatusInternalServerError, map[string]string{"error": "internal error"})
+		return
+	}
+
+	id, err := generateID()
+	if err != nil {
+		writeJSON(rw, http.StatusInternalServerError, map[string]string{"error": "internal error"})
+		return
+	}
+
 	apiKey := APIKey{
-		ID:        generateID(),
-		Key:       key,
+		ID:        id,
+		KeyHash:   hashKey(key),
+		KeyPrefix: key[:12],
 		Name:      fmt.Sprintf("key-%d", len(dev.APIKeys)+1),
 		CreatedAt: time.Now(),
 	}
 	dev.APIKeys = append(dev.APIKeys, apiKey)
 
-	writeJSON(rw, http.StatusCreated, apiKey)
+	// Return full key only once at creation.
+	writeJSON(rw, http.StatusCreated, map[string]string{
+		"id":   apiKey.ID,
+		"key":  key,
+		"name": apiKey.Name,
+		"note": "Store this key securely. It will not be shown again.",
+	})
 }
 
 func (h *Handler) handleListKeys(rw http.ResponseWriter, _ *http.Request, devID string) {
@@ -186,11 +220,23 @@ func (h *Handler) handleListKeys(rw http.ResponseWriter, _ *http.Request, devID 
 		return
 	}
 
-	// Mask keys in listing.
-	keys := make([]APIKey, len(dev.APIKeys))
-	for i, k := range dev.APIKeys {
-		keys[i] = k
-		keys[i].Key = k.Key[:8] + "..."
+	// Only show prefix and metadata, never the full key or hash.
+	type safeKey struct {
+		ID        string    `json:"id"`
+		Prefix    string    `json:"prefix"`
+		Name      string    `json:"name"`
+		CreatedAt time.Time `json:"createdAt"`
+		Requests  int64     `json:"requests"`
+	}
+	keys := make([]safeKey, 0, len(dev.APIKeys))
+	for _, k := range dev.APIKeys {
+		keys = append(keys, safeKey{
+			ID:        k.ID,
+			Prefix:    k.KeyPrefix + "...",
+			Name:      k.Name,
+			CreatedAt: k.CreatedAt,
+			Requests:  k.Requests,
+		})
 	}
 
 	writeJSON(rw, http.StatusOK, keys)
@@ -202,14 +248,23 @@ func writeJSON(rw http.ResponseWriter, status int, v any) {
 	json.NewEncoder(rw).Encode(v)
 }
 
-func generateID() string {
+func generateID() (string, error) {
 	b := make([]byte, 8)
-	rand.Read(b)
-	return hex.EncodeToString(b)
+	if _, err := rand.Read(b); err != nil {
+		return "", err
+	}
+	return hex.EncodeToString(b), nil
 }
 
-func generateAPIKey() string {
+func generateAPIKey() (string, error) {
 	b := make([]byte, 32)
-	rand.Read(b)
-	return "tsk_" + hex.EncodeToString(b)
+	if _, err := rand.Read(b); err != nil {
+		return "", err
+	}
+	return "tsk_" + hex.EncodeToString(b), nil
+}
+
+func hashKey(key string) string {
+	h := sha256.Sum256([]byte(key))
+	return hex.EncodeToString(h[:])
 }
