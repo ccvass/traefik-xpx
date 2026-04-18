@@ -37,6 +37,7 @@ type rateLimiter struct {
 	sourceMatcher utils.SourceExtractor
 	next          http.Handler
 	logger        *zerolog.Logger
+	failOpen      bool
 
 	limiter limiter
 }
@@ -120,6 +121,7 @@ func New(ctx context.Context, next http.Handler, config dynamic.RateLimit, name 
 		next:          next,
 		sourceMatcher: sourceMatcher,
 		limiter:       limiter,
+		failOpen:      config.FailOpen,
 	}, nil
 }
 
@@ -150,6 +152,11 @@ func (rl *rateLimiter) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 	delay, err := rl.limiter.Allow(ctx, rlSource)
 	if err != nil {
 		rl.logger.Error().Err(err).Msg("Could not insert/update bucket")
+		if rl.failOpen {
+			rl.logger.Warn().Msg("Fail-open: allowing request despite limiter error")
+			rl.next.ServeHTTP(rw, req)
+			return
+		}
 		observability.SetStatusErrorf(ctx, "Could not insert/update bucket")
 		http.Error(rw, "Could not insert/update bucket", http.StatusInternalServerError)
 		return

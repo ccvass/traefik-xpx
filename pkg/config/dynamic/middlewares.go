@@ -669,6 +669,10 @@ type RateLimit struct {
 	// Redis stores the configuration for using Redis as a bucket in the rate-limiting algorithm.
 	// If not specified, Traefik will default to an in-memory bucket for the algorithm.
 	Redis *Redis `json:"redis,omitempty" toml:"redis,omitempty" yaml:"redis,omitempty" export:"true"`
+
+	// FailOpen allows requests through when the limiter backend (Redis) is unavailable.
+	// Default is false (fail-closed: return 500 on error).
+	FailOpen bool `json:"failOpen,omitempty" toml:"failOpen,omitempty" yaml:"failOpen,omitempty" export:"true"`
 }
 
 // SetDefaults sets the default values on a RateLimit.
