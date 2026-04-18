@@ -11,6 +11,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/traefik/traefik/v3/pkg/config/runtime"
 	"github.com/traefik/traefik/v3/pkg/middlewares/addprefix"
+	"github.com/traefik/traefik/v3/pkg/middlewares/apikey"
 	"github.com/traefik/traefik/v3/pkg/middlewares/auth"
 	"github.com/traefik/traefik/v3/pkg/middlewares/buffering"
 	"github.com/traefik/traefik/v3/pkg/middlewares/chain"
@@ -109,6 +110,16 @@ func (b *Builder) buildConstructor(ctx context.Context, middlewareName string) (
 	if config.AddPrefix != nil {
 		middleware = func(next http.Handler) (http.Handler, error) {
 			return addprefix.New(ctx, next, *config.AddPrefix, middlewareName)
+		}
+	}
+
+	// APIKey
+	if config.APIKey != nil {
+		if middleware != nil {
+			return nil, badConf
+		}
+		middleware = func(next http.Handler) (http.Handler, error) {
+			return apikey.New(ctx, next, *config.APIKey, middlewareName)
 		}
 	}
 
