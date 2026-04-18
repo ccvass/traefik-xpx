@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"sync"
+	"sync/atomic"
 	"time"
 )
 
@@ -29,7 +30,7 @@ type Debugger struct {
 	mu      sync.RWMutex
 	traces  []TraceEntry
 	maxSize int
-	enabled bool
+	enabled atomic.Bool
 }
 
 // New creates a new traffic debugger.
@@ -37,16 +38,17 @@ func New(maxSize int) *Debugger {
 	if maxSize <= 0 {
 		maxSize = 1000
 	}
-	return &Debugger{
+	d := &Debugger{
 		traces:  make([]TraceEntry, 0, maxSize),
 		maxSize: maxSize,
-		enabled: true,
 	}
+	d.enabled.Store(true)
+	return d
 }
 
 // Record adds a trace entry.
 func (d *Debugger) Record(entry TraceEntry) {
-	if !d.enabled {
+	if !d.enabled.Load() {
 		return
 	}
 	d.mu.Lock()
@@ -60,7 +62,7 @@ func (d *Debugger) Record(entry TraceEntry) {
 
 // Enable enables/disables the debugger.
 func (d *Debugger) Enable(enabled bool) {
-	d.enabled = enabled
+	d.enabled.Store(enabled)
 }
 
 // Clear removes all traces.
