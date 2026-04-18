@@ -111,6 +111,10 @@ type Configuration struct {
 	Spiffe *SpiffeClientConfig `description:"SPIFFE integration configuration." json:"spiffe,omitempty" toml:"spiffe,omitempty" yaml:"spiffe,omitempty" export:"true"`
 
 	OCSP *tls.OCSPConfig `description:"OCSP configuration." json:"ocsp,omitempty" toml:"ocsp,omitempty" yaml:"ocsp,omitempty" label:"allowEmpty" file:"allowEmpty" export:"true"`
+
+	AI      *AIConfig      `description:"AI Gateway configuration." json:"ai,omitempty" toml:"ai,omitempty" yaml:"ai,omitempty" export:"true"`
+	MCP     *MCPConfig     `description:"MCP Gateway configuration." json:"mcp,omitempty" toml:"mcp,omitempty" yaml:"mcp,omitempty" export:"true"`
+	APIMgmt *APIMgmtConfig `description:"API Management configuration." json:"apiMgmt,omitempty" toml:"apiMgmt,omitempty" yaml:"apiMgmt,omitempty" export:"true"`
 }
 
 // Core configures Traefik core behavior.

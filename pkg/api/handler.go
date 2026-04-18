@@ -132,6 +132,15 @@ func (h *Handler) createRouter() *mux.Router {
 	apiRouter.Methods(http.MethodGet).Path("/api/certificates").HandlerFunc(h.getCertificates)
 	apiRouter.Methods(http.MethodGet).Path("/api/certificates/{certificateID}").HandlerFunc(h.getCertificate)
 
+	// Extended API: AI Gateway, MCP Gateway, API Management.
+	apiRouter.Methods(http.MethodGet).Path("/api/ai/status").HandlerFunc(h.getAIStatus)
+	apiRouter.Methods(http.MethodGet).Path("/api/ai/providers").HandlerFunc(h.getAIProviders)
+	apiRouter.Methods(http.MethodGet).Path("/api/mcp/status").HandlerFunc(h.getMCPStatus)
+	apiRouter.Methods(http.MethodGet).Path("/api/mcp/servers").HandlerFunc(h.getMCPServers)
+	apiRouter.Methods(http.MethodGet).Path("/api/mcp/policies").HandlerFunc(h.getMCPPolicies)
+	apiRouter.Methods(http.MethodGet).Path("/api/apimgmt/status").HandlerFunc(h.getAPIMgmtStatus)
+	apiRouter.Methods(http.MethodGet).Path("/api/apimgmt/portal").HandlerFunc(h.getAPIMgmtPortal)
+
 	version.Handler{}.Append(apiRouter)
 
 	return router
