@@ -14,7 +14,11 @@ import (
 	"github.com/traefik/traefik/v3/pkg/middlewares/apikey"
 	"github.com/traefik/traefik/v3/pkg/middlewares/distributedratelimiter"
 	"github.com/traefik/traefik/v3/pkg/middlewares/httpcache"
+	"github.com/traefik/traefik/v3/pkg/middlewares/jwtauth"
 	"github.com/traefik/traefik/v3/pkg/middlewares/ldapauth"
+	"github.com/traefik/traefik/v3/pkg/middlewares/oauthclientcreds"
+	"github.com/traefik/traefik/v3/pkg/middlewares/oauthintrospect"
+	"github.com/traefik/traefik/v3/pkg/middlewares/oidc"
 	"github.com/traefik/traefik/v3/pkg/middlewares/opa"
 	"github.com/traefik/traefik/v3/pkg/middlewares/waf"
 	"github.com/traefik/traefik/v3/pkg/middlewares/auth"
@@ -312,6 +316,46 @@ func (b *Builder) buildConstructor(ctx context.Context, middlewareName string) (
 		}
 		middleware = func(next http.Handler) (http.Handler, error) {
 			return httpcache.New(ctx, next, *config.HTTPCache, middlewareName)
+		}
+	}
+
+	// JWTAuth
+	if config.JWTAuth != nil {
+		if middleware != nil {
+			return nil, badConf
+		}
+		middleware = func(next http.Handler) (http.Handler, error) {
+			return jwtauth.New(ctx, next, *config.JWTAuth, middlewareName)
+		}
+	}
+
+	// OAuthIntrospect
+	if config.OAuthIntrospect != nil {
+		if middleware != nil {
+			return nil, badConf
+		}
+		middleware = func(next http.Handler) (http.Handler, error) {
+			return oauthintrospect.New(ctx, next, *config.OAuthIntrospect, middlewareName)
+		}
+	}
+
+	// OAuthClientCreds
+	if config.OAuthClientCreds != nil {
+		if middleware != nil {
+			return nil, badConf
+		}
+		middleware = func(next http.Handler) (http.Handler, error) {
+			return oauthclientcreds.New(ctx, next, *config.OAuthClientCreds, middlewareName)
+		}
+	}
+
+	// OIDC
+	if config.OIDC != nil {
+		if middleware != nil {
+			return nil, badConf
+		}
+		middleware = func(next http.Handler) (http.Handler, error) {
+			return oidc.New(ctx, next, *config.OIDC, middlewareName)
 		}
 	}
 
