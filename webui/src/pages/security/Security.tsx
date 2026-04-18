@@ -1,5 +1,5 @@
 import { Card, Flex, Grid, H2, Text, Badge } from '@traefik-labs/faency'
-import PageTitle from 'layout/PageTitle'
+import useSWR from 'swr'
 
 const StatCard = ({ title, value, subtitle }: { title: string; value: string; subtitle?: string }) => (
   <Card css={{ p: '$4' }}>
@@ -11,55 +11,71 @@ const StatCard = ({ title, value, subtitle }: { title: string; value: string; su
   </Card>
 )
 
-export const Security = () => {
+export function Security() {
+  const { data: middlewares } = useSWR('/http/middlewares')
+
+  const wafMiddlewares = Array.isArray(middlewares) ? middlewares.filter((m: any) => m.type === 'waf') : []
+  const apiKeyMiddlewares = Array.isArray(middlewares) ? middlewares.filter((m: any) => m.type === 'apikey') : []
+  const authMiddlewares = Array.isArray(middlewares)
+    ? middlewares.filter((m: any) => ['basicauth', 'digestauth', 'forwardauth', 'jwt', 'oidc', 'oauth2introspection', 'hmac', 'ldap'].includes(m.type))
+    : []
+  const opaMiddlewares = Array.isArray(middlewares) ? middlewares.filter((m: any) => m.type === 'opa') : []
+
   return (
-    <Flex direction="column" gap={6}>
-      <PageTitle title="Security" />
+    <Flex direction="column" gap={4}>
+      <H2>Security</H2>
 
-      <Flex direction="column" gap={4}>
-        <H2 css={{ fontSize: '$8' }}>WAF (Coraza)</H2>
-        <Grid gap={4} css={{ gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))' }}>
-          <StatCard title="Requests Inspected" value="0" subtitle="Last 24h" />
-          <StatCard title="Blocked" value="0" subtitle="403 responses" />
-          <StatCard title="SQL Injection" value="0" subtitle="Detected" />
-          <StatCard title="XSS" value="0" subtitle="Detected" />
-        </Grid>
-      </Flex>
+      <Grid columns={{ '@initial': 2, '@md': 4 }} gap={3}>
+        <StatCard title="WAF Rules" value={String(wafMiddlewares.length)} subtitle="Active WAF middlewares" />
+        <StatCard title="API Key Auth" value={String(apiKeyMiddlewares.length)} subtitle="API key middlewares" />
+        <StatCard title="Auth Methods" value={String(authMiddlewares.length)} subtitle="JWT/OIDC/LDAP/OAuth/HMAC" />
+        <StatCard title="OPA Policies" value={String(opaMiddlewares.length)} subtitle="Policy decision points" />
+      </Grid>
 
-      <Flex direction="column" gap={4}>
-        <H2 css={{ fontSize: '$8' }}>OPA Authorization</H2>
-        <Grid gap={4} css={{ gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))' }}>
-          <StatCard title="Evaluations" value="0" />
-          <StatCard title="Allowed" value="0" />
-          <StatCard title="Denied" value="0" />
-        </Grid>
-      </Flex>
-
-      <Flex direction="column" gap={4}>
-        <H2 css={{ fontSize: '$8' }}>Authentication</H2>
-        <Grid gap={4} css={{ gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))' }}>
-          {['JWT', 'OIDC', 'API Key', 'HMAC', 'LDAP', 'OAuth'].map((method) => (
-            <Card key={method} css={{ p: '$4' }}>
-              <Flex justify="between" align="center">
-                <Text css={{ fontWeight: 600 }}>{method}</Text>
-                <Badge variant="gray">No data</Badge>
-              </Flex>
-            </Card>
-          ))}
-        </Grid>
-      </Flex>
-
-      <Flex direction="column" gap={4}>
-        <H2 css={{ fontSize: '$8' }}>Vault</H2>
+      {wafMiddlewares.length > 0 && (
         <Card css={{ p: '$4' }}>
-          <Flex justify="between" align="center">
-            <Text>HashiCorp Vault</Text>
-            <Badge variant="gray">Not configured</Badge>
+          <Flex direction="column" gap={2}>
+            <Text css={{ fontWeight: 600 }}>WAF Middlewares</Text>
+            {wafMiddlewares.map((m: any) => (
+              <Flex key={m.name} justify="between" align="center">
+                <Text>{m.name}</Text>
+                <Badge variant={m.status === 'enabled' ? 'green' : 'red'}>{m.status}</Badge>
+              </Flex>
+            ))}
           </Flex>
         </Card>
-      </Flex>
+      )}
+
+      {apiKeyMiddlewares.length > 0 && (
+        <Card css={{ p: '$4' }}>
+          <Flex direction="column" gap={2}>
+            <Text css={{ fontWeight: 600 }}>API Key Middlewares</Text>
+            {apiKeyMiddlewares.map((m: any) => (
+              <Flex key={m.name} justify="between" align="center">
+                <Text>{m.name}</Text>
+                <Badge variant={m.status === 'enabled' ? 'green' : 'red'}>{m.status}</Badge>
+              </Flex>
+            ))}
+          </Flex>
+        </Card>
+      )}
+
+      {authMiddlewares.length > 0 && (
+        <Card css={{ p: '$4' }}>
+          <Flex direction="column" gap={2}>
+            <Text css={{ fontWeight: 600 }}>Authentication Middlewares</Text>
+            {authMiddlewares.map((m: any) => (
+              <Flex key={m.name} justify="between" align="center">
+                <Text>{m.name}</Text>
+                <Flex gap={1}>
+                  <Badge>{m.type}</Badge>
+                  <Badge variant={m.status === 'enabled' ? 'green' : 'red'}>{m.status}</Badge>
+                </Flex>
+              </Flex>
+            ))}
+          </Flex>
+        </Card>
+      )}
     </Flex>
   )
 }
-
-export default Security
