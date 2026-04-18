@@ -9,4 +9,5 @@ export { AIGateway } from './ai'
 export { Security } from './security'
 export { MCPGateway } from './mcp'
 export { APIManagement } from './apimgmt'
+export { ConfigManager } from './config'
 export { HTTPPages, TCPPages, UDPPages, CertificatesPages }

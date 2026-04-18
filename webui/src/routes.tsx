@@ -6,7 +6,7 @@ import {
   LiaHomeSolid,
   LiaCertificateSolid,
 } from 'react-icons/lia'
-import { MdOutlineSecurity, MdOutlineSmartToy, MdOutlineHub, MdOutlineApi } from 'react-icons/md'
+import { MdOutlineSecurity, MdOutlineSmartToy, MdOutlineHub, MdOutlineApi, MdOutlineSettings } from 'react-icons/md'
 
 export type Route = {
   path: string
@@ -151,6 +151,17 @@ export const ROUTES: RouteSections[] = [
         path: '/api-management',
         label: 'API Management',
         icon: <MdOutlineApi color="currentColor" size={20} />,
+      },
+    ],
+  },
+  {
+    section: 'config',
+    sectionLabel: 'Configuration',
+    items: [
+      {
+        path: '/config',
+        label: 'Config Manager',
+        icon: <MdOutlineSettings color="currentColor" size={20} />,
       },
     ],
   },
