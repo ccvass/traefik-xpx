@@ -10,7 +10,7 @@ import fetch from './libs/fetch'
 import { VersionProvider } from 'contexts/version'
 import { useIsDarkMode } from 'hooks/use-theme'
 import ErrorSuspenseWrapper from 'layout/ErrorSuspenseWrapper'
-import { Dashboard, HTTPPages, NotFound, TCPPages, UDPPages, CertificatesPages, AIGateway, Security, MCPGateway, APIManagement } from 'pages'
+import { Dashboard, HTTPPages, NotFound, TCPPages, UDPPages, CertificatesPages, AIGateway, Security, MCPGateway, APIManagement, ConfigManager } from 'pages'
 import { DashboardSkeleton } from 'pages/dashboard/Dashboard'
 
 export const LIGHT_THEME = lightTheme('blue')
@@ -75,6 +75,7 @@ export const Routes = () => {
           <Route path="/security" element={<Security />} />
           {/* API Management */}
           <Route path="/api-management" element={<APIManagement />} />
+          <Route path="/config" element={<ConfigManager />} />
 
           <Route path="*" element={<NotFound />} />
         </RouterRoutes>
