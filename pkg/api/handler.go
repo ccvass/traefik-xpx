@@ -145,7 +145,7 @@ func (h *Handler) createRouter() *mux.Router {
 	// CRUD: Dynamic configuration management.
 	if h.staticConfig.Providers != nil && h.staticConfig.Providers.File != nil && h.staticConfig.Providers.File.Filename != "" {
 		dcm := newDynamicConfigManager(h.staticConfig.Providers.File.Filename)
-		dcm.RegisterCRUDRoutes(apiRouter)
+		dcm.RegisterCRUDRoutes(apiRouter, h.authWrap)
 	}
 
 	// Static configuration management (for AI/MCP/APIMgmt settings).
@@ -153,12 +153,12 @@ func (h *Handler) createRouter() *mux.Router {
 	if staticPath != "" {
 		scm := newStaticConfigManager(staticPath)
 		apiRouter.Methods(http.MethodGet).Path("/api/config/static").HandlerFunc(scm.getStaticSection)
-		apiRouter.Methods(http.MethodPut).Path("/api/config/static").HandlerFunc(scm.putStaticSection)
-		apiRouter.Methods(http.MethodDelete).Path("/api/config/static").HandlerFunc(scm.deleteStaticSection)
+		apiRouter.Methods(http.MethodPut).Path("/api/config/static").HandlerFunc(h.authWrap(scm.putStaticSection))
+		apiRouter.Methods(http.MethodDelete).Path("/api/config/static").HandlerFunc(h.authWrap(scm.deleteStaticSection))
 
 		// Static config auto-reload.
 		sr := newStaticReloader(staticPath, true)
-		apiRouter.Methods(http.MethodPost).Path("/api/reload").HandlerFunc(sr.handleReload)
+		apiRouter.Methods(http.MethodPost).Path("/api/reload").HandlerFunc(h.authWrap(sr.handleReload))
 		apiRouter.Methods(http.MethodGet).Path("/api/reload").HandlerFunc(sr.handleReloadStatus)
 
 		// Backup and restore.
@@ -167,8 +167,8 @@ func (h *Handler) createRouter() *mux.Router {
 			dynamicPath = h.staticConfig.Providers.File.Filename
 		}
 		bh := newBackupHandler(staticPath, dynamicPath)
-		apiRouter.Methods(http.MethodGet).Path("/api/config/backup").HandlerFunc(bh.handleBackup)
-		apiRouter.Methods(http.MethodPost).Path("/api/config/restore").HandlerFunc(bh.handleRestore)
+		apiRouter.Methods(http.MethodGet).Path("/api/config/backup").HandlerFunc(h.authWrap(bh.handleBackup))
+		apiRouter.Methods(http.MethodPost).Path("/api/config/restore").HandlerFunc(h.authWrap(bh.handleRestore))
 	}
 
 	version.Handler{}.Append(apiRouter)

@@ -73,17 +73,17 @@ func (m *DynamicConfigManager) save(cfg *dynamicConfig) error {
 }
 
 // RegisterCRUDRoutes registers CRUD endpoints on the given router.
-func (m *DynamicConfigManager) RegisterCRUDRoutes(router *mux.Router) {
+func (m *DynamicConfigManager) RegisterCRUDRoutes(router *mux.Router, authWrap func(http.HandlerFunc) http.HandlerFunc) {
 	router.Methods(http.MethodGet).Path("/api/config/dynamic").HandlerFunc(m.getDynamic)
 
-	router.Methods(http.MethodPut).Path("/api/config/http/routers/{name}").HandlerFunc(m.putRouter)
-	router.Methods(http.MethodDelete).Path("/api/config/http/routers/{name}").HandlerFunc(m.deleteRouter)
+	router.Methods(http.MethodPut).Path("/api/config/http/routers/{name}").HandlerFunc(authWrap(m.putRouter))
+	router.Methods(http.MethodDelete).Path("/api/config/http/routers/{name}").HandlerFunc(authWrap(m.deleteRouter))
 
-	router.Methods(http.MethodPut).Path("/api/config/http/services/{name}").HandlerFunc(m.putService)
-	router.Methods(http.MethodDelete).Path("/api/config/http/services/{name}").HandlerFunc(m.deleteService)
+	router.Methods(http.MethodPut).Path("/api/config/http/services/{name}").HandlerFunc(authWrap(m.putService))
+	router.Methods(http.MethodDelete).Path("/api/config/http/services/{name}").HandlerFunc(authWrap(m.deleteService))
 
-	router.Methods(http.MethodPut).Path("/api/config/http/middlewares/{name}").HandlerFunc(m.putMiddleware)
-	router.Methods(http.MethodDelete).Path("/api/config/http/middlewares/{name}").HandlerFunc(m.deleteMiddleware)
+	router.Methods(http.MethodPut).Path("/api/config/http/middlewares/{name}").HandlerFunc(authWrap(m.putMiddleware))
+	router.Methods(http.MethodDelete).Path("/api/config/http/middlewares/{name}").HandlerFunc(authWrap(m.deleteMiddleware))
 }
 
 func (m *DynamicConfigManager) getDynamic(rw http.ResponseWriter, _ *http.Request) {

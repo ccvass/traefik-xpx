@@ -190,6 +190,8 @@ type API struct {
 	Debug              bool   `description:"Enable additional endpoints for debugging and profiling." json:"debug,omitempty" toml:"debug,omitempty" yaml:"debug,omitempty" export:"true"`
 	DisableDashboardAd bool   `description:"Disable ad in the dashboard." json:"disableDashboardAd,omitempty" toml:"disableDashboardAd,omitempty" yaml:"disableDashboardAd,omitempty" export:"true"`
 	DashboardName      string `description:"Custom name for the dashboard." json:"dashboardName,omitempty" toml:"dashboardName,omitempty" yaml:"dashboardName,omitempty" export:"true"`
+	AuthUser           string `description:"Basic auth username for dashboard/API." json:"authUser,omitempty" toml:"authUser,omitempty" yaml:"authUser,omitempty"`
+	AuthPassword       string `description:"Basic auth password for dashboard/API." json:"authPassword,omitempty" toml:"authPassword,omitempty" yaml:"authPassword,omitempty" loggable:"false"`
 	// TODO: Re-enable statistics
 	// Statistics      *types.Statistics `description:"Enable more detailed statistics." json:"statistics,omitempty" toml:"statistics,omitempty" yaml:"statistics,omitempty" label:"allowEmpty" file:"allowEmpty" export:"true"`
 }
