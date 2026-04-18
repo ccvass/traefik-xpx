@@ -1,0 +1,100 @@
+version: "3.8"
+
+# Traefik API Server - Docker Swarm Stack
+# Deploy: docker stack deploy -c docker-compose.yml traefik
+#
+# Features enabled:
+# - All auth middlewares (JWT, OIDC, API Key, HMAC, LDAP, OAuth)
+# - OPA authorization, Coraza WAF
+# - Distributed rate limiting (Redis-backed)
+# - HTTP caching (Redis-backed)
+# - Distributed Let's Encrypt (Redis-backed)
+# - AI Gateway with multi-LLM support
+# - MCP Gateway with TBAC and governance
+# - API Management with developer portal
+
+services:
+  traefik:
+    image: traefik-api-srv:latest
+    deploy:
+      replicas: 2
+      placement:
+        constraints: [node.role == manager]
+      restart_policy:
+        condition: on-failure
+    command:
+      - "--providers.swarm.endpoint=unix:///var/run/docker.sock"
+      - "--providers.swarm.exposedByDefault=false"
+      - "--providers.swarm.network=traefik-public"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--api.dashboard=true"
+      - "--log.level=INFO"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - traefik-public
+
+  redis:
+    image: redis:7-alpine
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    command: redis-server --appendonly yes
+    volumes:
+      - redis-data:/data
+    networks:
+      - traefik-public
+
+  # Example: API with JWT auth middleware
+  my-api:
+    image: my-api:latest
+    deploy:
+      replicas: 3
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.my-api.rule=Host(`api.example.com`)"
+        - "traefik.http.routers.my-api.entrypoints=websecure"
+        - "traefik.http.routers.my-api.tls=true"
+        - "traefik.http.routers.my-api.middlewares=my-jwt,my-ratelimit"
+        # JWT Auth
+        - "traefik.http.middlewares.my-jwt.jwtAuth.jwksUrl=https://auth.example.com/.well-known/jwks.json"
+        - "traefik.http.middlewares.my-jwt.jwtAuth.issuer=https://auth.example.com"
+        - "traefik.http.middlewares.my-jwt.jwtAuth.audience=my-api"
+        # Distributed Rate Limit
+        - "traefik.http.middlewares.my-ratelimit.distributedRateLimit.average=100"
+        - "traefik.http.middlewares.my-ratelimit.distributedRateLimit.burst=200"
+        - "traefik.http.middlewares.my-ratelimit.distributedRateLimit.redisUrl=redis://redis:6379/0"
+        # Service
+        - "traefik.http.services.my-api.loadbalancer.server.port=8080"
+    networks:
+      - traefik-public
+
+  # Example: API with WAF + API Key auth
+  protected-api:
+    image: protected-api:latest
+    deploy:
+      replicas: 2
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.protected.rule=Host(`secure.example.com`)"
+        - "traefik.http.routers.protected.middlewares=my-waf,my-apikey"
+        # WAF
+        - "traefik.http.middlewares.my-waf.waf.inlineRules=SecRuleEngine On\nSecRule ARGS \"@detectSQLi\" \"id:1,phase:2,deny,status:403\""
+        # API Key
+        - "traefik.http.middlewares.my-apikey.apiKey.headerName=X-API-Key"
+        - "traefik.http.services.protected.loadbalancer.server.port=8080"
+    networks:
+      - traefik-public
+
+volumes:
+  redis-data:
+
+networks:
+  traefik-public:
+    driver: overlay
+    attachable: true
