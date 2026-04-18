@@ -6,6 +6,7 @@ import {
   LiaHomeSolid,
   LiaCertificateSolid,
 } from 'react-icons/lia'
+import { MdOutlineSecurity, MdOutlineSmartToy, MdOutlineHub, MdOutlineApi } from 'react-icons/md'
 
 export type Route = {
   path: string
@@ -106,6 +107,50 @@ export const ROUTES: RouteSections[] = [
         activeMatches: ['/certificates/:name'],
         label: 'Certificates',
         icon: <LiaCertificateSolid color="currentColor" size={20} />,
+      },
+    ],
+  },
+  {
+    section: 'ai-gateway',
+    sectionLabel: 'AI Gateway',
+    items: [
+      {
+        path: '/ai',
+        label: 'AI Gateway',
+        icon: <MdOutlineSmartToy color="currentColor" size={20} />,
+      },
+    ],
+  },
+  {
+    section: 'mcp-gateway',
+    sectionLabel: 'MCP Gateway',
+    items: [
+      {
+        path: '/mcp',
+        label: 'MCP Gateway',
+        icon: <MdOutlineHub color="currentColor" size={20} />,
+      },
+    ],
+  },
+  {
+    section: 'security',
+    sectionLabel: 'Security',
+    items: [
+      {
+        path: '/security',
+        label: 'Security',
+        icon: <MdOutlineSecurity color="currentColor" size={20} />,
+      },
+    ],
+  },
+  {
+    section: 'api-management',
+    sectionLabel: 'API Management',
+    items: [
+      {
+        path: '/api-management',
+        label: 'API Management',
+        icon: <MdOutlineApi color="currentColor" size={20} />,
       },
     ],
   },

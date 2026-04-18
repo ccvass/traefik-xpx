@@ -5,4 +5,8 @@ import * as UDPPages from './udp'
 
 export { Dashboard } from './dashboard/Dashboard'
 export { NotFound } from './NotFound'
+export { AIGateway } from './ai'
+export { Security } from './security'
+export { MCPGateway } from './mcp'
+export { APIManagement } from './apimgmt'
 export { HTTPPages, TCPPages, UDPPages, CertificatesPages }
