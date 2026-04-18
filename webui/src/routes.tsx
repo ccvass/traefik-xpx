@@ -6,7 +6,7 @@ import {
   LiaHomeSolid,
   LiaCertificateSolid,
 } from 'react-icons/lia'
-import { MdOutlineSecurity, MdOutlineSmartToy, MdOutlineHub, MdOutlineApi, MdOutlineSettings } from 'react-icons/md'
+import { MdOutlineSecurity, MdOutlineSmartToy, MdOutlineHub, MdOutlineApi, MdOutlineSettings, MdOutlineDashboard } from 'react-icons/md'
 
 export type Route = {
   path: string
@@ -184,6 +184,17 @@ export const ROUTES: RouteSections[] = [
         path: '/clusters',
         label: 'Multi-Cluster',
         icon: <MdOutlineApi color="currentColor" size={20} />,
+      },
+    ],
+  },
+  {
+    section: 'grafana',
+    sectionLabel: 'Observability',
+    items: [
+      {
+        path: '/grafana',
+        label: 'Grafana Dashboards',
+        icon: <MdOutlineDashboard color="currentColor" size={20} />,
       },
     ],
   },

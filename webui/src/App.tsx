@@ -10,7 +10,7 @@ import fetch from './libs/fetch'
 import { VersionProvider } from 'contexts/version'
 import { useIsDarkMode } from 'hooks/use-theme'
 import ErrorSuspenseWrapper from 'layout/ErrorSuspenseWrapper'
-import { Dashboard, HTTPPages, NotFound, TCPPages, UDPPages, CertificatesPages, AIGateway, Security, MCPGateway, APIManagement, ConfigManager, Distributed, Clusters } from 'pages'
+import { Dashboard, HTTPPages, NotFound, TCPPages, UDPPages, CertificatesPages, AIGateway, Security, MCPGateway, APIManagement, ConfigManager, Distributed, Clusters, GrafanaDashboards } from 'pages'
 import { DashboardSkeleton } from 'pages/dashboard/Dashboard'
 
 export const LIGHT_THEME = lightTheme('blue')
@@ -78,6 +78,7 @@ export const Routes = () => {
           <Route path="/config" element={<ConfigManager />} />
           <Route path="/distributed" element={<Distributed />} />
           <Route path="/clusters" element={<Clusters />} />
+          <Route path="/grafana" element={<GrafanaDashboards />} />
 
           <Route path="*" element={<NotFound />} />
         </RouterRoutes>
