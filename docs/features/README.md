@@ -6,52 +6,52 @@ Complete feature documentation with configuration examples.
 
 ### Authentication & Security
 
-- [JWT Authentication](features/JWT.md)
-- [OAuth 2.0 Token Introspection](features/OAUTH-INTROSPECTION.md)
-- [OAuth 2.0 Client Credentials](features/OAUTH-CLIENT-CREDENTIALS.md)
-- [OpenID Connect (OIDC)](features/OIDC.md)
-- [LDAP Authentication](features/LDAP.md)
-- [API Key Authentication](features/API-KEY.md)
-- [HMAC Authentication](features/HMAC.md)
-- [Open Policy Agent (OPA)](features/OPA.md)
-- [Coraza WAF](features/WAF.md)
-- [HashiCorp Vault Integration](features/VAULT.md)
+- [JWT Authentication](JWT.md)
+- [OAuth 2.0 Token Introspection](OAUTH-INTROSPECTION.md)
+- [OAuth 2.0 Client Credentials](OAUTH-CLIENT-CREDENTIALS.md)
+- [OpenID Connect (OIDC)](OIDC.md)
+- [LDAP Authentication](LDAP.md)
+- [API Key Authentication](API-KEY.md)
+- [HMAC Authentication](HMAC.md)
+- [Open Policy Agent (OPA)](OPA.md)
+- [Coraza WAF](WAF.md)
+- [HashiCorp Vault Integration](VAULT.md)
 
 ### Distributed Features
 
-- [Distributed Rate Limiting](features/DISTRIBUTED-RATE-LIMIT.md)
-- [Distributed In-Flight Request Limiting](features/DISTRIBUTED-INFLIGHT.md)
-- [HTTP Caching](features/HTTP-CACHE.md)
-- [Distributed ACME (Let's Encrypt)](features/DISTRIBUTED-ACME.md)
-- [Vault PKI Certificate Resolver](features/VAULT-PKI.md)
-- [Vault K/V TLS Store](features/VAULT-KV-TLS.md)
+- [Distributed Rate Limiting](DISTRIBUTED-RATE-LIMIT.md)
+- [Distributed In-Flight Request Limiting](DISTRIBUTED-INFLIGHT.md)
+- [HTTP Caching](HTTP-CACHE.md)
+- [Distributed ACME (Let's Encrypt)](DISTRIBUTED-ACME.md)
+- [Vault PKI Certificate Resolver](VAULT-PKI.md)
+- [Vault K/V TLS Store](VAULT-KV-TLS.md)
 
 ### AI Gateway
 
-- [Multi-LLM Gateway](features/AI-GATEWAY.md)
-- [Semantic Cache](features/SEMANTIC-CACHE.md)
-- [PII Guard](features/PII-GUARD.md)
+- [Multi-LLM Gateway](AI-GATEWAY.md)
+- [Semantic Cache](SEMANTIC-CACHE.md)
+- [PII Guard](PII-GUARD.md)
 
 ### MCP Gateway
 
-- [MCP Gateway Overview](features/MCP-GATEWAY.md)
-- [Tool-Based Access Control (TBAC)](features/MCP-TBAC.md)
-- [MCP Policy Engine](features/MCP-POLICY.md)
-- [MCP Audit Logger](features/MCP-AUDIT.md)
+- [MCP Gateway Overview](MCP-GATEWAY.md)
+- [Tool-Based Access Control (TBAC)](MCP-TBAC.md)
+- [MCP Policy Engine](MCP-POLICY.md)
+- [MCP Audit Logger](MCP-AUDIT.md)
 
 ### API Management
 
-- [API Versioning](features/API-VERSIONING.md)
-- [Developer Portal](features/DEVELOPER-PORTAL.md)
-- [OpenAPI Support](features/OPENAPI.md)
-- [API Mocking](features/API-MOCKING.md)
-- [Configuration Linter](features/CONFIG-LINTER.md)
+- [API Versioning](API-VERSIONING.md)
+- [Developer Portal](DEVELOPER-PORTAL.md)
+- [OpenAPI Support](OPENAPI.md)
+- [API Mocking](API-MOCKING.md)
+- [Configuration Linter](CONFIG-LINTER.md)
 
 ### Operations
 
-- [Static Config Auto-Reload](features/STATIC-RELOAD.md)
-- [Backup and Restore](features/BACKUP-RESTORE.md)
-- [Encrypted Cluster Communication (mTLS)](features/CLUSTER-MTLS.md)
-- [Dashboard CRUD](features/DASHBOARD-CRUD.md)
-- [Grafana Dashboards](features/GRAFANA.md)
-- [FIPS 140-2 Compliance](features/FIPS.md)
+- [Static Config Auto-Reload](STATIC-RELOAD.md)
+- [Backup and Restore](BACKUP-RESTORE.md)
+- [Encrypted Cluster Communication (mTLS)](CLUSTER-MTLS.md)
+- [Dashboard CRUD](DASHBOARD-CRUD.md)
+- [Grafana Dashboards](GRAFANA.md)
+- [FIPS 140-2 Compliance](FIPS.md)
