@@ -12,4 +12,5 @@ export { APIManagement } from './apimgmt'
 export { ConfigManager } from './config'
 export { Distributed } from './distributed'
 export { Clusters } from './clusters'
+export { GrafanaDashboards } from './grafana'
 export { HTTPPages, TCPPages, UDPPages, CertificatesPages }

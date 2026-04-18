@@ -140,6 +140,7 @@ func (h *Handler) createRouter() *mux.Router {
 	apiRouter.Methods(http.MethodGet).Path("/api/mcp/policies").HandlerFunc(h.getMCPPolicies)
 	apiRouter.Methods(http.MethodGet).Path("/api/apimgmt/status").HandlerFunc(h.getAPIMgmtStatus)
 	apiRouter.Methods(http.MethodGet).Path("/api/apimgmt/portal").HandlerFunc(h.getAPIMgmtPortal)
+	apiRouter.Methods(http.MethodGet).Path("/api/grafana/dashboards").HandlerFunc(h.getGrafanaDashboards)
 
 	// CRUD: Dynamic configuration management.
 	if h.staticConfig.Providers != nil && h.staticConfig.Providers.File != nil && h.staticConfig.Providers.File.Filename != "" {
