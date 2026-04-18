@@ -123,6 +123,8 @@ require (
 	sigs.k8s.io/yaml v1.6.0
 )
 
+require github.com/hashicorp/vault/api v1.23.0
+
 require (
 	cloud.google.com/go/auth v0.18.1 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.8 // indirect
@@ -251,10 +253,12 @@ require (
 	github.com/hashicorp/go-immutable-radix v1.3.1 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/hashicorp/go-rootcerts v1.0.2 // indirect
+	github.com/hashicorp/go-secure-stdlib/parseutil v0.2.0 // indirect
+	github.com/hashicorp/go-secure-stdlib/strutil v0.1.2 // indirect
 	github.com/hashicorp/go-sockaddr v1.0.7 // indirect
 	github.com/hashicorp/go-uuid v1.0.3 // indirect
 	github.com/hashicorp/golang-lru v1.0.2 // indirect
-	github.com/hashicorp/hcl v1.0.1-vault-5 // indirect
+	github.com/hashicorp/hcl v1.0.1-vault-7 // indirect
 	github.com/hashicorp/serf v0.10.1 // indirect
 	github.com/huaweicloud/huaweicloud-sdk-go-v3 v0.1.187 // indirect
 	github.com/iij/doapi v0.0.0-20190504054126-0bbf12d6d7df // indirect
@@ -330,6 +334,7 @@ require (
 	github.com/regfish/regfish-dnsapi-go v0.1.1 // indirect
 	github.com/rs/cors v1.7.0 // indirect
 	github.com/rs/dnscache v0.0.0-20230804202142-fc85eb664529 // indirect
+	github.com/ryanuber/go-glob v1.0.0 // indirect
 	github.com/sacloud/api-client-go v0.3.3 // indirect
 	github.com/sacloud/go-http v0.1.9 // indirect
 	github.com/sacloud/iaas-api-go v1.23.1 // indirect
