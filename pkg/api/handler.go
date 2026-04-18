@@ -154,6 +154,11 @@ func (h *Handler) createRouter() *mux.Router {
 		apiRouter.Methods(http.MethodGet).Path("/api/config/static").HandlerFunc(scm.getStaticSection)
 		apiRouter.Methods(http.MethodPut).Path("/api/config/static").HandlerFunc(scm.putStaticSection)
 		apiRouter.Methods(http.MethodDelete).Path("/api/config/static").HandlerFunc(scm.deleteStaticSection)
+
+		// Static config auto-reload.
+		sr := newStaticReloader(staticPath, true)
+		apiRouter.Methods(http.MethodPost).Path("/api/reload").HandlerFunc(sr.handleReload)
+		apiRouter.Methods(http.MethodGet).Path("/api/reload").HandlerFunc(sr.handleReloadStatus)
 	}
 
 	version.Handler{}.Append(apiRouter)
