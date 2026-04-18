@@ -36,6 +36,7 @@ type Middleware struct {
 	RateLimit         *RateLimit         `json:"rateLimit,omitempty" toml:"rateLimit,omitempty" yaml:"rateLimit,omitempty" export:"true"`
 	RedirectRegex     *RedirectRegex     `json:"redirectRegex,omitempty" toml:"redirectRegex,omitempty" yaml:"redirectRegex,omitempty" export:"true"`
 	RedirectScheme    *RedirectScheme    `json:"redirectScheme,omitempty" toml:"redirectScheme,omitempty" yaml:"redirectScheme,omitempty" export:"true"`
+	APIKey            *APIKey            `json:"apiKey,omitempty" toml:"apiKey,omitempty" yaml:"apiKey,omitempty" export:"true"`
 	BasicAuth         *BasicAuth         `json:"basicAuth,omitempty" toml:"basicAuth,omitempty" yaml:"basicAuth,omitempty" export:"true"`
 	DigestAuth        *DigestAuth        `json:"digestAuth,omitempty" toml:"digestAuth,omitempty" yaml:"digestAuth,omitempty" export:"true"`
 	ForwardAuth       *ForwardAuth       `json:"forwardAuth,omitempty" toml:"forwardAuth,omitempty" yaml:"forwardAuth,omitempty" export:"true"`
@@ -94,6 +95,39 @@ type AddPrefix struct {
 	// It should include a leading slash (/).
 	// +kubebuilder:validation:XValidation:message="must start with a '/'",rule="self.startsWith('/')"
 	Prefix string `json:"prefix,omitempty" toml:"prefix,omitempty" yaml:"prefix,omitempty" export:"true"`
+}
+
+// +k8s:deepcopy-gen=true
+
+// APIKey holds the API key authentication middleware configuration.
+// This middleware restricts access to your services to requests providing a valid API key.
+type APIKey struct {
+	// Keys is the list of valid API keys with optional metadata.
+	Keys []APIKeyEntry `json:"keys,omitempty" toml:"keys,omitempty" yaml:"keys,omitempty" loggable:"false"`
+	// KeysFile is the path to an external file that contains the API keys (one per line, format: key:metadata).
+	KeysFile string `json:"keysFile,omitempty" toml:"keysFile,omitempty" yaml:"keysFile,omitempty"`
+	// HeaderName is the header to extract the API key from.
+	// Default: X-API-Key.
+	HeaderName string `json:"headerName,omitempty" toml:"headerName,omitempty" yaml:"headerName,omitempty" export:"true"`
+	// QueryParam is the query parameter name to extract the API key from.
+	QueryParam string `json:"queryParam,omitempty" toml:"queryParam,omitempty" yaml:"queryParam,omitempty" export:"true"`
+	// CookieName is the cookie name to extract the API key from.
+	CookieName string `json:"cookieName,omitempty" toml:"cookieName,omitempty" yaml:"cookieName,omitempty" export:"true"`
+	// HeaderField defines a header field to store the authenticated key metadata.
+	HeaderField string `json:"headerField,omitempty" toml:"headerField,omitempty" yaml:"headerField,omitempty" export:"true"`
+	// RemoveHeader removes the API key header before forwarding the request.
+	// Default: false.
+	RemoveHeader bool `json:"removeHeader,omitempty" toml:"removeHeader,omitempty" yaml:"removeHeader,omitempty" export:"true"`
+}
+
+// +k8s:deepcopy-gen=true
+
+// APIKeyEntry holds an API key value and optional metadata.
+type APIKeyEntry struct {
+	// Value is the API key value.
+	Value string `json:"value" toml:"value" yaml:"value" loggable:"false"`
+	// Metadata is optional metadata associated with the key (e.g., owner, plan).
+	Metadata string `json:"metadata,omitempty" toml:"metadata,omitempty" yaml:"metadata,omitempty"`
 }
 
 // +k8s:deepcopy-gen=true
