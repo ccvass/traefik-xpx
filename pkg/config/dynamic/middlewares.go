@@ -49,6 +49,11 @@ type Middleware struct {
 	ContentType       *ContentType       `json:"contentType,omitempty" toml:"contentType,omitempty" yaml:"contentType,omitempty" label:"allowEmpty" file:"allowEmpty" kv:"allowEmpty" export:"true"`
 	GrpcWeb           *GrpcWeb           `json:"grpcWeb,omitempty" toml:"grpcWeb,omitempty" yaml:"grpcWeb,omitempty" export:"true"`
 	HMAC              *HMAC              `json:"hmac,omitempty" toml:"hmac,omitempty" yaml:"hmac,omitempty" export:"true"`
+	LDAP              *LDAP              `json:"ldap,omitempty" toml:"ldap,omitempty" yaml:"ldap,omitempty" export:"true"`
+	OPA               *OPA               `json:"opa,omitempty" toml:"opa,omitempty" yaml:"opa,omitempty" export:"true"`
+	WAF               *WAF               `json:"waf,omitempty" toml:"waf,omitempty" yaml:"waf,omitempty" export:"true"`
+	DistributedRateLimit *DistributedRateLimit `json:"distributedRateLimit,omitempty" toml:"distributedRateLimit,omitempty" yaml:"distributedRateLimit,omitempty" export:"true"`
+	HTTPCache         *HTTPCache         `json:"httpCache,omitempty" toml:"httpCache,omitempty" yaml:"httpCache,omitempty" export:"true"`
 
 	Plugin map[string]PluginConf `json:"plugin,omitempty" toml:"plugin,omitempty" yaml:"plugin,omitempty" export:"true"`
 
@@ -983,4 +988,71 @@ type HMAC struct {
 	MaxSkew ptypes.Duration `json:"maxSkew,omitempty" toml:"maxSkew,omitempty" yaml:"maxSkew,omitempty" export:"true"`
 	// SignedHeaders lists headers included in the signature computation.
 	SignedHeaders []string `json:"signedHeaders,omitempty" toml:"signedHeaders,omitempty" yaml:"signedHeaders,omitempty"`
+}
+
+// +k8s:deepcopy-gen=true
+
+// LDAP holds the LDAP authentication middleware configuration.
+type LDAP struct {
+	URL                string            `json:"url" toml:"url" yaml:"url"`
+	BaseDN             string            `json:"baseDn" toml:"baseDn" yaml:"baseDn"`
+	BindDN             string            `json:"bindDn,omitempty" toml:"bindDn,omitempty" yaml:"bindDn,omitempty"`
+	BindPassword       string            `json:"bindPassword,omitempty" toml:"bindPassword,omitempty" yaml:"bindPassword,omitempty"`
+	SearchFilter       string            `json:"searchFilter,omitempty" toml:"searchFilter,omitempty" yaml:"searchFilter,omitempty" export:"true"`
+	UsernameAttr       string            `json:"usernameAttr,omitempty" toml:"usernameAttr,omitempty" yaml:"usernameAttr,omitempty" export:"true"`
+	GroupFilter        string            `json:"groupFilter,omitempty" toml:"groupFilter,omitempty" yaml:"groupFilter,omitempty" export:"true"`
+	GroupAttr          string            `json:"groupAttr,omitempty" toml:"groupAttr,omitempty" yaml:"groupAttr,omitempty" export:"true"`
+	StartTLS           bool              `json:"startTls,omitempty" toml:"startTls,omitempty" yaml:"startTls,omitempty" export:"true"`
+	InsecureSkipVerify bool              `json:"insecureSkipVerify,omitempty" toml:"insecureSkipVerify,omitempty" yaml:"insecureSkipVerify,omitempty" export:"true"`
+	CacheDuration      ptypes.Duration   `json:"cacheDuration,omitempty" toml:"cacheDuration,omitempty" yaml:"cacheDuration,omitempty" export:"true"`
+	ForwardHeaders     map[string]string `json:"forwardHeaders,omitempty" toml:"forwardHeaders,omitempty" yaml:"forwardHeaders,omitempty"`
+}
+
+// +k8s:deepcopy-gen=true
+
+// OPA holds the Open Policy Agent middleware configuration.
+type OPA struct {
+	URL          string          `json:"url,omitempty" toml:"url,omitempty" yaml:"url,omitempty" export:"true"`
+	Policy       string          `json:"policy,omitempty" toml:"policy,omitempty" yaml:"policy,omitempty"`
+	PolicyPath   string          `json:"policyPath,omitempty" toml:"policyPath,omitempty" yaml:"policyPath,omitempty"`
+	DecisionPath string          `json:"decisionPath,omitempty" toml:"decisionPath,omitempty" yaml:"decisionPath,omitempty" export:"true"`
+	AllowField   string          `json:"allowField,omitempty" toml:"allowField,omitempty" yaml:"allowField,omitempty" export:"true"`
+	IncludeBody  bool            `json:"includeBody,omitempty" toml:"includeBody,omitempty" yaml:"includeBody,omitempty" export:"true"`
+	MaxBodySize  int64           `json:"maxBodySize,omitempty" toml:"maxBodySize,omitempty" yaml:"maxBodySize,omitempty" export:"true"`
+	Timeout      ptypes.Duration `json:"timeout,omitempty" toml:"timeout,omitempty" yaml:"timeout,omitempty" export:"true"`
+}
+
+// +k8s:deepcopy-gen=true
+
+// WAF holds the Web Application Firewall middleware configuration.
+type WAF struct {
+	RuleFiles    []string `json:"ruleFiles,omitempty" toml:"ruleFiles,omitempty" yaml:"ruleFiles,omitempty"`
+	InlineRules  string   `json:"inlineRules,omitempty" toml:"inlineRules,omitempty" yaml:"inlineRules,omitempty"`
+	AuditLog     bool     `json:"auditLog,omitempty" toml:"auditLog,omitempty" yaml:"auditLog,omitempty" export:"true"`
+	AuditLogPath string   `json:"auditLogPath,omitempty" toml:"auditLogPath,omitempty" yaml:"auditLogPath,omitempty"`
+	MaxBodySize  int64    `json:"maxBodySize,omitempty" toml:"maxBodySize,omitempty" yaml:"maxBodySize,omitempty" export:"true"`
+}
+
+// +k8s:deepcopy-gen=true
+
+// DistributedRateLimit holds the distributed rate limiting middleware configuration.
+type DistributedRateLimit struct {
+	Average       int64           `json:"average" toml:"average" yaml:"average" export:"true"`
+	Burst         int64           `json:"burst,omitempty" toml:"burst,omitempty" yaml:"burst,omitempty" export:"true"`
+	Period        ptypes.Duration `json:"period,omitempty" toml:"period,omitempty" yaml:"period,omitempty" export:"true"`
+	RedisURL      string          `json:"redisUrl" toml:"redisUrl" yaml:"redisUrl"`
+	RedisPassword string          `json:"redisPassword,omitempty" toml:"redisPassword,omitempty" yaml:"redisPassword,omitempty"`
+	KeyFunc       string          `json:"keyFunc,omitempty" toml:"keyFunc,omitempty" yaml:"keyFunc,omitempty" export:"true"`
+	KeyHeader     string          `json:"keyHeader,omitempty" toml:"keyHeader,omitempty" yaml:"keyHeader,omitempty" export:"true"`
+}
+
+// +k8s:deepcopy-gen=true
+
+// HTTPCache holds the HTTP caching middleware configuration.
+type HTTPCache struct {
+	DefaultTTL  ptypes.Duration `json:"defaultTtl,omitempty" toml:"defaultTtl,omitempty" yaml:"defaultTtl,omitempty" export:"true"`
+	Methods     []string        `json:"methods,omitempty" toml:"methods,omitempty" yaml:"methods,omitempty" export:"true"`
+	StatusCodes []int           `json:"statusCodes,omitempty" toml:"statusCodes,omitempty" yaml:"statusCodes,omitempty"`
+	VaryHeaders []string        `json:"varyHeaders,omitempty" toml:"varyHeaders,omitempty" yaml:"varyHeaders,omitempty"`
+	MaxEntries  int             `json:"maxEntries,omitempty" toml:"maxEntries,omitempty" yaml:"maxEntries,omitempty" export:"true"`
 }

@@ -1169,6 +1169,31 @@ func (in *Middleware) DeepCopyInto(out *Middleware) {
 		*out = new(HMAC)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.LDAP != nil {
+		in, out := &in.LDAP, &out.LDAP
+		*out = new(LDAP)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.OPA != nil {
+		in, out := &in.OPA, &out.OPA
+		*out = new(OPA)
+		**out = **in
+	}
+	if in.WAF != nil {
+		in, out := &in.WAF, &out.WAF
+		*out = new(WAF)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.DistributedRateLimit != nil {
+		in, out := &in.DistributedRateLimit, &out.DistributedRateLimit
+		*out = new(DistributedRateLimit)
+		**out = **in
+	}
+	if in.HTTPCache != nil {
+		in, out := &in.HTTPCache, &out.HTTPCache
+		*out = new(HTTPCache)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.Plugin != nil {
 		in, out := &in.Plugin, &out.Plugin
 		*out = make(map[string]PluginConf, len(*in))
@@ -2928,3 +2953,33 @@ func (in *HMAC) DeepCopy() *HMAC {
 	in.DeepCopyInto(out)
 	return out
 }
+
+func (in *LDAP) DeepCopyInto(out *LDAP) {
+	*out = *in
+	if in.ForwardHeaders != nil {
+		in, out := &in.ForwardHeaders, &out.ForwardHeaders
+		*out = make(map[string]string, len(*in))
+		for k, v := range *in { (*out)[k] = v }
+	}
+}
+func (in *LDAP) DeepCopy() *LDAP { if in == nil { return nil }; out := new(LDAP); in.DeepCopyInto(out); return out }
+
+func (in *OPA) DeepCopyInto(out *OPA) { *out = *in }
+func (in *OPA) DeepCopy() *OPA { if in == nil { return nil }; out := new(OPA); in.DeepCopyInto(out); return out }
+
+func (in *WAF) DeepCopyInto(out *WAF) {
+	*out = *in
+	if in.RuleFiles != nil { t := make([]string, len(in.RuleFiles)); copy(t, in.RuleFiles); out.RuleFiles = t }
+}
+func (in *WAF) DeepCopy() *WAF { if in == nil { return nil }; out := new(WAF); in.DeepCopyInto(out); return out }
+
+func (in *DistributedRateLimit) DeepCopyInto(out *DistributedRateLimit) { *out = *in }
+func (in *DistributedRateLimit) DeepCopy() *DistributedRateLimit { if in == nil { return nil }; out := new(DistributedRateLimit); in.DeepCopyInto(out); return out }
+
+func (in *HTTPCache) DeepCopyInto(out *HTTPCache) {
+	*out = *in
+	if in.Methods != nil { t := make([]string, len(in.Methods)); copy(t, in.Methods); out.Methods = t }
+	if in.StatusCodes != nil { t := make([]int, len(in.StatusCodes)); copy(t, in.StatusCodes); out.StatusCodes = t }
+	if in.VaryHeaders != nil { t := make([]string, len(in.VaryHeaders)); copy(t, in.VaryHeaders); out.VaryHeaders = t }
+}
+func (in *HTTPCache) DeepCopy() *HTTPCache { if in == nil { return nil }; out := new(HTTPCache); in.DeepCopyInto(out); return out }
