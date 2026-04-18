@@ -92,8 +92,16 @@ func (c *httpCacheMiddleware) ServeHTTP(rw http.ResponseWriter, req *http.Reques
 		return
 	}
 
-	// Skip if Cache-Control: no-cache.
+	// Never cache requests with Authorization header to prevent cross-user leakage.
+	if req.Header.Get("Authorization") != "" {
+		rw.Header().Set("X-Cache", "BYPASS")
+		c.next.ServeHTTP(rw, req)
+		return
+	}
+
+	// Skip if client requests no-cache.
 	if strings.Contains(req.Header.Get("Cache-Control"), "no-cache") {
+		rw.Header().Set("X-Cache", "BYPASS")
 		c.next.ServeHTTP(rw, req)
 		return
 	}
@@ -115,25 +123,35 @@ func (c *httpCacheMiddleware) ServeHTTP(rw http.ResponseWriter, req *http.Reques
 		return
 	}
 
-	// Cache miss — proxy to backend.
-	rec := &responseRecorder{ResponseWriter: rw, statusCode: 200}
+	// Cache miss — buffer the response to set headers before writing.
+	rec := &responseRecorder{statusCode: 200, headers: make(http.Header)}
 	c.next.ServeHTTP(rec, req)
 
-	if c.statusCodes[rec.statusCode] {
+	// Respect backend Cache-Control directives.
+	cc := rec.headers.Get("Cache-Control")
+	noStore := strings.Contains(cc, "no-store") || strings.Contains(cc, "private")
+
+	if !noStore && c.statusCodes[rec.statusCode] {
 		c.mu.Lock()
 		if len(c.entries) >= c.maxEntries {
 			c.evict()
 		}
 		c.entries[key] = &cacheEntry{
 			status:  rec.statusCode,
-			headers: rec.Header().Clone(),
+			headers: rec.headers.Clone(),
 			body:    rec.body.Bytes(),
 			expiry:  time.Now().Add(c.ttl),
 		}
 		c.mu.Unlock()
 	}
 
+	// Write response to client with X-Cache header set before body.
+	for k, v := range rec.headers {
+		rw.Header()[k] = v
+	}
 	rw.Header().Set("X-Cache", "MISS")
+	rw.WriteHeader(rec.statusCode)
+	rw.Write(rec.body.Bytes())
 }
 
 func (c *httpCacheMiddleware) cacheKey(req *http.Request) string {
@@ -154,14 +172,12 @@ func (c *httpCacheMiddleware) cacheKey(req *http.Request) string {
 }
 
 func (c *httpCacheMiddleware) evict() {
-	// Simple eviction: remove expired entries first, then oldest.
 	now := time.Now()
 	for k, v := range c.entries {
 		if now.After(v.expiry) {
 			delete(c.entries, k)
 		}
 	}
-	// If still over limit, remove arbitrary entries.
 	for k := range c.entries {
 		if len(c.entries) < c.maxEntries {
 			break
@@ -170,18 +186,21 @@ func (c *httpCacheMiddleware) evict() {
 	}
 }
 
+// responseRecorder buffers the entire response so headers can be set before writing to client.
 type responseRecorder struct {
-	http.ResponseWriter
 	statusCode int
+	headers    http.Header
 	body       bytes.Buffer
+}
+
+func (r *responseRecorder) Header() http.Header {
+	return r.headers
 }
 
 func (r *responseRecorder) WriteHeader(code int) {
 	r.statusCode = code
-	r.ResponseWriter.WriteHeader(code)
 }
 
 func (r *responseRecorder) Write(b []byte) (int, error) {
-	r.body.Write(b)
-	return r.ResponseWriter.Write(b)
+	return r.body.Write(b)
 }
