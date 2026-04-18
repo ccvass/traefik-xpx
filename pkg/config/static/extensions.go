@@ -45,3 +45,24 @@ type APIMgmtPortalConfig struct {
 	Title        string `json:"title,omitempty" toml:"title,omitempty" yaml:"title,omitempty" export:"true"`
 	BasePath     string `json:"basePath,omitempty" toml:"basePath,omitempty" yaml:"basePath,omitempty" export:"true"`
 }
+
+// VaultPKIConfig holds Vault PKI certificate resolver configuration.
+type VaultPKIConfig struct {
+	Address    string `json:"address" toml:"address" yaml:"address" export:"true"`
+	Token      string `json:"token,omitempty" toml:"token,omitempty" yaml:"token,omitempty" loggable:"false"`
+	MountPath  string `json:"mountPath,omitempty" toml:"mountPath,omitempty" yaml:"mountPath,omitempty" export:"true"`
+	Role       string `json:"role" toml:"role" yaml:"role" export:"true"`
+	CommonName string `json:"commonName,omitempty" toml:"commonName,omitempty" yaml:"commonName,omitempty" export:"true"`
+	TTL        string `json:"ttl,omitempty" toml:"ttl,omitempty" yaml:"ttl,omitempty" export:"true"`
+	AltNames   string `json:"altNames,omitempty" toml:"altNames,omitempty" yaml:"altNames,omitempty" export:"true"`
+}
+
+// VaultKVTLSConfig holds Vault KV TLS certificate store configuration.
+type VaultKVTLSConfig struct {
+	Address    string `json:"address" toml:"address" yaml:"address" export:"true"`
+	Token      string `json:"token,omitempty" toml:"token,omitempty" yaml:"token,omitempty" loggable:"false"`
+	MountPath  string `json:"mountPath,omitempty" toml:"mountPath,omitempty" yaml:"mountPath,omitempty" export:"true"`
+	SecretPath string `json:"secretPath" toml:"secretPath" yaml:"secretPath" export:"true"`
+	CertKey    string `json:"certKey,omitempty" toml:"certKey,omitempty" yaml:"certKey,omitempty" export:"true"`
+	PrivateKey string `json:"privateKey,omitempty" toml:"privateKey,omitempty" yaml:"privateKey,omitempty" export:"true"`
+}
