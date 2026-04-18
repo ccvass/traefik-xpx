@@ -47,6 +47,7 @@ type Middleware struct {
 	Retry             *Retry             `json:"retry,omitempty" toml:"retry,omitempty" yaml:"retry,omitempty" export:"true"`
 	ContentType       *ContentType       `json:"contentType,omitempty" toml:"contentType,omitempty" yaml:"contentType,omitempty" label:"allowEmpty" file:"allowEmpty" kv:"allowEmpty" export:"true"`
 	GrpcWeb           *GrpcWeb           `json:"grpcWeb,omitempty" toml:"grpcWeb,omitempty" yaml:"grpcWeb,omitempty" export:"true"`
+	HTTPCache         *HTTPCache         `json:"httpCache,omitempty" toml:"httpCache,omitempty" yaml:"httpCache,omitempty" export:"true"`
 
 	Plugin map[string]PluginConf `json:"plugin,omitempty" toml:"plugin,omitempty" yaml:"plugin,omitempty" export:"true"`
 
@@ -930,4 +931,20 @@ type RewriteTarget struct {
 	Replacement string `json:"replacement,omitempty"`
 	// XForwardedPrefix defines the value of the X-Forwarded-Prefix header.
 	XForwardedPrefix string `json:"xForwardedPrefix,omitempty"`
+}
+
+// +k8s:deepcopy-gen=true
+
+// HTTPCache holds the HTTP caching middleware configuration.
+type HTTPCache struct {
+	// DefaultTTL is the default cache duration when no Cache-Control header is present.
+	DefaultTTL ptypes.Duration `json:"defaultTtl,omitempty" toml:"defaultTtl,omitempty" yaml:"defaultTtl,omitempty" export:"true"`
+	// Methods lists HTTP methods to cache. Defaults to GET, HEAD.
+	Methods []string `json:"methods,omitempty" toml:"methods,omitempty" yaml:"methods,omitempty" export:"true"`
+	// StatusCodes lists cacheable status codes. Defaults to 200, 301, 404.
+	StatusCodes []int `json:"statusCodes,omitempty" toml:"statusCodes,omitempty" yaml:"statusCodes,omitempty"`
+	// VaryHeaders lists headers to include in cache key variation.
+	VaryHeaders []string `json:"varyHeaders,omitempty" toml:"varyHeaders,omitempty" yaml:"varyHeaders,omitempty"`
+	// MaxEntries is the maximum number of cached entries. Defaults to 10000.
+	MaxEntries int `json:"maxEntries,omitempty" toml:"maxEntries,omitempty" yaml:"maxEntries,omitempty" export:"true"`
 }
