@@ -141,6 +141,12 @@ func (h *Handler) createRouter() *mux.Router {
 	apiRouter.Methods(http.MethodGet).Path("/api/apimgmt/status").HandlerFunc(h.getAPIMgmtStatus)
 	apiRouter.Methods(http.MethodGet).Path("/api/apimgmt/portal").HandlerFunc(h.getAPIMgmtPortal)
 
+	// CRUD: Dynamic configuration management.
+	if h.staticConfig.Providers != nil && h.staticConfig.Providers.File != nil && h.staticConfig.Providers.File.Filename != "" {
+		dcm := newDynamicConfigManager(h.staticConfig.Providers.File.Filename)
+		dcm.RegisterCRUDRoutes(apiRouter)
+	}
+
 	version.Handler{}.Append(apiRouter)
 
 	return router
