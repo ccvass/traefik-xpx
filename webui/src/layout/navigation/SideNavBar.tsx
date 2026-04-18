@@ -27,7 +27,6 @@ import { PluginsIcon } from 'components/icons/PluginsIcon'
 import TooltipText from 'components/TooltipText'
 import { VersionContext } from 'contexts/version'
 import useTotals from 'hooks/use-overview-totals'
-import ApimDemoNavMenu from 'pages/hub-demo/HubDemoNav'
 import { Route, ROUTES } from 'routes'
 
 const NavigationDrawer = styled(Flex, {
@@ -284,12 +283,6 @@ export const SideNav = ({
           </NavigationLink>
         </Flex>
 
-        <ApimDemoNavMenu
-          isResponsive={isResponsive}
-          isSmallScreen={isSmallScreen}
-          isExpanded={isExpanded}
-          onSidePanelToggle={onSidePanelToggle}
-        />
       </Container>
     </NavigationDrawer>
   )
