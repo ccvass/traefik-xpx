@@ -1,4 +1,4 @@
-import { Card, CSS, Flex, Grid, H2, Text } from '@traefik-labs/faency'
+import { Badge, Card, CSS, Flex, Grid, H2, Text } from '@traefik-labs/faency'
 import { ReactNode, useMemo } from 'react'
 import useSWR from 'swr'
 
@@ -8,6 +8,66 @@ import ResourceCard from 'components/resources/ResourceCard'
 import TraefikResourceStatsCard, { StatsCardSkeleton } from 'components/resources/TraefikResourceStatsCard'
 import PageTitle from 'layout/PageTitle'
 import { capitalizeFirstLetter } from 'utils/string'
+
+
+const API_BASE = (window as any).APIUrl || '/api'
+
+const PlatformStatusCard = ({ title, status, detail, href }: { title: string; status: string; detail: string; href: string }) => (
+  <a href={`#${href}`} style={{ textDecoration: 'none' }}>
+    <Card css={{ p: '$3', cursor: 'pointer', '&:hover': { borderColor: '$blue7' } }}>
+      <Flex direction="column" gap={1}>
+        <Flex justify="between" align="center">
+          <Text css={{ fontWeight: 600, fontSize: '$3' }}>{title}</Text>
+          <Badge variant={status === 'active' ? 'green' : status === 'available' ? 'blue' : 'gray'} css={{ fontSize: '$1' }}>
+            {status}
+          </Badge>
+        </Flex>
+        <Text css={{ fontSize: '$2', color: '$textSubtle' }}>{detail}</Text>
+      </Flex>
+    </Card>
+  </a>
+)
+
+const PlatformStatus = () => {
+  const { data: aiStatus } = useSWR('ai-status', () => fetch(`${API_BASE}/ai/status`).then(r => r.json()).catch(() => null))
+  const { data: mcpStatus } = useSWR('mcp-status', () => fetch(`${API_BASE}/mcp/status`).then(r => r.json()).catch(() => null))
+  const { data: middlewares } = useSWR('/http/middlewares')
+
+  const securityCount = Array.isArray(middlewares)
+    ? middlewares.filter((m: any) => ['waf', 'apikey', 'jwt', 'oidc', 'hmac', 'ldap', 'opa'].includes(m.type)).length
+    : 0
+  const cacheCount = Array.isArray(middlewares) ? middlewares.filter((m: any) => m.type === 'httpcache').length : 0
+  const rateLimitCount = Array.isArray(middlewares) ? middlewares.filter((m: any) => m.type === 'ratelimit').length : 0
+
+  return (
+    <Grid columns={{ '@initial': 2, '@md': 4 }} gap={3}>
+      <PlatformStatusCard
+        title="🤖 AI Gateway"
+        status={aiStatus?.enabled ? 'active' : 'available'}
+        detail={aiStatus?.enabled ? `${aiStatus.components} providers` : 'Not configured'}
+        href="/ai"
+      />
+      <PlatformStatusCard
+        title="🔧 MCP Gateway"
+        status={mcpStatus?.enabled ? 'active' : 'available'}
+        detail={mcpStatus?.enabled ? `${mcpStatus.components} servers` : 'Not configured'}
+        href="/mcp"
+      />
+      <PlatformStatusCard
+        title="🛡️ Security"
+        status={securityCount > 0 ? 'active' : 'available'}
+        detail={securityCount > 0 ? `${securityCount} active middlewares` : 'No security middlewares'}
+        href="/security"
+      />
+      <PlatformStatusCard
+        title="⚡ Distributed"
+        status={rateLimitCount + cacheCount > 0 ? 'active' : 'available'}
+        detail={`${rateLimitCount} rate limits, ${cacheCount} caches`}
+        href="/distributed"
+      />
+    </Grid>
+  )
+}
 
 const RESOURCES = ['routers', 'services', 'middlewares']
 
@@ -78,6 +138,10 @@ export const Dashboard = () => {
   return (
     <Flex direction="column" gap={6}>
       <PageTitle title="Dashboard" />
+
+      {/* Platform Status */}
+      <PlatformStatus />
+
       <SectionContainer title="Entrypoints" css={{ mt: 0 }}>
         {entrypoints?.map((i, idx) => (
           <ResourceCard
