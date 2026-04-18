@@ -55,7 +55,7 @@ type Correlator struct {
 	retention time.Duration
 }
 
-// New creates a new event correlator.
+// New creates a new event correlator with automatic retention cleanup.
 func New(config Config) *Correlator {
 	window := config.CorrelationWindow
 	if window <= 0 {
@@ -69,12 +69,21 @@ func New(config Config) *Correlator {
 	if maxEvents <= 0 {
 		maxEvents = 10000
 	}
-	return &Correlator{
+	c := &Correlator{
 		events:    make([]Event, 0, 256),
 		window:    window,
 		maxEvents: maxEvents,
 		retention: retention,
 	}
+	// Auto-cleanup goroutine enforces retention automatically.
+	go func() {
+		ticker := time.NewTicker(retention / 10)
+		defer ticker.Stop()
+		for range ticker.C {
+			c.Cleanup()
+		}
+	}()
+	return c
 }
 
 // Record adds an event.

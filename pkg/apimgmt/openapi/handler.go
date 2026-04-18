@@ -20,7 +20,6 @@ type Config struct {
 	SpecPath         string `json:"specPath,omitempty" toml:"specPath,omitempty" yaml:"specPath,omitempty"`
 	SpecURL          string `json:"specUrl,omitempty" toml:"specUrl,omitempty" yaml:"specUrl,omitempty"`
 	ValidateRequest  bool   `json:"validateRequest,omitempty" toml:"validateRequest,omitempty" yaml:"validateRequest,omitempty"`
-	ValidateResponse bool   `json:"validateResponse,omitempty" toml:"validateResponse,omitempty" yaml:"validateResponse,omitempty"`
 	ServeSpec        bool   `json:"serveSpec,omitempty" toml:"serveSpec,omitempty" yaml:"serveSpec,omitempty"`
 	SpecEndpoint     string `json:"specEndpoint,omitempty" toml:"specEndpoint,omitempty" yaml:"specEndpoint,omitempty"`
 }
