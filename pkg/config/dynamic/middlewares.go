@@ -53,6 +53,7 @@ type Middleware struct {
 	OPA               *OPA               `json:"opa,omitempty" toml:"opa,omitempty" yaml:"opa,omitempty" export:"true"`
 	WAF               *WAF               `json:"waf,omitempty" toml:"waf,omitempty" yaml:"waf,omitempty" export:"true"`
 	DistributedRateLimit *DistributedRateLimit `json:"distributedRateLimit,omitempty" toml:"distributedRateLimit,omitempty" yaml:"distributedRateLimit,omitempty" export:"true"`
+	DistributedInFlightReq *DistributedInFlightReq `json:"distributedInFlightReq,omitempty" toml:"distributedInFlightReq,omitempty" yaml:"distributedInFlightReq,omitempty" export:"true"`
 	HTTPCache         *HTTPCache         `json:"httpCache,omitempty" toml:"httpCache,omitempty" yaml:"httpCache,omitempty" export:"true"`
 	APIMock           *APIMock           `json:"apiMock,omitempty" toml:"apiMock,omitempty" yaml:"apiMock,omitempty" export:"true"`
 	JWTAuth           *JWTAuth           `json:"jwtAuth,omitempty" toml:"jwtAuth,omitempty" yaml:"jwtAuth,omitempty" export:"true"`
@@ -1049,6 +1050,15 @@ type DistributedRateLimit struct {
 	RedisPassword string          `json:"redisPassword,omitempty" toml:"redisPassword,omitempty" yaml:"redisPassword,omitempty" loggable:"false"`
 	KeyFunc       string          `json:"keyFunc,omitempty" toml:"keyFunc,omitempty" yaml:"keyFunc,omitempty" export:"true"`
 	KeyHeader     string          `json:"keyHeader,omitempty" toml:"keyHeader,omitempty" yaml:"keyHeader,omitempty" export:"true"`
+}
+
+// DistributedInFlightReq holds the distributed in-flight request limiting configuration.
+type DistributedInFlightReq struct {
+	Amount        int64  `json:"amount" toml:"amount" yaml:"amount" export:"true"`
+	RedisURL      string `json:"redisUrl" toml:"redisUrl" yaml:"redisUrl"`
+	RedisPassword string `json:"redisPassword,omitempty" toml:"redisPassword,omitempty" yaml:"redisPassword,omitempty" loggable:"false"`
+	KeyFunc       string `json:"keyFunc,omitempty" toml:"keyFunc,omitempty" yaml:"keyFunc,omitempty" export:"true"`
+	KeyHeader     string `json:"keyHeader,omitempty" toml:"keyHeader,omitempty" yaml:"keyHeader,omitempty" export:"true"`
 }
 
 // +k8s:deepcopy-gen=true
