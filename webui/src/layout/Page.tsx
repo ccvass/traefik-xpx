@@ -42,24 +42,17 @@ export interface Props {
 }
 
 const Page = ({ children }: Props) => {
-  const { pathname } = useLocation()
   const [isSideBarPanelOpen, setIsSideBarPanelOpen] = useState(false)
   const location = useLocation()
 
-  const isDemoPage = useMemo(() => pathname.includes('hub-dashboard'), [pathname])
-
   const renderedContent = useMemo(() => {
-    if (isDemoPage) {
-      return children
-    }
-
     return (
       <PageContainer data-testid={`${location.pathname} page`} direction="column">
         <TopNav />
         {children}
       </PageContainer>
     )
-  }, [children, isDemoPage, location.pathname])
+  }, [children, location.pathname])
 
   return (
     <ToastProvider>
