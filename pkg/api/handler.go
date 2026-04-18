@@ -159,6 +159,15 @@ func (h *Handler) createRouter() *mux.Router {
 		sr := newStaticReloader(staticPath, true)
 		apiRouter.Methods(http.MethodPost).Path("/api/reload").HandlerFunc(sr.handleReload)
 		apiRouter.Methods(http.MethodGet).Path("/api/reload").HandlerFunc(sr.handleReloadStatus)
+
+		// Backup and restore.
+		dynamicPath := ""
+		if h.staticConfig.Providers != nil && h.staticConfig.Providers.File != nil {
+			dynamicPath = h.staticConfig.Providers.File.Filename
+		}
+		bh := newBackupHandler(staticPath, dynamicPath)
+		apiRouter.Methods(http.MethodGet).Path("/api/config/backup").HandlerFunc(bh.handleBackup)
+		apiRouter.Methods(http.MethodPost).Path("/api/config/restore").HandlerFunc(bh.handleRestore)
 	}
 
 	version.Handler{}.Append(apiRouter)

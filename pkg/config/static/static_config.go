@@ -137,6 +137,7 @@ type SpiffeClientConfig struct {
 type CertificateResolver struct {
 	ACME      *acmeprovider.Configuration `description:"Enables ACME (Let's Encrypt) automatic SSL." json:"acme,omitempty" toml:"acme,omitempty" yaml:"acme,omitempty" export:"true"`
 	Tailscale *struct{}                   `description:"Enables Tailscale certificate resolution." json:"tailscale,omitempty" toml:"tailscale,omitempty" yaml:"tailscale,omitempty" label:"allowEmpty" file:"allowEmpty" export:"true"`
+	VaultPKI  *VaultPKIConfig             `description:"Enables Vault PKI certificate resolution." json:"vaultPKI,omitempty" toml:"vaultPKI,omitempty" yaml:"vaultPKI,omitempty" export:"true"`
 }
 
 // Global holds the global configuration.
