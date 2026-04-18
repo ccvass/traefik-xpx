@@ -147,6 +147,15 @@ func (h *Handler) createRouter() *mux.Router {
 		dcm.RegisterCRUDRoutes(apiRouter)
 	}
 
+	// Static configuration management (for AI/MCP/APIMgmt settings).
+	staticPath := findStaticConfigPath()
+	if staticPath != "" {
+		scm := newStaticConfigManager(staticPath)
+		apiRouter.Methods(http.MethodGet).Path("/api/config/static").HandlerFunc(scm.getStaticSection)
+		apiRouter.Methods(http.MethodPut).Path("/api/config/static").HandlerFunc(scm.putStaticSection)
+		apiRouter.Methods(http.MethodDelete).Path("/api/config/static").HandlerFunc(scm.deleteStaticSection)
+	}
+
 	version.Handler{}.Append(apiRouter)
 
 	return router
