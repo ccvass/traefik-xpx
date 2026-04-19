@@ -1,0 +1,63 @@
+version: "3.8"
+
+services:
+  traefik-xp:
+    image: traefik-xp:latest
+    command:
+      - --providers.swarm.endpoint=unix:///var/run/docker.sock
+      - --providers.swarm.exposedByDefault=false
+      - --providers.file.filename=/etc/traefik/dynamic.yml
+      - --providers.file.watch=true
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --entrypoints.traefik.address=:8099
+      - --api.dashboard=true
+      - --api.authUser=admin
+      - --api.authPassword=${ADMIN_PASSWORD}
+      - --api.valkeyUrl=valkey://valkey:6379
+      - --certificatesresolvers.le.acme.email=${ACME_EMAIL}
+      - --certificatesresolvers.le.acme.storage=/certificates/acme.json
+      - --certificatesresolvers.le.acme.httpChallenge.entryPoint=web
+      - --ping.entryPoint=web
+      - --accesslog
+      - --log.filepath=/var/log/traefik/traefik.log
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8099:8099"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - traefik-certs:/certificates
+      - traefik-config:/etc/traefik
+      - traefik-logs:/var/log/traefik
+    networks:
+      - traefik-public
+    deploy:
+      mode: global
+      placement:
+        constraints: [node.role == manager]
+      labels:
+        - "traefik.enable=true"
+
+  valkey:
+    image: valkey/valkey:9-alpine
+    command: valkey-server --appendonly yes
+    volumes:
+      - valkey-data:/data
+    networks:
+      - traefik-public
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+
+volumes:
+  traefik-certs:
+  traefik-config:
+  traefik-logs:
+  valkey-data:
+
+networks:
+  traefik-public:
+    driver: overlay
+    attachable: true

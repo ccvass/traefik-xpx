@@ -1,12 +1,20 @@
-# syntax=docker/dockerfile:1.2
-FROM alpine:3.23
+# Multi-stage build
+FROM golang:1.24-alpine AS builder
+RUN apk add --no-cache git nodejs npm
+WORKDIR /src
+COPY . .
+RUN cd webui-new && npm ci && npx vite build
+RUN CGO_ENABLED=0 go build -o /traefik-xp ./cmd/traefik
 
-RUN apk add --no-cache --no-progress ca-certificates tzdata
-
-ARG TARGETPLATFORM
-COPY ./dist/$TARGETPLATFORM/traefik /
-
-EXPOSE 80
-VOLUME ["/tmp"]
-
-ENTRYPOINT ["/traefik"]
+# Rootless runtime
+FROM alpine:3.21
+RUN apk add --no-cache ca-certificates tzdata && \
+    addgroup -g 65532 -S traefik && \
+    adduser -u 65532 -S traefik -G traefik && \
+    mkdir -p /etc/traefik /var/log/traefik /certificates && \
+    chown -R traefik:traefik /etc/traefik /var/log/traefik /certificates
+COPY --from=builder /traefik-xp /usr/local/bin/traefik-xp
+USER traefik:traefik
+EXPOSE 80 443 8099
+ENTRYPOINT ["traefik-xp"]
+CMD ["--configFile=/etc/traefik/traefik.yml"]
