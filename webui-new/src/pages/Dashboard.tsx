@@ -8,11 +8,11 @@ import {
 } from 'lucide-react'
 import type { Overview, Entrypoint, Middleware } from '@/types/api'
 
-function StatCard({ value, label, trend }: { value: number | string; label: string; trend?: 'up' | 'down' | 'neutral' }) {
+function StatCard({ value, label }: { value: number | string; label: string }) {
   return (
-    <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
-      <p className="text-3xl font-bold tracking-tight">{value}</p>
-      <p className="text-xs text-zinc-500 mt-1 uppercase tracking-wide">{label}</p>
+    <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl px-5 py-4 min-w-[120px]">
+      <p className="text-4xl font-extrabold tracking-tight">{value}</p>
+      <p className="text-[10px] text-zinc-500 mt-1 uppercase tracking-widest font-semibold">{label}</p>
     </div>
   )
 }
@@ -91,13 +91,15 @@ function HealthBanner({ overview, entrypoints }: { overview: Overview; entrypoin
 
 function EntrypointList({ entrypoints }: { entrypoints: Entrypoint[] }) {
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
       {entrypoints.map((ep) => (
-        <div key={ep.name} className="bg-zinc-900 border border-zinc-800 rounded-lg p-3 flex items-center gap-3">
-          <Activity size={16} className="text-brand shrink-0" />
+        <div key={ep.name} className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 flex items-center gap-4">
+          <div className="p-3 rounded-lg bg-brand/10">
+            <Activity size={20} className="text-brand" />
+          </div>
           <div>
-            <p className="text-xs font-semibold uppercase">{ep.name}</p>
-            <p className="text-xs text-zinc-500">{ep.address}</p>
+            <p className="text-sm font-bold uppercase tracking-wide">{ep.name}</p>
+            <p className="text-lg text-zinc-300 font-mono">{ep.address}</p>
           </div>
         </div>
       ))}
@@ -192,7 +194,7 @@ export function DashboardPage() {
 
       {/* Proxy Summary */}
       <div>
-        <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide mb-3">Proxy Overview</h2>
+        <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide mb-4">Proxy Overview</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {(['http', 'tcp', 'udp'] as const).map(proto => {
             const data = overview[proto]
@@ -200,12 +202,29 @@ export function DashboardPage() {
             const total = (data.routers?.total || 0) + (data.services?.total || 0) + ('middlewares' in data ? data.middlewares?.total || 0 : 0)
             if (total === 0) return null
             return (
-              <div key={proto} className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
-                <h3 className="font-bold uppercase text-xs text-zinc-500 mb-3">{proto}</h3>
-                <div className="space-y-1 text-sm">
-                  <div className="flex justify-between"><span className="text-zinc-400">Routers</span><span>{data.routers.total}</span></div>
-                  <div className="flex justify-between"><span className="text-zinc-400">Services</span><span>{data.services.total}</span></div>
-                  {'middlewares' in data && <div className="flex justify-between"><span className="text-zinc-400">Middlewares</span><span>{data.middlewares.total}</span></div>}
+              <div key={proto} className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+                <h3 className="font-bold uppercase text-sm text-brand mb-4 tracking-wider">{proto}</h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-zinc-400">Routers</span>
+                    <span className="text-2xl font-bold">{data.routers.total}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-zinc-400">Services</span>
+                    <span className="text-2xl font-bold">{data.services.total}</span>
+                  </div>
+                  {'middlewares' in data && (
+                    <div className="flex justify-between items-center">
+                      <span className="text-zinc-400">Middlewares</span>
+                      <span className="text-2xl font-bold">{data.middlewares.total}</span>
+                    </div>
+                  )}
+                  {data.routers.errors > 0 && (
+                    <div className="flex justify-between items-center text-red-400">
+                      <span>Errors</span>
+                      <span className="text-lg font-bold">{data.routers.errors}</span>
+                    </div>
+                  )}
                 </div>
               </div>
             )
