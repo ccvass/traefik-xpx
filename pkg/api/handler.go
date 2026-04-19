@@ -177,6 +177,9 @@ func (h *Handler) createRouter() *mux.Router {
 		apiRouter.Methods(http.MethodPost).Path("/api/auth/login").HandlerFunc(sm.handleLogin)
 		apiRouter.Methods(http.MethodPost).Path("/api/auth/logout").HandlerFunc(sm.handleLogout)
 		apiRouter.Methods(http.MethodGet).Path("/api/auth/me").HandlerFunc(sm.handleMe)
+		apiRouter.Methods(http.MethodGet).Path("/api/auth/users").HandlerFunc(sm.handleListUsers)
+		apiRouter.Methods(http.MethodPost).Path("/api/auth/users").HandlerFunc(sm.handleAddUser)
+		apiRouter.Methods(http.MethodDelete).Path("/api/auth/users").HandlerFunc(sm.handleDeleteUser)
 	}
 	version.Handler{}.Append(apiRouter)
 
