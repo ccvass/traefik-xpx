@@ -160,7 +160,7 @@ export function GatewayPage() {
         </div>
         <div className="flex gap-1 flex-wrap">
           {Object.entries(ALL_MW_TYPES).map(([k, v]) => (
-            <button key={k} onClick={() => startMw(k)} className="flex items-center gap-1 px-2 py-1 bg-zinc-800 hover:bg-zinc-700 rounded text-[10px] text-zinc-300 transition-colors">{v.label}</button>
+            <button key={k} onClick={() => startMw(k)} className="flex items-center gap-1 px-2.5 py-1.5 bg-zinc-800 hover:bg-brand/20 hover:text-brand rounded-full text-[10px] text-zinc-400 transition-all border border-zinc-700 hover:border-brand/40 font-medium">{v.label}</button>
           ))}
         </div>
         {form === 'wizard' && <MiddlewareWizard onDone={() => setForm(null)} />}
@@ -180,7 +180,7 @@ export function GatewayPage() {
               <p className="text-xs text-zinc-500">{m.type} • {m.status} • {m.provider}</p>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-[10px] px-2 py-0.5 rounded bg-zinc-800 text-zinc-400">{m.type}</span>
+              <span className="text-[10px] px-2.5 py-1 rounded-full bg-zinc-800 text-zinc-300 font-medium border border-zinc-700">{m.type}</span>
               {m.provider === 'file' && <>
                 <button onClick={() => setEditing({type:'middlewares', name: m.name.replace(/@.*/,''), data: m})} className="p-1 rounded hover:bg-amber-950 text-zinc-500 hover:text-amber-400" title="Edit"><Save size={14} /></button>
                 <button onClick={() => del('middlewares', m.name)} className="p-1 rounded hover:bg-red-950 text-zinc-500 hover:text-red-400"><Trash2 size={14} /></button>
