@@ -101,7 +101,7 @@ export function GatewayPage() {
       {/* Services Tab */}
       {tab === 'Services' && <>
         <button onClick={() => { setForm('service'); setName(''); setJson(JSON.stringify({ loadBalancer: { servers: [{ url: 'http://127.0.0.1:8080' }], healthCheck: { path: '/health', interval: '10s' } } }, null, 2)) }} className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-semibold transition-all" style={{ backgroundColor: '#a855f715', color: '#a855f7', borderWidth: 1, borderStyle: 'solid', borderColor: '#a855f730' }}><Plus size={14} />Add Service</button>
-        {form === 'service' && <AddForm title="New Service" name={name} setName={setName} json={json} setJson={setJson} color="#a855f7" onSave={saveService} onCancel={() => setForm(null)} disabled={!name} />}
+        {form === 'service' && <AddForm title="New Service" name={name} setName={setName} json={json} setJson={setJson} color="#a855f7" onSave={saveService} onCancel={() => setForm(null)} disabled={!name} typeKey="service" />}
         <div className="space-y-2">{sArr.map((s: any) => (
           <div key={s.name} onClick={() => setDetail(s)} className="p-4 rounded-lg border glass cursor-pointer hover:scale-[1.01] transition-all">
             <div className="flex justify-between items-center">
@@ -184,7 +184,7 @@ export function GatewayPage() {
               {Object.entries(ALL_MW_TYPES).map(([k, v]) => <option key={k} value={k}>{v.label}</option>)}
             </select>
           </div>
-          <AddForm title={`New ${ALL_MW_TYPES[mwType]?.label || mwType}`} name={name} setName={setName} json={json} setJson={setJson} color="emerald" onSave={saveMw} onCancel={() => setForm(null)} disabled={!name} />
+          <AddForm title={`New ${ALL_MW_TYPES[mwType]?.label || mwType}`} name={name} setName={setName} json={json} setJson={setJson} color="emerald" onSave={saveMw} onCancel={() => setForm(null)} disabled={!name} typeKey="service" />
         </>}
         <div className="space-y-2">{mArr.map((m: any) => (
           <div key={m.name} onClick={() => setDetail(m)} className="flex justify-between items-center p-4 rounded-lg border glass cursor-pointer hover:scale-[1.01] transition-all">

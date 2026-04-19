@@ -119,7 +119,7 @@ export function StaticConfigForm({ section, title, fields, onDone }: {
       <p className="font-semibold text-sm text-brand">{title}</p>
       {fields.map(f => (
         <div key={f.key}>
-          <label className="text-xs text-zinc-500">{f.label}</label>
+          <label className="text-xs text-zinc-400 font-medium">{f.label} {f.placeholder && <span className="text-zinc-600 font-normal">— e.g. {f.placeholder}</span>}</label>
           {f.options ? (
             <select value={vals[f.key] || ''} onChange={e => setVals({ ...vals, [f.key]: e.target.value })} className="w-full mt-1 rounded-lg px-3 py-2.5 text-sm outline-none transition-colors" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }}>
               <option value="">Select...</option>

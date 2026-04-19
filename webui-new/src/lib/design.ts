@@ -119,3 +119,83 @@ export const TYPE_LABELS: Record<string, string> = {
 export function getTypeLabel(type: string): string {
   return TYPE_LABELS[type] || type.charAt(0).toUpperCase() + type.slice(1)
 }
+
+// Tooltip help text for each middleware/resource type
+export const TYPE_HELP: Record<string, { desc: string; fields: string }> = {
+  waf: {
+    desc: 'Web Application Firewall — blocks SQLi, XSS, bot attacks using ModSecurity/Coraza rules.',
+    fields: 'inlineRules: SecRule syntax. Example:\nSecRule ARGS "@detectSQLi" "id:1,phase:2,deny,status:403"\nSecRule ARGS "@detectXSS" "id:2,phase:2,deny,status:403"\nSecRule REQUEST_URI "@contains /admin" "id:3,phase:1,deny,status:403"',
+  },
+  apikey: {
+    desc: 'API Key Authentication — validates requests via a header key.',
+    fields: 'headerName: Header to check (e.g. "X-API-Key")\nkeys[].value: The API key string\nkeys[].metadata: Label for the key owner (e.g. "mobile-app")',
+  },
+  jwt: {
+    desc: 'JWT Token Validation — verifies tokens against a JWKS endpoint.',
+    fields: 'jwksUrl: URL to JWKS endpoint (e.g. "https://auth.example.com/.well-known/jwks.json")\nissuer: Expected token issuer (e.g. "https://auth.example.com")',
+  },
+  oidc: {
+    desc: 'OpenID Connect — full OAuth2/OIDC authentication flow.',
+    fields: 'issuerUrl: OIDC provider URL (e.g. "https://accounts.google.com")\nclientId: Your app client ID\nclientSecret: Your app client secret\nredirectUrl: Callback URL (e.g. "https://app.example.com/callback")',
+  },
+  hmac: {
+    desc: 'HMAC Signature Verification — validates request signatures.',
+    fields: 'secret: Shared secret key\nalgorithm: "sha256" or "sha512"\nheaderName: Header containing the signature (e.g. "X-Signature")',
+  },
+  ratelimit: {
+    desc: 'Rate Limiting — limits requests per client to prevent abuse.',
+    fields: 'average: Requests allowed per period (e.g. 100)\nburst: Max spike above average (e.g. 50)\nperiod: Time window (e.g. "1s", "1m", "1h")',
+  },
+  httpcache: {
+    desc: 'HTTP Response Cache — caches backend responses to reduce load.',
+    fields: 'defaultTtl: Cache duration (e.g. "300s" = 5 minutes)\nmaxEntries: Max cached items (e.g. 5000)',
+  },
+  inflightreq: {
+    desc: 'In-Flight Request Limiter — limits concurrent requests to backend.',
+    fields: 'amount: Max simultaneous requests (e.g. 100)',
+  },
+  aigateway: {
+    desc: 'AI Gateway — routes and manages LLM API calls with caching and guardrails.',
+    fields: 'provider: LLM provider ("openai", "anthropic", "ollama")\nmodel: Model name (e.g. "gpt-4", "claude-3-opus")',
+  },
+  semanticcache: {
+    desc: 'Semantic Cache — caches similar LLM queries using vector similarity.',
+    fields: 'ttl: Cache duration in seconds (e.g. 3600)\nmaxEntries: Max cached queries (e.g. 10000)\nsimilarityThreshold: 0.0-1.0, higher = stricter match (e.g. 0.92)',
+  },
+  piiguard: {
+    desc: 'PII Guard — detects and redacts personal data (emails, phones, SSNs) in requests.',
+    fields: 'patterns: Array of PII types to detect ["email", "phone", "ssn"]\naction: "redact" (replace with ***) or "block" (reject request)',
+  },
+  tbac: {
+    desc: 'Tool-Based Access Control — controls which MCP agents can use which tools.',
+    fields: 'rules[].agent: Agent name or pattern\nrules[].tools: Array of allowed tools (["*"] for all)\nrules[].scope: Access scope\ndefaultAction: "allow" or "deny" when no rule matches',
+  },
+  mcpaudit: {
+    desc: 'MCP Audit Logger — logs all tool calls for compliance and debugging.',
+    fields: 'logFile: Path to audit log (e.g. "/var/log/traefik/mcp-audit.json")\nincludePayload: true/false — log request/response bodies',
+  },
+  mcppolicy: {
+    desc: 'MCP Policy Engine — governance rules for MCP tool usage.',
+    fields: 'rules[].name: Rule identifier\nrules[].action: "allow" or "deny"\nrules[].priority: Number (higher = evaluated first)',
+  },
+  apimock: {
+    desc: 'API Mock — returns mock responses based on an OpenAPI specification.',
+    fields: 'specFile: Path to OpenAPI YAML/JSON (e.g. "/etc/traefik/specs/api.yaml")\ndefaultStatus: HTTP status for unmatched routes (e.g. 200)',
+  },
+  router: {
+    desc: 'HTTP Router — routes incoming requests to a backend service based on rules.',
+    fields: 'rule: Matching rule (e.g. "Host(`app.example.com`) && PathPrefix(`/api`)")\nservice: Target service name\nentryPoints: ["web", "websecure"]\nmiddlewares: ["auth", "rate-limit"] (optional)',
+  },
+  service: {
+    desc: 'Backend Service — load balancer with health checks.',
+    fields: 'loadBalancer.servers[].url: Backend URL (e.g. "http://10.0.0.1:8080")\nhealthCheck.path: Health endpoint (e.g. "/health")\nhealthCheck.interval: Check frequency (e.g. "10s")',
+  },
+  user: {
+    desc: 'Dashboard User — JWT-authenticated access to the Traefik-XP dashboard.',
+    fields: 'username: Unique login name\npassword: Minimum 8 characters, stored as bcrypt hash',
+  },
+  cluster: {
+    desc: 'Remote Instance — register another Traefik-XP node for multi-cluster monitoring.',
+    fields: 'name: Identifier (e.g. "prod-us-east")\nurl: API endpoint (e.g. "https://node2:8099")\nregion: Optional location tag (e.g. "us-east-1")',
+  },
+}

@@ -45,14 +45,15 @@ export function UsersPage() {
       </div>
 
       {show && <Modal open={true} onClose={() => setShow(false)} color="#2AA2C1" size="sm">
-          <p className="font-semibold text-lg mb-4" style={{ color: '#2AA2C1' }}>New User</p>
+          <p className="font-semibold text-lg mb-1" style={{ color: '#2AA2C1' }}>New User</p>
+          <p className="text-xs text-zinc-400 mb-3">Create a dashboard user with JWT authentication.</p>
           <div className="space-y-4">
             <div>
-              <label className="text-xs text-zinc-400 font-medium">Username</label>
+              <label className="text-xs text-zinc-400 font-medium">Username <span className="text-zinc-600 font-normal">— unique login name</span></label>
               <input value={username} onChange={e => setUsername(e.target.value)} placeholder="e.g. operator" className="w-full mt-1 rounded-lg px-3 py-2.5 text-sm outline-none transition-colors" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }} />
             </div>
             <div>
-              <label className="text-xs text-zinc-400 font-medium">Password</label>
+              <label className="text-xs text-zinc-400 font-medium">Password <span className="text-zinc-600 font-normal">— minimum 8 characters, stored as bcrypt hash</span></label>
               <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Minimum 8 characters" className="w-full mt-1 rounded-lg px-3 py-2.5 text-sm outline-none transition-colors" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }} />
             </div>
           </div>

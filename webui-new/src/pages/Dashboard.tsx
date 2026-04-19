@@ -247,7 +247,8 @@ export function DashboardPage() {
       {/* Edit modal */}
       {editing && (
         <Modal open={true} onClose={() => setEditing(null)} color="#f59e0b">
-          <h3 className="font-semibold text-lg mb-4" style={{ color: '#f59e0b' }}>Edit: {editing.name}</h3>
+          <h3 className="font-semibold text-lg mb-1" style={{ color: '#f59e0b' }}>Edit: {editing.name}</h3>
+          <p className="text-xs text-zinc-400 mb-3">Edit the raw JSON configuration. Changes apply immediately when saved.</p>
           <textarea value={editJson} onChange={e => setEditJson(e.target.value)} rows={16} className="w-full rounded-lg px-4 py-3 text-xs font-mono outline-none resize-y" style={{ backgroundColor: '#09090b', borderWidth: 1, borderStyle: 'solid', borderColor: '#27272a', color: '#34d399', minHeight: 200 }} />
           <div className="flex gap-2 justify-end mt-4">
             <button onClick={() => setEditing(null)} className="px-4 py-2 text-sm rounded-lg bg-zinc-800 hover:bg-zinc-700 flex items-center gap-1"><X size={14} />Cancel</button>
