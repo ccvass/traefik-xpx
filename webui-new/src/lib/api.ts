@@ -1,3 +1,4 @@
+import { toast } from 'sonner'
 const BASE = '/api'
 
 export function getToken(): string {
@@ -17,15 +18,15 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     window.location.reload()
     throw new Error('Unauthorized')
   }
-  if (!res.ok) throw new Error(`${res.status} ${res.statusText}`)
+  if (!res.ok) { toast.error(`Error: ${res.status} ${res.statusText}`); throw new Error(`${res.status} ${res.statusText}`) }
   return res.json()
 }
 
 export const api = {
   get: <T,>(path: string) => request<T>(path),
-  put: <T,>(path: string, body: unknown) => request<T>(path, { method: 'PUT', body: JSON.stringify(body) }),
-  del: <T,>(path: string) => request<T>(path, { method: 'DELETE' }),
-  post: <T,>(path: string, body?: unknown) => request<T>(path, { method: 'POST', body: body ? JSON.stringify(body) : undefined }),
+  put: <T,>(path: string, body: unknown) => request<T>(path, { method: 'PUT', body: JSON.stringify(body) }).then(r => { toast.success('Saved'); return r }),
+  del: <T,>(path: string) => request<T>(path, { method: 'DELETE' }).then(r => { toast.success('Deleted'); return r }),
+  post: <T,>(path: string, body?: unknown) => request<T>(path, { method: 'POST', body: body ? JSON.stringify(body) : undefined }).then(r => { toast.success('Done'); return r }),
 }
 
 export function fetcher<T>(path: string): Promise<T> {
