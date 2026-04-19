@@ -91,7 +91,7 @@ export function MiddlewareWizard({ onDone }: { onDone: () => void }) {
       <div className="flex items-center gap-2 text-xs">
         {['Type', 'Configure', 'Review'].map((s, i) => (
           <div key={s} className={`flex items-center gap-1 ${i <= step ? 'text-brand' : 'text-zinc-600'}`}>
-            <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${i <= step ? 'bg-brand text-white' : 'bg-zinc-800'}`}>{i + 1}</div>
+            <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-bold ${i <= step ? 'bg-brand text-white' : 'bg-zinc-800'}`}>{i + 1}</div>
             {s}
             {i < 2 && <div className={`w-8 h-px ${i < step ? 'bg-brand' : 'bg-zinc-700'}`} />}
           </div>
@@ -101,7 +101,7 @@ export function MiddlewareWizard({ onDone }: { onDone: () => void }) {
       {/* Step 0: Select type */}
       {step === 0 && <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
         {Object.entries(MW_STEPS).map(([k, v]) => (
-          <button key={k} onClick={() => selectType(k)} className="p-3 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-left transition-colors">
+          <button key={k} onClick={() => selectType(k)} className="p-4 bg-zinc-800 hover:bg-zinc-700 rounded-xl text-left transition-all border border-zinc-700 hover:border-brand/50 hover:shadow-lg hover:shadow-brand/5 hover:-translate-y-0.5">
             <p className="text-sm font-medium">{v.label}</p>
           </button>
         ))}

@@ -27,9 +27,9 @@ export function MCPPage() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3"><Link to="/" className="text-zinc-500 hover:text-white"><ArrowLeft size={20}/></Link><h1 className="text-2xl font-bold">MCP Gateway</h1></div>
         <div className="flex gap-2">
-          <button onClick={() => startAdd('tbac')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-lg text-xs font-medium hover:bg-brand/20"><Plus size={14}/>Add TBAC Rule</button>
-          <button onClick={() => startAdd('mcpaudit')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-lg text-xs font-medium hover:bg-brand/20"><Plus size={14}/>Add Audit Logger</button>
-          <button onClick={() => startAdd('mcppolicy')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-lg text-xs font-medium hover:bg-brand/20"><Plus size={14}/>Add Policy</button>
+          <button onClick={() => startAdd('tbac')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-full text-xs font-semibold hover:bg-brand/20 border border-brand/20 hover:border-brand/40 transition-all"><Plus size={14}/>Add TBAC Rule</button>
+          <button onClick={() => startAdd('mcpaudit')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-full text-xs font-semibold hover:bg-brand/20 border border-brand/20 hover:border-brand/40 transition-all"><Plus size={14}/>Add Audit Logger</button>
+          <button onClick={() => startAdd('mcppolicy')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-full text-xs font-semibold hover:bg-brand/20 border border-brand/20 hover:border-brand/40 transition-all"><Plus size={14}/>Add Policy</button>
         </div>
       </div>
       {adding && <AddForm title={`New ${adding}`} name={name} setName={setName} json={json} setJson={setJson} color="brand" onSave={save} onCancel={() => setAdding(null)} disabled={!name} />}

@@ -29,7 +29,7 @@ function ResourceItem({ name, detail, editable, onDelete }: { name: string; deta
         <p className="text-xs text-zinc-500">{detail}</p>
       </div>
       <div className="flex items-center gap-2">
-        {!editable && <span className="text-[10px] text-zinc-600 uppercase">read-only</span>}
+        {!editable && <span className="text-[10px] px-2 py-0.5 rounded-full bg-zinc-800/50 text-zinc-500 border border-zinc-700/50 uppercase">read-only</span>}
         {editable && <button onClick={onDelete} className="p-1.5 rounded hover:bg-red-950 text-zinc-500 hover:text-red-400 transition-colors"><Trash2 size={14} /></button>}
       </div>
     </div>

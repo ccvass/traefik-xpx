@@ -29,11 +29,11 @@ export function SecurityPage() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3"><Link to="/" className="text-zinc-500 hover:text-white"><ArrowLeft size={20}/></Link><h1 className="text-2xl font-bold">Security</h1></div>
         <div className="flex gap-2 flex-wrap">
-          <button onClick={() => startAdd('waf')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-lg text-xs font-medium hover:bg-brand/20"><Plus size={14}/>Add WAF</button>
-          <button onClick={() => startAdd('apikey')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-lg text-xs font-medium hover:bg-brand/20"><Plus size={14}/>Add API Key</button>
-          <button onClick={() => startAdd('jwt')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-lg text-xs font-medium hover:bg-brand/20"><Plus size={14}/>Add JWT</button>
-          <button onClick={() => startAdd('oidc')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-lg text-xs font-medium hover:bg-brand/20"><Plus size={14}/>Add OIDC</button>
-          <button onClick={() => startAdd('hmac')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-lg text-xs font-medium hover:bg-brand/20"><Plus size={14}/>Add HMAC</button>
+          <button onClick={() => startAdd('waf')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-full text-xs font-semibold hover:bg-brand/20 border border-brand/20 hover:border-brand/40 transition-all"><Plus size={14}/>Add WAF</button>
+          <button onClick={() => startAdd('apikey')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-full text-xs font-semibold hover:bg-brand/20 border border-brand/20 hover:border-brand/40 transition-all"><Plus size={14}/>Add API Key</button>
+          <button onClick={() => startAdd('jwt')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-full text-xs font-semibold hover:bg-brand/20 border border-brand/20 hover:border-brand/40 transition-all"><Plus size={14}/>Add JWT</button>
+          <button onClick={() => startAdd('oidc')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-full text-xs font-semibold hover:bg-brand/20 border border-brand/20 hover:border-brand/40 transition-all"><Plus size={14}/>Add OIDC</button>
+          <button onClick={() => startAdd('hmac')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-full text-xs font-semibold hover:bg-brand/20 border border-brand/20 hover:border-brand/40 transition-all"><Plus size={14}/>Add HMAC</button>
         </div>
       </div>
       {adding && <AddForm title={`New ${adding}`} name={name} setName={setName} json={json} setJson={setJson} color="brand" onSave={save} onCancel={() => setAdding(null)} disabled={!name} />}
@@ -71,9 +71,9 @@ export function DistributedPage() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3"><Link to="/" className="text-zinc-500 hover:text-white"><ArrowLeft size={20}/></Link><h1 className="text-2xl font-bold">Distributed</h1></div>
         <div className="flex gap-2">
-          <button onClick={() => startAdd('ratelimit')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-lg text-xs font-medium hover:bg-brand/20"><Plus size={14}/>Add Rate Limiter</button>
-          <button onClick={() => startAdd('httpcache')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-lg text-xs font-medium hover:bg-brand/20"><Plus size={14}/>Add HTTP Cache</button>
-          <button onClick={() => startAdd('inflightreq')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-lg text-xs font-medium hover:bg-brand/20"><Plus size={14}/>Add In-Flight</button>
+          <button onClick={() => startAdd('ratelimit')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-full text-xs font-semibold hover:bg-brand/20 border border-brand/20 hover:border-brand/40 transition-all"><Plus size={14}/>Add Rate Limiter</button>
+          <button onClick={() => startAdd('httpcache')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-full text-xs font-semibold hover:bg-brand/20 border border-brand/20 hover:border-brand/40 transition-all"><Plus size={14}/>Add HTTP Cache</button>
+          <button onClick={() => startAdd('inflightreq')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-full text-xs font-semibold hover:bg-brand/20 border border-brand/20 hover:border-brand/40 transition-all"><Plus size={14}/>Add In-Flight</button>
         </div>
       </div>
       {adding && <AddForm title={`New ${adding}`} name={name} setName={setName} json={json} setJson={setJson} color="brand" onSave={save} onCancel={() => setAdding(null)} disabled={!name} />}
@@ -117,8 +117,8 @@ export function APIMgmtPage() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3"><Link to="/" className="text-zinc-500 hover:text-white"><ArrowLeft size={20}/></Link><h1 className="text-2xl font-bold">API Management</h1></div>
         <div className="flex gap-2">
-          <button onClick={() => startAdd('router')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-lg text-xs font-medium hover:bg-brand/20"><Plus size={14}/>Add API Route</button>
-          <button onClick={() => startAdd('apimock')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-lg text-xs font-medium hover:bg-brand/20"><Plus size={14}/>Add Mock</button>
+          <button onClick={() => startAdd('router')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-full text-xs font-semibold hover:bg-brand/20 border border-brand/20 hover:border-brand/40 transition-all"><Plus size={14}/>Add API Route</button>
+          <button onClick={() => startAdd('apimock')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-full text-xs font-semibold hover:bg-brand/20 border border-brand/20 hover:border-brand/40 transition-all"><Plus size={14}/>Add Mock</button>
         </div>
       </div>
       {adding && <AddForm title={`New ${adding}`} name={name} setName={setName} json={json} setJson={setJson} color="brand" onSave={save} onCancel={() => setAdding(null)} disabled={!name} />}
