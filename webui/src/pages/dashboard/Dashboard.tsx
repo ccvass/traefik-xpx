@@ -80,7 +80,14 @@ export const Dashboard = () => {
       <PageTitle title="Dashboard" />
 
       {/* Platform Overview */}
-      <Grid gap={3} css={{ gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))" }}>{[{t:"AI Gateway",h:"#/ai",i:"🤖"},{t:"MCP Gateway",h:"#/mcp",i:"🔧"},{t:"Security",h:"#/security",i:"🛡️"},{t:"Distributed",h:"#/distributed",i:"⚡"},{t:"Config Manager",h:"#/config",i:"⚙️"},{t:"Grafana",h:"#/grafana",i:"📊"}].map(p=><a key={p.t} href={p.h} style={{textDecoration:"none"}}><Card css={{p:"$3",cursor:"pointer"}}><Flex direction="column" gap={1}><Text css={{fontSize:"$4"}}>{p.i}</Text><Text css={{fontWeight:600,fontSize:"$3"}}>{p.t}</Text><Text css={{fontSize:"$1",color:"$blue9"}}>Configure →</Text></Flex></Card></a>)}</Grid>
+      <Grid gap={3} css={{ gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))' }}>
+        <a href="#/ai" style={{textDecoration:'none'}}><Card css={{p:'$3',cursor:'pointer'}}><Flex direction="column" gap={1}><Text css={{fontSize:'$4'}}>🤖</Text><Text css={{fontWeight:600}}>AI Gateway</Text></Flex></Card></a>
+        <a href="#/mcp" style={{textDecoration:'none'}}><Card css={{p:'$3',cursor:'pointer'}}><Flex direction="column" gap={1}><Text css={{fontSize:'$4'}}>🔧</Text><Text css={{fontWeight:600}}>MCP Gateway</Text></Flex></Card></a>
+        <a href="#/security" style={{textDecoration:'none'}}><Card css={{p:'$3',cursor:'pointer'}}><Flex direction="column" gap={1}><Text css={{fontSize:'$4'}}>🛡️</Text><Text css={{fontWeight:600}}>Security</Text></Flex></Card></a>
+        <a href="#/distributed" style={{textDecoration:'none'}}><Card css={{p:'$3',cursor:'pointer'}}><Flex direction="column" gap={1}><Text css={{fontSize:'$4'}}>⚡</Text><Text css={{fontWeight:600}}>Distributed</Text></Flex></Card></a>
+        <a href="#/config" style={{textDecoration:'none'}}><Card css={{p:'$3',cursor:'pointer'}}><Flex direction="column" gap={1}><Text css={{fontSize:'$4'}}>⚙️</Text><Text css={{fontWeight:600}}>Config Manager</Text></Flex></Card></a>
+        <a href="#/grafana" style={{textDecoration:'none'}}><Card css={{p:'$3',cursor:'pointer'}}><Flex direction="column" gap={1}><Text css={{fontSize:'$4'}}>📊</Text><Text css={{fontWeight:600}}>Grafana</Text></Flex></Card></a>
+      </Grid>
 
       <SectionContainer title="Entrypoints" css={{ mt: 0 }}>
         {entrypoints?.map((i, idx) => (
