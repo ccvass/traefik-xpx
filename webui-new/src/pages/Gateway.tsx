@@ -126,7 +126,7 @@ export function GatewayPage() {
       {/* Routes Tab */}
       {tab === 'Routes' && <>
         <button onClick={() => { setForm('router'); setName(''); setJson(JSON.stringify({ rule: "Host(`app.example.com`)", service: "my-service", entryPoints: ["web"], middlewares: [] }, null, 2)) }} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-lg text-xs font-medium hover:bg-brand/20"><Plus size={14} />Add Route</button>
-        {form === 'router' && <RouterFormFull middlewares={mArr.filter((m: any) => m.provider === 'file').map((m: any) => m.name.replace(/@.*/, ''))} onSave={async ({name: n, config}: any) => { await api.put(`/config/http/routers/${n}`, config); mutateAll(); setForm(null) }} onCancel={() => setForm(null)} />}
+        {form === 'router' && <RouterFormFull middlewares={mArr.map((m: any) => m.name.replace(/@.*/, ''))} onSave={async ({name: n, config}: any) => { await api.put(`/config/http/routers/${n}`, config); mutateAll(); setForm(null) }} onCancel={() => setForm(null)} />}
         <div className="space-y-2">{rArr.map((r: any) => (
           <div key={r.name} className={`p-4 rounded-lg border ${r.provider === 'file' ? 'border-emerald-900/50 bg-emerald-950/20' : 'border-zinc-800 bg-zinc-900'}`}>
             <div className="flex justify-between items-center">
