@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils'
 import { logout } from '@/lib/api'
 import {
   LayoutDashboard, Globe, Shield, Cpu, Zap, Package, Settings,
-  Network, BarChart3, MonitorDot, ChevronLeft, ChevronRight, Bot, Wrench, Menu, LogOut
+  Network, BarChart3, MonitorDot, ChevronLeft, ChevronRight, Bot, Wrench, Menu, LogOut, Users
 } from 'lucide-react'
 
 interface NavItem { label: string; path: string; icon: ReactNode }
@@ -29,6 +29,7 @@ const NAV: NavGroup[] = [
   { title: 'Operations', items: [
     { label: 'Multi-Cluster', path: '/clusters', icon: <MonitorDot size={18} /> },
     { label: 'Grafana', path: '/grafana', icon: <BarChart3 size={18} /> },
+    { label: 'Users', path: '/users', icon: <Users size={18} /> },
   ]},
 ]
 

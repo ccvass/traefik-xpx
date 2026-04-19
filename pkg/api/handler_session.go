@@ -169,3 +169,40 @@ func (sm *sessionManager) authMiddleware(next http.Handler) http.Handler {
 		http.Error(rw, `{"error":"unauthorized"}`, http.StatusUnauthorized)
 	})
 }
+
+func (sm *sessionManager) handleListUsers(rw http.ResponseWriter, _ *http.Request) {
+	sm.mu.RLock()
+	defer sm.mu.RUnlock()
+	users := make([]map[string]string, 0, len(sm.users))
+	for u := range sm.users {
+		users = append(users, map[string]string{"username": u})
+	}
+	rw.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(rw).Encode(users)
+}
+
+func (sm *sessionManager) handleAddUser(rw http.ResponseWriter, req *http.Request) {
+	var lr loginRequest
+	if err := json.NewDecoder(req.Body).Decode(&lr); err != nil || lr.Username == "" || lr.Password == "" {
+		http.Error(rw, `{"error":"username and password required"}`, http.StatusBadRequest)
+		return
+	}
+	sm.mu.Lock()
+	sm.users[lr.Username] = lr.Password
+	sm.mu.Unlock()
+	rw.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(rw).Encode(map[string]string{"status": "created", "username": lr.Username})
+}
+
+func (sm *sessionManager) handleDeleteUser(rw http.ResponseWriter, req *http.Request) {
+	var body struct{ Username string `json:"username"` }
+	if err := json.NewDecoder(req.Body).Decode(&body); err != nil || body.Username == "" {
+		http.Error(rw, `{"error":"username required"}`, http.StatusBadRequest)
+		return
+	}
+	sm.mu.Lock()
+	delete(sm.users, body.Username)
+	sm.mu.Unlock()
+	rw.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(rw).Encode(map[string]string{"status": "deleted", "username": body.Username})
+}
