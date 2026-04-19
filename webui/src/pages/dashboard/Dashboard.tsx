@@ -11,8 +11,6 @@ import { capitalizeFirstLetter } from 'utils/string'
 
 
 const PlatformOverview = () => {
-  const { data: aiStatus } = useSWR('/ai/status')
-  const { data: mcpStatus } = useSWR('/mcp/status')
   const { data: middlewares } = useSWR('/http/middlewares')
   const { data: routers } = useSWR('/http/routers')
   const { data: services } = useSWR('/http/services')
@@ -26,8 +24,8 @@ const PlatformOverview = () => {
   const cacheCount = mws.filter((m: any) => m.type === 'httpcache').length
 
   const panels = [
-    { icon: '🤖', title: 'AI Gateway', href: '#/ai', active: !!aiStatus?.enabled, lines: [`${aiStatus?.components || 0} providers`] },
-    { icon: '🔧', title: 'MCP Gateway', href: '#/mcp', active: !!mcpStatus?.enabled, lines: [`${mcpStatus?.components || 0} servers`] },
+    { icon: '🤖', title: 'AI Gateway', href: '#/ai', active: false, lines: ['Click to configure'] },
+    { icon: '🔧', title: 'MCP Gateway', href: '#/mcp', active: false, lines: ['Click to configure'] },
     { icon: '🛡️', title: 'Security', href: '#/security', active: wafCount + authCount > 0, lines: [`${wafCount} WAF, ${authCount} Auth`] },
     { icon: '⚡', title: 'Distributed', href: '#/distributed', active: rateLimitCount + cacheCount > 0, lines: [`${rateLimitCount} rate limits, ${cacheCount} caches`] },
     { icon: '📦', title: 'API Mgmt', href: '#/api-management', active: totalRouters > 0, lines: [`${totalRouters} routers, ${totalServices} services`] },
