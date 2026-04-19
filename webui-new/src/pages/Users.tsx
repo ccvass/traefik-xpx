@@ -45,20 +45,20 @@ export function UsersPage() {
       </div>
 
       {show && <Modal open={true} onClose={() => setShow(false)} color="#2AA2C1">
-          <p className="font-semibold text-sm text-brand">New User</p>
+          <p className="font-semibold text-sm" style={{ color: '#2AA2C1' }}>New User</p>
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="text-xs text-zinc-500">Username</label>
-              <input value={username} onChange={e => setUsername(e.target.value)} placeholder="e.g. operator" className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand" />
+              <input value={username} onChange={e => setUsername(e.target.value)} placeholder="e.g. operator" className="w-full mt-1 rounded-lg px-3 py-2.5 text-sm outline-none transition-colors" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }} />
             </div>
             <div>
               <label className="text-xs text-zinc-500">Password</label>
-              <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••" className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand" />
+              <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••" className="w-full mt-1 rounded-lg px-3 py-2.5 text-sm outline-none transition-colors" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }} />
             </div>
           </div>
           <div className="flex gap-2 justify-end">
             <button onClick={() => setShow(false)} className="px-3 py-1.5 text-xs rounded-lg bg-zinc-800 hover:bg-zinc-700 flex items-center gap-1"><X size={12} />Cancel</button>
-            <button onClick={add} disabled={!username || !password} className="px-3 py-1.5 text-xs rounded-lg bg-brand hover:bg-brand/80 text-white font-semibold disabled:opacity-30 flex items-center gap-1"><Save size={12} />Create User</button>
+            <button onClick={add} disabled={!username || !password} className="px-3 py-1.5 text-xs rounded-lg text-white font-semibold disabled:opacity-40 flex items-center gap-1" style={{ backgroundColor: '#2AA2C1' }}><Save size={12} />Create User</button>
           </div>
       </Modal>}
 

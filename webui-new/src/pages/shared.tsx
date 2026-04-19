@@ -16,11 +16,11 @@ function AddForm({ title, name, setName, json, setJson, color, onSave, onCancel,
       <div className="space-y-3">
         <div>
           <label className="text-xs text-zinc-500">Name</label>
-          <input value={name} onChange={e => setName(e.target.value)} placeholder="e.g. my-resource" className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand" />
+          <input value={name} onChange={e => setName(e.target.value)} placeholder="e.g. my-resource" className="w-full mt-1 rounded-lg px-3 py-2.5 text-sm outline-none transition-colors" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }} />
         </div>
         <div>
           <label className="text-xs text-zinc-500">Configuration (JSON)</label>
-          <textarea value={json} onChange={e => setJson(e.target.value)} rows={10} className="w-full mt-1 bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-3 text-xs font-mono outline-none leading-relaxed text-emerald-300 resize-y" style={{ borderColor: '#3f3f46' }} />
+          <textarea value={json} onChange={e => setJson(e.target.value)} rows={10} className="w-full mt-1 rounded-lg px-4 py-3 text-xs font-mono outline-none leading-relaxed resize-y" style={{ backgroundColor: '#09090b', borderWidth: 1, borderStyle: 'solid', borderColor: '#27272a', color: '#34d399', minHeight: 200 }} />
         </div>
         <div className="flex gap-2 justify-end">
           <button onClick={onCancel} className="px-3 py-1.5 text-xs rounded-lg bg-zinc-800 hover:bg-zinc-700 flex items-center gap-1"><X size={12} />Cancel</button>

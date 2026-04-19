@@ -33,13 +33,13 @@ export function ClustersPage() {
       </div>
 
       {show && <Modal open={true} onClose={() => setShow(false)} color="#2AA2C1">
-          <p className="font-semibold text-sm text-brand">Add Cluster Instance</p>
+          <p className="font-semibold text-sm" style={{ color: '#2AA2C1' }}>Add Cluster Instance</p>
           <div className="grid grid-cols-3 gap-3">
-            <div><label className="text-xs text-zinc-500">Name</label><input value={name} onChange={e => setName(e.target.value)} placeholder="e.g. prod-us-east" className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand" /></div>
-            <div><label className="text-xs text-zinc-500">API URL</label><input value={url} onChange={e => setUrl(e.target.value)} placeholder="e.g. https://node2:8099" className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand" /></div>
-            <div><label className="text-xs text-zinc-500">Region</label><input value={region} onChange={e => setRegion(e.target.value)} placeholder="e.g. us-east-1" className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand" /></div>
+            <div><label className="text-xs text-zinc-500">Name</label><input value={name} onChange={e => setName(e.target.value)} placeholder="e.g. prod-us-east" className="w-full mt-1 rounded-lg px-3 py-2.5 text-sm outline-none transition-colors" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }} /></div>
+            <div><label className="text-xs text-zinc-500">API URL</label><input value={url} onChange={e => setUrl(e.target.value)} placeholder="e.g. https://node2:8099" className="w-full mt-1 rounded-lg px-3 py-2.5 text-sm outline-none transition-colors" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }} /></div>
+            <div><label className="text-xs text-zinc-500">Region</label><input value={region} onChange={e => setRegion(e.target.value)} placeholder="e.g. us-east-1" className="w-full mt-1 rounded-lg px-3 py-2.5 text-sm outline-none transition-colors" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }} /></div>
           </div>
-          <div className="flex gap-2 justify-end"><button onClick={() => setShow(false)} className="px-3 py-1.5 text-xs rounded-lg bg-zinc-800"><X size={12} className="inline mr-1" />Cancel</button><button onClick={add} disabled={!name||!url} className="px-3 py-1.5 text-xs rounded-lg bg-brand text-white font-semibold disabled:opacity-30"><Save size={12} className="inline mr-1" />Add</button></div>
+          <div className="flex gap-2 justify-end"><button onClick={() => setShow(false)} className="px-3 py-1.5 text-xs rounded-lg bg-zinc-800"><X size={12} className="inline mr-1" />Cancel</button><button onClick={add} disabled={!name||!url} className="px-3 py-1.5 text-xs rounded-lg text-white font-semibold disabled:opacity-40" style={{ backgroundColor: '#2AA2C1' }}><Save size={12} className="inline mr-1" />Add</button></div>
       </Modal>}
 
       <div className="bg-zinc-900 border border-emerald-900/50 rounded-xl p-6">
