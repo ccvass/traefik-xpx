@@ -133,7 +133,7 @@ export const Dashboard = () => {
       <PageTitle title="Dashboard" />
 
       {/* Platform Overview */}
-      <PlatformOverview />
+      <Grid gap={3} css={{ gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))" }}>{[{t:"AI Gateway",h:"#/ai",i:"🤖"},{t:"MCP Gateway",h:"#/mcp",i:"🔧"},{t:"Security",h:"#/security",i:"🛡️"},{t:"Distributed",h:"#/distributed",i:"⚡"},{t:"Config Manager",h:"#/config",i:"⚙️"},{t:"Grafana",h:"#/grafana",i:"📊"}].map(p=><a key={p.t} href={p.h} style={{textDecoration:"none"}}><Card css={{p:"$3",cursor:"pointer","&:hover":{borderColor:"$blue7"}}}><Flex direction="column" gap={1}><Text css={{fontSize:"$4"}}>{p.i}</Text><Text css={{fontWeight:600,fontSize:"$3"}}>{p.t}</Text><Text css={{fontSize:"$1",color:"$blue9"}}>Configure →</Text></Flex></Card></a>)}</Grid>
 
       <SectionContainer title="Entrypoints" css={{ mt: 0 }}>
         {entrypoints?.map((i, idx) => (
