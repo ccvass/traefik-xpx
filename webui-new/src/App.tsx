@@ -8,7 +8,8 @@ import { LoginPage } from '@/pages/Login'
 import { AIPage } from '@/pages/AI'
 import { MCPPage } from '@/pages/MCP'
 import { SecurityPage, DistributedPage, APIMgmtPage } from '@/pages/Features'
-import { ClustersPage, GrafanaPage, ProxyPage } from '@/pages/Operations'
+import { ClustersPage, GrafanaPage } from '@/pages/Operations'
+import { GatewayPage } from '@/pages/Gateway'
 import { UsersPage } from '@/pages/Users'
 
 export function App() {
@@ -32,7 +33,7 @@ export function App() {
             <Route path="/api-mgmt" element={<APIMgmtPage />} />
             <Route path="/clusters" element={<ClustersPage />} />
             <Route path="/grafana" element={<GrafanaPage />} />
-            <Route path="/proxy/*" element={<ProxyPage />} />
+            <Route path="/gateway" element={<GatewayPage />} />
             <Route path="/users" element={<UsersPage />} />
           </Routes>
         </Shell>

@@ -14,10 +14,8 @@ const NAV: NavGroup[] = [
   { title: '', items: [
     { label: 'Dashboard', path: '/', icon: <LayoutDashboard size={18} /> },
   ]},
-  { title: 'Proxy', items: [
-    { label: 'HTTP', path: '/proxy/http', icon: <Globe size={18} /> },
-    { label: 'TCP', path: '/proxy/tcp', icon: <Network size={18} /> },
-    { label: 'UDP', path: '/proxy/udp', icon: <Network size={18} /> },
+  { title: '', items: [
+    { label: 'API Gateway', path: '/gateway', icon: <Globe size={18} /> },
   ]},
   { title: 'Platform', items: [
     { label: 'AI Gateway', path: '/ai', icon: <Bot size={18} /> },
