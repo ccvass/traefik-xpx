@@ -52,6 +52,8 @@ type Middleware struct {
 	LDAP              *LDAP              `json:"ldap,omitempty" toml:"ldap,omitempty" yaml:"ldap,omitempty" export:"true"`
 	OPA               *OPA               `json:"opa,omitempty" toml:"opa,omitempty" yaml:"opa,omitempty" export:"true"`
 	WAF               *WAF               `json:"waf,omitempty" toml:"waf,omitempty" yaml:"waf,omitempty" export:"true"`
+	GeoIP             *GeoIP             `json:"geoip,omitempty" toml:"geoip,omitempty" yaml:"geoip,omitempty" export:"true"`
+	BotDetect         *BotDetect         `json:"botDetect,omitempty" toml:"botDetect,omitempty" yaml:"botDetect,omitempty" export:"true"`
 	DistributedRateLimit *DistributedRateLimit `json:"distributedRateLimit,omitempty" toml:"distributedRateLimit,omitempty" yaml:"distributedRateLimit,omitempty" export:"true"`
 	DistributedInFlightReq *DistributedInFlightReq `json:"distributedInFlightReq,omitempty" toml:"distributedInFlightReq,omitempty" yaml:"distributedInFlightReq,omitempty" export:"true"`
 	HTTPCache         *HTTPCache         `json:"httpCache,omitempty" toml:"httpCache,omitempty" yaml:"httpCache,omitempty" export:"true"`
@@ -1129,4 +1131,23 @@ type APIMock struct {
 	SpecFile      string        `json:"specFile,omitempty" toml:"specFile,omitempty" yaml:"specFile,omitempty" export:"true"`
 	DefaultStatus int           `json:"defaultStatus,omitempty" toml:"defaultStatus,omitempty" yaml:"defaultStatus,omitempty" export:"true"`
 	AddDelay      ptypes.Duration `json:"addDelay,omitempty" toml:"addDelay,omitempty" yaml:"addDelay,omitempty" export:"true"`
+}
+
+// GeoIP holds the GeoIP blocking middleware configuration.
+type GeoIP struct {
+	DatabaseFile      string   `json:"databaseFile,omitempty" toml:"databaseFile,omitempty" yaml:"databaseFile,omitempty"`
+	AllowCountries    []string `json:"allowCountries,omitempty" toml:"allowCountries,omitempty" yaml:"allowCountries,omitempty"`
+	BlockCountries    []string `json:"blockCountries,omitempty" toml:"blockCountries,omitempty" yaml:"blockCountries,omitempty"`
+	DefaultAction     string   `json:"defaultAction,omitempty" toml:"defaultAction,omitempty" yaml:"defaultAction,omitempty"`
+	TrustForwardedFor bool     `json:"trustForwardedFor,omitempty" toml:"trustForwardedFor,omitempty" yaml:"trustForwardedFor,omitempty"`
+}
+
+// BotDetect holds the bot detection middleware configuration.
+type BotDetect struct {
+	BlockKnownBots    bool     `json:"blockKnownBots,omitempty" toml:"blockKnownBots,omitempty" yaml:"blockKnownBots,omitempty"`
+	AllowGoodBots     bool     `json:"allowGoodBots,omitempty" toml:"allowGoodBots,omitempty" yaml:"allowGoodBots,omitempty"`
+	RateThreshold     int      `json:"rateThreshold,omitempty" toml:"rateThreshold,omitempty" yaml:"rateThreshold,omitempty"`
+	ChallengeMode     bool     `json:"challengeMode,omitempty" toml:"challengeMode,omitempty" yaml:"challengeMode,omitempty"`
+	CustomBlockPatterns []string `json:"customBlockPatterns,omitempty" toml:"customBlockPatterns,omitempty" yaml:"customBlockPatterns,omitempty"`
+	CustomAllowPatterns []string `json:"customAllowPatterns,omitempty" toml:"customAllowPatterns,omitempty" yaml:"customAllowPatterns,omitempty"`
 }

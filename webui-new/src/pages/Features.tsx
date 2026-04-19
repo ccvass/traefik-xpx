@@ -10,7 +10,7 @@ import { COLORS, getCategoryColors, getTypeLabel } from '@/lib/design'
 export function SecurityPage() {
   const { data: mws } = useSWR<Middleware[]>('/http/middlewares', fetcher)
   const all = mws || []
-  const sec = all.filter(m => ['waf','apikey','jwt','jwtAuth','oidc','hmac','ldap','basicauth','opa'].includes(m.type))
+  const sec = all.filter(m => ['waf','apikey','jwt','jwtAuth','oidc','hmac','ldap','basicauth','opa','geoip','botdetect'].includes(m.type))
   const [adding, setAdding] = useState<string|null>(null)
   const [name, setName] = useState(''); const [json, setJson] = useState('')
 
@@ -20,6 +20,8 @@ export function SecurityPage() {
     jwt: { jwtAuth: { jwksUrl: 'https://auth.example.com/.well-known/jwks.json', issuer: 'https://auth.example.com' } },
     oidc: { oidc: { issuerUrl: 'https://accounts.google.com', clientId: 'id', clientSecret: 'secret', redirectUrl: 'https://app/callback' } },
     hmac: { hmac: { secret: 'shared-secret', algorithm: 'sha256', headerName: 'X-Signature' } },
+    geoip: { geoip: { databaseFile: '/etc/traefik/GeoLite2-Country.mmdb', allowCountries: ['PE', 'CO', 'CL', 'EC', 'MX', 'BR', 'AR'], trustForwardedFor: true } },
+    botdetect: { botDetect: { blockKnownBots: true, allowGoodBots: true, rateThreshold: 60, challengeMode: false } },
   }
   const startAdd = (t: string) => { setAdding(t); setName(''); setJson(JSON.stringify(templates[t], null, 2)) }
   const save = async () => { try { await api.put(`/config/http/middlewares/${name}`, JSON.parse(json)); mutateAll(); setAdding(null) } catch {} }
@@ -35,6 +37,8 @@ export function SecurityPage() {
           <ActionBtn label="Add JWT" onClick={() => startAdd('jwt')} color={COLORS.traffic.accent} />
           <ActionBtn label="Add OIDC" onClick={() => startAdd('oidc')} color={COLORS.cache.accent} />
           <ActionBtn label="Add HMAC" onClick={() => startAdd('hmac')} color={COLORS.resilience.accent} />
+          <ActionBtn label="Add GeoIP" onClick={() => startAdd('geoip')} color={COLORS.network.accent} />
+          <ActionBtn label="Add Bot Detect" onClick={() => startAdd('botdetect')} color={COLORS.mock.accent} />
         </div>
       </div>
       {adding && <AddForm title={`New ${getTypeLabel(adding || '')}`} name={name} setName={setName} json={json} setJson={setJson} color={getCategoryColors(adding || "").accent} onSave={save} onCancel={() => setAdding(null)} disabled={!name} typeKey={adding || ''} />}

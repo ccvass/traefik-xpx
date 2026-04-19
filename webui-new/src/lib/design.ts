@@ -35,6 +35,7 @@ const TYPE_MAP: Record<string, keyof typeof COLORS> = {
   headers: 'utility', buffering: 'utility', chain: 'utility', stripprefixregex: 'utility',
   contenttype: 'utility', mcpaudit: 'utility', mcppolicy: 'utility', mcpgovernance: 'utility',
   aigateway: 'identity',
+  geoip: 'network', botdetect: 'mock',
 }
 
 export function getCategoryColors(type: string) {
@@ -115,6 +116,7 @@ export const TYPE_LABELS: Record<string, string> = {
   aigateway: 'AI Gateway', semanticcache: 'Semantic Cache', piiguard: 'PII Guard',
   tbac: 'TBAC Rule', mcpaudit: 'Audit Logger', mcppolicy: 'MCP Policy', mcpgovernance: 'MCP Governance',
   apimock: 'API Mock', router: 'API Route', basicauth: 'Basic Auth',
+  geoip: 'GeoIP Block', botdetect: 'Bot Detect',
 }
 export function getTypeLabel(type: string): string {
   return TYPE_LABELS[type] || type.charAt(0).toUpperCase() + type.slice(1)
@@ -193,6 +195,14 @@ export const TYPE_HELP: Record<string, { desc: string; fields: string }> = {
   user: {
     desc: 'Dashboard User — JWT-authenticated access to the Traefik-XP dashboard.',
     fields: 'username: Unique login name\npassword: Minimum 8 characters, stored as bcrypt hash',
+  },
+  geoip: {
+    desc: 'GeoIP Blocking — block or allow traffic by country using MaxMind GeoLite2 database.',
+    fields: 'databaseFile: Path to GeoLite2-Country.mmdb\nallowCountries: Whitelist (e.g. ["PE","CO","CL","MX"])\nblockCountries: Blacklist (e.g. ["RU","CN"])\ntrustForwardedFor: true if behind Cloudflare/CDN',
+  },
+  botdetect: {
+    desc: 'Bot Detection — blocks scrapers, vulnerability scanners, and automated attacks by User-Agent and request rate.',
+    fields: 'blockKnownBots: true to block known malicious UAs (sqlmap, nikto, scrapy)\nallowGoodBots: true to allow Googlebot, Bingbot, Cloudflare\nrateThreshold: Max requests/minute per IP (e.g. 60)\nchallengeMode: true returns 429 instead of 403',
   },
   cluster: {
     desc: 'Remote Instance — register another Traefik-XP node for multi-cluster monitoring.',
