@@ -6,7 +6,7 @@ import useSWR, { mutate } from 'swr'
 const API_BASE = (window as any).APIUrl || '/api'
 
 async function apiCall(method: string, path: string, body?: any) {
-  const opts: RequestInit = { method, headers: { 'Content-Type': 'application/json' } }
+  const opts: RequestInit = { method, credentials: 'include', headers: { 'Content-Type': 'application/json' } }
   if (body) opts.body = JSON.stringify(body)
   const res = await fetch(`${API_BASE}${path}`, opts)
   return res.json()

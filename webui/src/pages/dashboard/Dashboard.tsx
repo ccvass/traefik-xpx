@@ -40,8 +40,8 @@ const Metric = ({ label, value }: { label: string; value: string | number }) => 
 )
 
 const PlatformOverview = () => {
-  const { data: aiStatus } = useSWR('ai-status', () => fetch(`${API_BASE}/ai/status`).then(r => r.json()).catch(() => null))
-  const { data: mcpStatus } = useSWR('mcp-status', () => fetch(`${API_BASE}/mcp/status`).then(r => r.json()).catch(() => null))
+  const { data: aiStatus } = useSWR('ai-status', () => fetch(`${API_BASE}/ai/status`, { credentials: 'include' }).then(r => r.json()).catch(() => null))
+  const { data: mcpStatus } = useSWR('mcp-status', () => fetch(`${API_BASE}/mcp/status`, { credentials: 'include' }).then(r => r.json()).catch(() => null))
   const { data: middlewares } = useSWR('/http/middlewares')
   const { data: overview } = useSWR('/overview')
   const { data: routers } = useSWR('/http/routers')
