@@ -23,3 +23,10 @@ integration/gateway-api-conformance-reports/**/experimental-dev-default-report.y
 REMOTE.md
 debug/
 .playwright-mcp/
+
+# Traefik-XP
+webui-new/node_modules/
+webui/static/assets/
+debug/
+.playwright-mcp/
+*.log
