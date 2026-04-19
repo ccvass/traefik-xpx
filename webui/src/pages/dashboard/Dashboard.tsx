@@ -1,4 +1,4 @@
-import { Badge, Button, Card, CSS, Flex, Grid, H2, Text } from '@traefik-labs/faency'
+import { Card, CSS, Flex, Grid, H2, Text } from '@traefik-labs/faency'
 import { ReactNode, useMemo } from 'react'
 import useSWR from 'swr'
 
@@ -12,122 +12,61 @@ import { capitalizeFirstLetter } from 'utils/string'
 
 const API_BASE = (window as any).APIUrl || '/api'
 
-const FeaturePanel = ({ title, icon, href, status, children }: { title: string; icon: string; href: string; status: 'active' | 'available' | 'off'; children: React.ReactNode }) => (
-  <a href={`#${href}`} style={{ textDecoration: 'none' }}>
-    <Card css={{ p: '$4', cursor: 'pointer', transition: 'all 0.2s', '&:hover': { transform: 'translateY(-2px)', boxShadow: '$3' }, height: '100%' }}>
-      <Flex direction="column" gap={2} css={{ height: '100%' }}>
-        <Flex justify="between" align="center">
-          <Text css={{ fontSize: '$5' }}>{icon}</Text>
-          <Badge variant={status === 'active' ? 'green' : status === 'available' ? 'blue' : 'gray'} css={{ fontSize: '$1' }}>
-            {status === 'active' ? '● Active' : status === 'available' ? '○ Available' : '○ Off'}
-          </Badge>
-        </Flex>
-        <Text css={{ fontWeight: 700, fontSize: '$4' }}>{title}</Text>
-        <Flex direction="column" gap={1} css={{ flex: 1 }}>
-          {children}
-        </Flex>
-        <Text css={{ fontSize: '$1', color: '$blue9', fontWeight: 500 }}>Configure →</Text>
-      </Flex>
-    </Card>
-  </a>
-)
-
-const Metric = ({ label, value }: { label: string; value: string | number }) => (
-  <Flex justify="between" align="center">
-    <Text css={{ fontSize: '$2', color: '$textSubtle' }}>{label}</Text>
-    <Text css={{ fontSize: '$2', fontWeight: 600 }}>{value}</Text>
-  </Flex>
-)
-
 const PlatformOverview = () => {
-  const { data: aiStatus } = useSWR('ai-status', () => fetch(`${API_BASE}/ai/status`).then(r => r.json()).catch(() => null))
-  const { data: mcpStatus } = useSWR('mcp-status', () => fetch(`${API_BASE}/mcp/status`).then(r => r.json()).catch(() => null))
+  const { data: aiStatus } = useSWR('ai-status', () => fetch(`${API_BASE}/ai/status`, { credentials: 'include' }).then(r => r.json()).catch(() => null))
+  const { data: mcpStatus } = useSWR('mcp-status', () => fetch(`${API_BASE}/mcp/status`, { credentials: 'include' }).then(r => r.json()).catch(() => null))
   const { data: middlewares } = useSWR('/http/middlewares')
-  const { data: overview } = useSWR('/overview')
   const { data: routers } = useSWR('/http/routers')
   const { data: services } = useSWR('/http/services')
 
   const mws = Array.isArray(middlewares) ? middlewares : []
-  const wafCount = mws.filter((m: any) => m.type === 'waf').length
-  const authCount = mws.filter((m: any) => ['apikey', 'jwt', 'oidc', 'hmac', 'ldap', 'basicauth', 'forwardauth'].includes(m.type)).length
-  const opaCount = mws.filter((m: any) => m.type === 'opa').length
-  const cacheCount = mws.filter((m: any) => m.type === 'httpcache').length
-  const rateLimitCount = mws.filter((m: any) => ['ratelimit', 'distributedratelimit'].includes(m.type)).length
-  const inflightCount = mws.filter((m: any) => ['inflightreq', 'distributedInflightReq'].includes(m.type)).length
   const totalRouters = Array.isArray(routers) ? routers.length : 0
   const totalServices = Array.isArray(services) ? services.length : 0
-  const fileRouters = Array.isArray(routers) ? routers.filter((r: any) => r.provider === 'file').length : 0
+  const wafCount = mws.filter((m: any) => m.type === 'waf').length
+  const authCount = mws.filter((m: any) => ['apikey', 'jwt', 'oidc', 'hmac', 'ldap', 'basicauth'].includes(m.type)).length
+  const rateLimitCount = mws.filter((m: any) => m.type === 'ratelimit').length
+  const cacheCount = mws.filter((m: any) => m.type === 'httpcache').length
+
+  const panels = [
+    { icon: '🤖', title: 'AI Gateway', href: '#/ai', active: !!aiStatus?.enabled, lines: [`${aiStatus?.components || 0} providers`] },
+    { icon: '🔧', title: 'MCP Gateway', href: '#/mcp', active: !!mcpStatus?.enabled, lines: [`${mcpStatus?.components || 0} servers`] },
+    { icon: '🛡️', title: 'Security', href: '#/security', active: wafCount + authCount > 0, lines: [`${wafCount} WAF, ${authCount} Auth`] },
+    { icon: '⚡', title: 'Distributed', href: '#/distributed', active: rateLimitCount + cacheCount > 0, lines: [`${rateLimitCount} rate limits, ${cacheCount} caches`] },
+    { icon: '📦', title: 'API Mgmt', href: '#/api-management', active: totalRouters > 0, lines: [`${totalRouters} routers, ${totalServices} services`] },
+    { icon: '📊', title: 'Observability', href: '#/grafana', active: true, lines: ['5 Grafana dashboards'] },
+  ]
 
   return (
     <Flex direction="column" gap={4}>
-      {/* Summary Bar */}
-      <Card css={{ p: '$3', background: '$gray2' }}>
-        <Flex justify="between" align="center" wrap="wrap" gap={3}>
-          <Flex gap={4}>
-            <Flex direction="column" align="center">
-              <Text css={{ fontSize: '$7', fontWeight: 700 }}>{totalRouters}</Text>
-              <Text css={{ fontSize: '$1', color: '$textSubtle' }}>Routers</Text>
-            </Flex>
-            <Flex direction="column" align="center">
-              <Text css={{ fontSize: '$7', fontWeight: 700 }}>{totalServices}</Text>
-              <Text css={{ fontSize: '$1', color: '$textSubtle' }}>Services</Text>
-            </Flex>
-            <Flex direction="column" align="center">
-              <Text css={{ fontSize: '$7', fontWeight: 700 }}>{mws.length}</Text>
-              <Text css={{ fontSize: '$1', color: '$textSubtle' }}>Middlewares</Text>
-            </Flex>
-            <Flex direction="column" align="center">
-              <Text css={{ fontSize: '$7', fontWeight: 700 }}>{fileRouters}</Text>
-              <Text css={{ fontSize: '$1', color: '$textSubtle' }}>Managed APIs</Text>
-            </Flex>
-          </Flex>
-          <a href="#/config"><Button>⚙️ Config Manager</Button></a>
+      <Flex gap={3} css={{ p: '$3', background: '$gray2', borderRadius: '$2' }} justify="between" align="center">
+        <Flex gap={4}>
+          <Flex direction="column" align="center"><Text css={{ fontSize: '$7', fontWeight: 700 }}>{totalRouters}</Text><Text css={{ fontSize: '$1', color: '$textSubtle' }}>Routers</Text></Flex>
+          <Flex direction="column" align="center"><Text css={{ fontSize: '$7', fontWeight: 700 }}>{totalServices}</Text><Text css={{ fontSize: '$1', color: '$textSubtle' }}>Services</Text></Flex>
+          <Flex direction="column" align="center"><Text css={{ fontSize: '$7', fontWeight: 700 }}>{mws.length}</Text><Text css={{ fontSize: '$1', color: '$textSubtle' }}>Middlewares</Text></Flex>
         </Flex>
-      </Card>
-
-      {/* Feature Panels */}
-      <Grid columns={{ '@initial': 1, '@sm': 2, '@lg': 3 }} gap={3}>
-        <FeaturePanel title="AI Gateway" icon="🤖" href="/ai" status={aiStatus?.enabled ? 'active' : 'available'}>
-          <Metric label="Providers" value={aiStatus?.components || 0} />
-          <Metric label="Semantic Cache" value={mws.some((m: any) => m.type === 'semanticcache') ? 'On' : 'Off'} />
-          <Metric label="PII Guard" value={mws.some((m: any) => m.type === 'piiguard') ? 'On' : 'Off'} />
-        </FeaturePanel>
-
-        <FeaturePanel title="MCP Gateway" icon="🔧" href="/mcp" status={mcpStatus?.enabled ? 'active' : 'available'}>
-          <Metric label="Servers" value={mcpStatus?.components || 0} />
-          <Metric label="TBAC Rules" value={mws.filter((m: any) => m.type === 'tbac').length} />
-          <Metric label="Audit Logger" value={mws.some((m: any) => m.type === 'mcpaudit') ? 'On' : 'Off'} />
-        </FeaturePanel>
-
-        <FeaturePanel title="Security" icon="🛡️" href="/security" status={wafCount + authCount + opaCount > 0 ? 'active' : 'available'}>
-          <Metric label="WAF Rules" value={wafCount} />
-          <Metric label="Auth Middlewares" value={authCount} />
-          <Metric label="OPA Policies" value={opaCount} />
-        </FeaturePanel>
-
-        <FeaturePanel title="Distributed" icon="⚡" href="/distributed" status={rateLimitCount + cacheCount + inflightCount > 0 ? 'active' : 'available'}>
-          <Metric label="Rate Limiters" value={rateLimitCount} />
-          <Metric label="HTTP Caches" value={cacheCount} />
-          <Metric label="In-Flight Limiters" value={inflightCount} />
-        </FeaturePanel>
-
-        <FeaturePanel title="API Management" icon="📦" href="/api-management" status={fileRouters > 0 ? 'active' : 'available'}>
-          <Metric label="Managed APIs" value={fileRouters} />
-          <Metric label="Total Middlewares" value={mws.length} />
-          <Metric label="Mock Endpoints" value={mws.filter((m: any) => m.type === 'apimock').length} />
-        </FeaturePanel>
-
-        <FeaturePanel title="Observability" icon="📊" href="/grafana" status="active">
-          <Metric label="Grafana Dashboards" value="5" />
-          <Metric label="Metrics" value={overview?.features?.metrics ? 'On' : 'Off'} />
-          <Metric label="Tracing" value={overview?.features?.tracing ? 'On' : 'Off'} />
-        </FeaturePanel>
+        <a href="#/config" style={{ textDecoration: 'none' }}><Card css={{ p: '$2 $3', cursor: 'pointer', fontWeight: 600 }}>⚙️ Config Manager</Card></a>
+      </Flex>
+      <Grid gap={3} css={{ gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))' }}>
+        {panels.map(p => (
+          <a key={p.title} href={p.href} style={{ textDecoration: 'none' }}>
+            <Card css={{ p: '$3', cursor: 'pointer', '&:hover': { borderColor: '$blue7' }, height: '100%' }}>
+              <Flex direction="column" gap={1}>
+                <Flex justify="between" align="center">
+                  <Text css={{ fontSize: '$4' }}>{p.icon}</Text>
+                  <Text css={{ fontSize: '$1', color: p.active ? '$green9' : '$blue9' }}>{p.active ? '● Active' : '○ Available'}</Text>
+                </Flex>
+                <Text css={{ fontWeight: 600, fontSize: '$3' }}>{p.title}</Text>
+                {p.lines.map((l, i) => <Text key={i} css={{ fontSize: '$1', color: '$textSubtle' }}>{l}</Text>)}
+                <Text css={{ fontSize: '$1', color: '$blue9', mt: '$1' }}>Configure →</Text>
+              </Flex>
+            </Card>
+          </a>
+        ))}
       </Grid>
     </Flex>
   )
 }
 
-const RESOURCES = ['routers', 'services', 'middlewares']
 
 const SectionContainer = ({
   title,
