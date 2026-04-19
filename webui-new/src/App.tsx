@@ -4,7 +4,9 @@ import { fetcher } from '@/lib/api'
 import { Shell } from '@/components/layout/Shell'
 import { DashboardPage } from '@/pages/Dashboard'
 import { ConfigPage } from '@/pages/Config'
-import { AIPage, MCPPage, SecurityPage, DistributedPage, APIMgmtPage } from '@/pages/Features'
+import { AIPage } from '@/pages/AI'
+import { MCPPage } from '@/pages/MCP'
+import { SecurityPage, DistributedPage, APIMgmtPage } from '@/pages/Features'
 import { ClustersPage, GrafanaPage, ProxyPage } from '@/pages/Operations'
 
 export function App() {
