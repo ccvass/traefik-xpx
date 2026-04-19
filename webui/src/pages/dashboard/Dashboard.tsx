@@ -9,6 +9,7 @@ import TraefikResourceStatsCard, { StatsCardSkeleton } from 'components/resource
 import PageTitle from 'layout/PageTitle'
 import { capitalizeFirstLetter } from 'utils/string'
 
+const RESOURCES = ['routers', 'services', 'middlewares']
 
 
 const SectionContainer = ({
