@@ -47,13 +47,13 @@ export function RouterFormFull({ middlewares, onSave, onCancel }: { middlewares:
     <div className="bg-zinc-900 border border-brand/30 rounded-xl p-5 space-y-3">
       <p className="font-semibold text-sm text-brand">New Route</p>
       <div className="grid grid-cols-2 gap-3">
-        <div><label className="text-xs text-zinc-500">Name</label><input value={name} onChange={e => setName(e.target.value)} placeholder="my-api" className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand" /></div>
-        <div><label className="text-xs text-zinc-500">Service</label><input value={service} onChange={e => setService(e.target.value)} placeholder="backend-svc" className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand" /></div>
+        <div><label className="text-xs text-zinc-500">Name</label><input value={name} onChange={e => setName(e.target.value)} placeholder="my-api" className="w-full mt-1 rounded-lg px-3 py-2.5 text-sm outline-none transition-colors" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }} /></div>
+        <div><label className="text-xs text-zinc-500">Service</label><input value={service} onChange={e => setService(e.target.value)} placeholder="backend-svc" className="w-full mt-1 rounded-lg px-3 py-2.5 text-sm outline-none transition-colors" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }} /></div>
       </div>
-      <div><label className="text-xs text-zinc-500">Rule</label><input value={rule} onChange={e => setRule(e.target.value)} placeholder="Host(`app.example.com`) && PathPrefix(`/api`)" className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand" /></div>
+      <div><label className="text-xs text-zinc-500">Rule</label><input value={rule} onChange={e => setRule(e.target.value)} placeholder="Host(`app.example.com`) && PathPrefix(`/api`)" className="w-full mt-1 rounded-lg px-3 py-2.5 text-sm outline-none transition-colors" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }} /></div>
       <div className="grid grid-cols-2 gap-3">
-        <div><label className="text-xs text-zinc-500">Entry Points</label><input value={eps} onChange={e => setEps(e.target.value)} className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand" /></div>
-        <div><label className="text-xs text-zinc-500">Cert Resolver (optional)</label><input value={certResolver} onChange={e => setCertResolver(e.target.value)} placeholder="le" className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand" /></div>
+        <div><label className="text-xs text-zinc-500">Entry Points</label><input value={eps} onChange={e => setEps(e.target.value)} className="w-full mt-1 rounded-lg px-3 py-2.5 text-sm outline-none transition-colors" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }} /></div>
+        <div><label className="text-xs text-zinc-500">Cert Resolver (optional)</label><input value={certResolver} onChange={e => setCertResolver(e.target.value)} placeholder="le" className="w-full mt-1 rounded-lg px-3 py-2.5 text-sm outline-none transition-colors" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }} /></div>
       </div>
       <div className="flex items-center gap-2">
         <input type="checkbox" checked={tls} onChange={e => setTls(e.target.checked)} id="tls-check" className="rounded" />
@@ -81,7 +81,7 @@ export function CertUploadForm({ onDone }: { onDone: () => void }) {
   return (
     <div className="bg-zinc-900 border border-brand/30 rounded-xl p-5 space-y-3">
       <p className="font-semibold text-sm text-brand">Upload TLS Certificate</p>
-      <div><label className="text-xs text-zinc-500">Name (identifier)</label><input value={name} onChange={e => setName(e.target.value)} placeholder="my-domain" className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand" /></div>
+      <div><label className="text-xs text-zinc-500">Name (identifier)</label><input value={name} onChange={e => setName(e.target.value)} placeholder="my-domain" className="w-full mt-1 rounded-lg px-3 py-2.5 text-sm outline-none transition-colors" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }} /></div>
       <div><label className="text-xs text-zinc-500">Certificate (PEM)</label><textarea value={cert} onChange={e => setCert(e.target.value)} rows={8} placeholder="-----BEGIN CERTIFICATE-----" className="w-full mt-1 bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-3 text-xs font-mono outline-none focus:border-brand leading-relaxed text-amber-300 selection:bg-brand/30 resize-y" /></div>
       <div><label className="text-xs text-zinc-500">Private Key (PEM)</label><textarea value={key} onChange={e => setKey(e.target.value)} rows={6} placeholder="-----BEGIN PRIVATE KEY-----" className="w-full mt-1 bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-3 text-xs font-mono outline-none focus:border-brand leading-relaxed text-amber-300 selection:bg-brand/30 resize-y" /></div>
       <div className="flex gap-2 justify-end">
@@ -121,12 +121,12 @@ export function StaticConfigForm({ section, title, fields, onDone }: {
         <div key={f.key}>
           <label className="text-xs text-zinc-500">{f.label}</label>
           {f.options ? (
-            <select value={vals[f.key] || ''} onChange={e => setVals({ ...vals, [f.key]: e.target.value })} className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand">
+            <select value={vals[f.key] || ''} onChange={e => setVals({ ...vals, [f.key]: e.target.value })} className="w-full mt-1 rounded-lg px-3 py-2.5 text-sm outline-none transition-colors" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }}>
               <option value="">Select...</option>
               {f.options.map(o => <option key={o} value={o}>{o}</option>)}
             </select>
           ) : (
-            <input value={vals[f.key] || ''} onChange={e => setVals({ ...vals, [f.key]: e.target.value })} placeholder={f.placeholder} type={f.type === 'password' ? 'password' : 'text'} className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand" />
+            <input value={vals[f.key] || ''} onChange={e => setVals({ ...vals, [f.key]: e.target.value })} placeholder={f.placeholder} type={f.type === 'password' ? 'password' : 'text'} className="w-full mt-1 rounded-lg px-3 py-2.5 text-sm outline-none transition-colors" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }} />
           )}
         </div>
       ))}

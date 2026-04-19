@@ -53,13 +53,13 @@ function RouterForm({ onDone }: { onDone: () => void }) {
     <div className="bg-zinc-900 border border-brand/30 rounded-xl p-5 space-y-3">
       <p className="font-semibold text-sm text-brand">New Router</p>
       <div className="grid grid-cols-2 gap-3">
-        <div><label className="text-xs text-zinc-500">Name</label><input value={n} onChange={e => setN(e.target.value)} placeholder="e.g. my-api" className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm focus:border-brand outline-none" /></div>
-        <div><label className="text-xs text-zinc-500">Service</label><input value={s} onChange={e => setS(e.target.value)} placeholder="e.g. backend-svc" className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm focus:border-brand outline-none" /></div>
+        <div><label className="text-xs text-zinc-500">Name</label><input value={n} onChange={e => setN(e.target.value)} placeholder="e.g. my-api" className="w-full mt-1 rounded-lg px-3 py-2.5 text-sm outline-none transition-colors" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }} /></div>
+        <div><label className="text-xs text-zinc-500">Service</label><input value={s} onChange={e => setS(e.target.value)} placeholder="e.g. backend-svc" className="w-full mt-1 rounded-lg px-3 py-2.5 text-sm outline-none transition-colors" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }} /></div>
       </div>
-      <div><label className="text-xs text-zinc-500">Rule</label><input value={r} onChange={e => setR(e.target.value)} placeholder='e.g. Host(`app.example.com`) && PathPrefix(`/api`)' className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm focus:border-brand outline-none" /></div>
+      <div><label className="text-xs text-zinc-500">Rule</label><input value={r} onChange={e => setR(e.target.value)} placeholder='e.g. Host(`app.example.com`) && PathPrefix(`/api`)' className="w-full mt-1 rounded-lg px-3 py-2.5 text-sm outline-none transition-colors" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }} /></div>
       <div className="grid grid-cols-2 gap-3">
-        <div><label className="text-xs text-zinc-500">Entry Points</label><input value={e} onChange={ev => setE(ev.target.value)} className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm focus:border-brand outline-none" /></div>
-        <div><label className="text-xs text-zinc-500">Middlewares</label><input value={m} onChange={e => setM(e.target.value)} placeholder="e.g. auth,rate-limit" className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm focus:border-brand outline-none" /></div>
+        <div><label className="text-xs text-zinc-500">Entry Points</label><input value={e} onChange={ev => setE(ev.target.value)} className="w-full mt-1 rounded-lg px-3 py-2.5 text-sm outline-none transition-colors" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }} /></div>
+        <div><label className="text-xs text-zinc-500">Middlewares</label><input value={m} onChange={e => setM(e.target.value)} placeholder="e.g. auth,rate-limit" className="w-full mt-1 rounded-lg px-3 py-2.5 text-sm outline-none transition-colors" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }} /></div>
       </div>
       <p className="text-[10px] text-zinc-600">Entry points: web (HTTP), websecure (HTTPS). Middlewares: comma-separated names.</p>
       <div className="flex gap-2 justify-end"><button onClick={onDone} className="px-3 py-1.5 text-xs rounded-lg bg-zinc-800 hover:bg-zinc-700"><X size={12} className="inline mr-1" />Cancel</button><button onClick={save} disabled={!n||!r||!s} className="px-3 py-1.5 text-xs rounded-lg bg-brand hover:bg-brand/80 text-white font-semibold disabled:opacity-30"><Save size={12} className="inline mr-1" />Create</button></div>
@@ -77,9 +77,9 @@ function ServiceForm({ onDone }: { onDone: () => void }) {
   return (
     <div className="bg-zinc-900 border border-purple-900/30 rounded-xl p-5 space-y-3">
       <p className="font-semibold text-sm text-purple-400">New Service</p>
-      <div><label className="text-xs text-zinc-500">Name</label><input value={n} onChange={e => setN(e.target.value)} placeholder="e.g. my-backend" className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm focus:border-brand outline-none" /></div>
-      <div><label className="text-xs text-zinc-500">Backend URLs (one per line)</label><textarea value={u} onChange={e => setU(e.target.value)} rows={3} className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm font-mono focus:border-brand outline-none" /></div>
-      <div><label className="text-xs text-zinc-500">Health Check Path</label><input value={h} onChange={e => setH(e.target.value)} className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm focus:border-brand outline-none" /></div>
+      <div><label className="text-xs text-zinc-500">Name</label><input value={n} onChange={e => setN(e.target.value)} placeholder="e.g. my-backend" className="w-full mt-1 rounded-lg px-3 py-2.5 text-sm outline-none transition-colors" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }} /></div>
+      <div><label className="text-xs text-zinc-500">Backend URLs (one per line)</label><textarea value={u} onChange={e => setU(e.target.value)} rows={3} className="w-full mt-1 rounded-lg px-3 py-2.5 text-sm font-mono outline-none transition-colors" style={{ backgroundColor: '#09090b', borderWidth: 1, borderStyle: 'solid', borderColor: '#27272a', color: '#34d399' }} /></div>
+      <div><label className="text-xs text-zinc-500">Health Check Path</label><input value={h} onChange={e => setH(e.target.value)} className="w-full mt-1 rounded-lg px-3 py-2.5 text-sm outline-none transition-colors" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }} /></div>
       <div className="flex gap-2 justify-end"><button onClick={onDone} className="px-3 py-1.5 text-xs rounded-lg bg-zinc-800 hover:bg-zinc-700"><X size={12} className="inline mr-1" />Cancel</button><button onClick={save} disabled={!n} className="px-3 py-1.5 text-xs rounded-lg bg-purple-600 hover:bg-purple-500 font-semibold disabled:opacity-30"><Save size={12} className="inline mr-1" />Create</button></div>
     </div>
   )
@@ -93,15 +93,15 @@ function MiddlewareForm({ onDone }: { onDone: () => void }) {
     <div className="bg-zinc-900 border border-emerald-900/30 rounded-xl p-5 space-y-3">
       <p className="font-semibold text-sm text-emerald-400">New Middleware</p>
       <div className="grid grid-cols-2 gap-3">
-        <div><label className="text-xs text-zinc-500">Name</label><input value={n} onChange={e => setN(e.target.value)} placeholder="e.g. my-auth" className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm focus:border-brand outline-none" /></div>
-        <div><label className="text-xs text-zinc-500">Type</label><select value={t} onChange={e => changeType(e.target.value)} className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm focus:border-brand outline-none">
+        <div><label className="text-xs text-zinc-500">Name</label><input value={n} onChange={e => setN(e.target.value)} placeholder="e.g. my-auth" className="w-full mt-1 rounded-lg px-3 py-2.5 text-sm outline-none transition-colors" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }} /></div>
+        <div><label className="text-xs text-zinc-500">Type</label><select value={t} onChange={e => changeType(e.target.value)} className="w-full mt-1 rounded-lg px-3 py-2.5 text-sm outline-none transition-colors" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }}>
           <option value="apiKey">API Key</option><option value="rateLimit">Rate Limit</option><option value="waf">WAF</option>
           <option value="jwtAuth">JWT</option><option value="oidc">OIDC</option><option value="hmac">HMAC</option>
           <option value="httpCache">Cache</option><option value="apiMock">Mock</option><option value="basicAuth">Basic Auth</option>
         </select></div>
       </div>
       <p className="text-[10px] text-zinc-600">Select type to auto-fill template. Edit values as needed.</p>
-      <div><label className="text-xs text-zinc-500">Configuration (JSON)</label><textarea value={j} onChange={e => setJ(e.target.value)} rows={6} className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-xs font-mono focus:border-brand outline-none" /></div>
+      <div><label className="text-xs text-zinc-500">Configuration (JSON)</label><textarea value={j} onChange={e => setJ(e.target.value)} rows={6} className="w-full mt-1 rounded-lg px-3 py-2.5 text-xs font-mono outline-none transition-colors" style={{ backgroundColor: '#09090b', borderWidth: 1, borderStyle: 'solid', borderColor: '#27272a', color: '#34d399' }} /></div>
       <div className="flex gap-2 justify-end"><button onClick={onDone} className="px-3 py-1.5 text-xs rounded-lg bg-zinc-800 hover:bg-zinc-700"><X size={12} className="inline mr-1" />Cancel</button><button onClick={save} disabled={!n} className="px-3 py-1.5 text-xs rounded-lg bg-emerald-600 hover:bg-emerald-500 font-semibold disabled:opacity-30"><Save size={12} className="inline mr-1" />Create</button></div>
     </div>
   )

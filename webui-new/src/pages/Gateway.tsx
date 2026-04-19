@@ -179,7 +179,7 @@ export function GatewayPage() {
       {form === 'middleware' && <>
           <div className="flex gap-2 items-center mb-2">
             <span className="text-xs text-zinc-500">Selected:</span>
-            <select value={mwType} onChange={e => { setMwType(e.target.value); setJson(JSON.stringify(ALL_MW_TYPES[e.target.value]?.template || {}, null, 2)) }} className="bg-zinc-800 border border-zinc-700 rounded px-2 py-1 text-xs outline-none">
+            <select value={mwType} onChange={e => { setMwType(e.target.value); setJson(JSON.stringify(ALL_MW_TYPES[e.target.value]?.template || {}, null, 2)) }} className="rounded px-2 py-1 text-xs outline-none" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }}>
               {Object.entries(ALL_MW_TYPES).map(([k, v]) => <option key={k} value={k}>{v.label}</option>)}
             </select>
           </div>
