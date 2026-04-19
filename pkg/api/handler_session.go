@@ -2,15 +2,17 @@ package api
 
 import (
 	"crypto/hmac"
-	"os"
 	"crypto/sha256"
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 	"strings"
 	"sync"
 	"time"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 type sessionManager struct {
@@ -47,7 +49,8 @@ func newSessionManager(authUser, authPassword string) *sessionManager {
 		tokenTTL:  24 * time.Hour,
 		usersFile: "/etc/traefik/users.json",
 	}
-	sm.users[authUser] = authPassword
+	hashed, _ := bcrypt.GenerateFromPassword([]byte(authPassword), bcrypt.DefaultCost)
+	sm.users[authUser] = string(hashed)
 	sm.loadUsersFromFile()
 	// Cleanup expired tokens periodically
 	go func() {
@@ -110,7 +113,7 @@ func (sm *sessionManager) handleLogin(rw http.ResponseWriter, req *http.Request)
 		return
 	}
 	pass, ok := sm.users[lr.Username]
-	if !ok || pass != lr.Password {
+	if !ok || bcrypt.CompareHashAndPassword([]byte(pass), []byte(lr.Password)) != nil {
 		http.Error(rw, `{"error":"invalid credentials"}`, http.StatusUnauthorized)
 		return
 	}
@@ -199,9 +202,10 @@ func (sm *sessionManager) handleAddUser(rw http.ResponseWriter, req *http.Reques
 		return
 	}
 	sm.mu.Lock()
-	sm.users[lr.Username] = lr.Password
+	hashed2, _ := bcrypt.GenerateFromPassword([]byte(lr.Password), bcrypt.DefaultCost)
+	sm.users[lr.Username] = string(hashed2)
 	sm.mu.Unlock()
-	sm.persistUser(lr.Username, lr.Password)
+	sm.persistUser(lr.Username, string(hashed2))
 	rw.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(rw).Encode(map[string]string{"status": "created", "username": lr.Username})
 }
