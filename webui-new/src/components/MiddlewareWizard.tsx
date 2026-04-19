@@ -118,7 +118,7 @@ export function MiddlewareWizard({ onDone }: { onDone: () => void }) {
           <div key={f.key}>
             <label className="text-xs text-zinc-500">{f.label}</label>
             {f.type === 'textarea' ? (
-              <textarea value={vals[f.key] || ''} onChange={e => setVals({ ...vals, [f.key]: e.target.value })} rows={4} placeholder={f.placeholder} className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-xs font-mono outline-none focus:border-brand" />
+              <textarea value={vals[f.key] || ''} onChange={e => setVals({ ...vals, [f.key]: e.target.value })} rows={8} placeholder={f.placeholder} className="w-full mt-1 bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-3 text-xs font-mono outline-none focus:border-brand leading-relaxed text-emerald-300 selection:bg-brand/30 resize-y" />
             ) : (
               <input value={vals[f.key] || ''} onChange={e => setVals({ ...vals, [f.key]: e.target.value })} placeholder={f.placeholder} className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand" />
             )}

@@ -13,7 +13,7 @@ export function EditForm({ title, endpoint, current, onDone }: { title: string; 
   return (
     <div className="bg-zinc-900 border border-amber-900/30 rounded-xl p-5 space-y-3">
       <p className="font-semibold text-sm text-amber-400">Edit: {title}</p>
-      <textarea value={json} onChange={e => setJson(e.target.value)} rows={8} className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-xs font-mono outline-none focus:border-brand" />
+      <textarea value={json} onChange={e => setJson(e.target.value)} rows={12} className="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-3 text-xs font-mono outline-none focus:border-brand leading-relaxed text-emerald-300 selection:bg-brand/30 resize-y" />
       <div className="flex gap-2 justify-end">
         <button onClick={onDone} className="px-3 py-1.5 text-xs rounded-lg bg-zinc-800 hover:bg-zinc-700 flex items-center gap-1"><X size={12} />Cancel</button>
         <button onClick={save} className="px-3 py-1.5 text-xs rounded-lg bg-amber-600 hover:bg-amber-500 text-white font-semibold flex items-center gap-1"><Save size={12} />Save Changes</button>
@@ -82,8 +82,8 @@ export function CertUploadForm({ onDone }: { onDone: () => void }) {
     <div className="bg-zinc-900 border border-brand/30 rounded-xl p-5 space-y-3">
       <p className="font-semibold text-sm text-brand">Upload TLS Certificate</p>
       <div><label className="text-xs text-zinc-500">Name (identifier)</label><input value={name} onChange={e => setName(e.target.value)} placeholder="my-domain" className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand" /></div>
-      <div><label className="text-xs text-zinc-500">Certificate (PEM)</label><textarea value={cert} onChange={e => setCert(e.target.value)} rows={4} placeholder="-----BEGIN CERTIFICATE-----" className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-xs font-mono outline-none focus:border-brand" /></div>
-      <div><label className="text-xs text-zinc-500">Private Key (PEM)</label><textarea value={key} onChange={e => setKey(e.target.value)} rows={4} placeholder="-----BEGIN PRIVATE KEY-----" className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-xs font-mono outline-none focus:border-brand" /></div>
+      <div><label className="text-xs text-zinc-500">Certificate (PEM)</label><textarea value={cert} onChange={e => setCert(e.target.value)} rows={8} placeholder="-----BEGIN CERTIFICATE-----" className="w-full mt-1 bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-3 text-xs font-mono outline-none focus:border-brand leading-relaxed text-amber-300 selection:bg-brand/30 resize-y" /></div>
+      <div><label className="text-xs text-zinc-500">Private Key (PEM)</label><textarea value={key} onChange={e => setKey(e.target.value)} rows={6} placeholder="-----BEGIN PRIVATE KEY-----" className="w-full mt-1 bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-3 text-xs font-mono outline-none focus:border-brand leading-relaxed text-amber-300 selection:bg-brand/30 resize-y" /></div>
       <div className="flex gap-2 justify-end">
         <button onClick={onDone} className="px-3 py-1.5 text-xs rounded-lg bg-zinc-800 hover:bg-zinc-700 flex items-center gap-1"><X size={12} />Cancel</button>
         <button onClick={save} disabled={!name || !cert || !key} className="px-3 py-1.5 text-xs rounded-lg bg-brand hover:bg-brand/80 text-white font-semibold disabled:opacity-30 flex items-center gap-1"><Save size={12} />Upload</button>

@@ -20,7 +20,7 @@ function AddForm({ title, name, setName, json, setJson, color, onSave, onCancel,
       </div>
       <div>
         <label className="text-xs text-zinc-500">Configuration (JSON)</label>
-        <textarea value={json} onChange={e => setJson(e.target.value)} rows={5} className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-xs font-mono outline-none focus:border-brand" />
+        <textarea value={json} onChange={e => setJson(e.target.value)} rows={10} className="w-full mt-1 bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-3 text-xs font-mono outline-none focus:border-brand leading-relaxed text-emerald-300 selection:bg-brand/30 resize-y" />
       </div>
       <div className="flex gap-2 justify-end">
         <button onClick={onCancel} className="px-3 py-1.5 text-xs rounded-lg bg-zinc-800 hover:bg-zinc-700 flex items-center gap-1"><X size={12} />Cancel</button>
