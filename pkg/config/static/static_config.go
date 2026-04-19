@@ -192,6 +192,7 @@ type API struct {
 	DashboardName      string `description:"Custom name for the dashboard." json:"dashboardName,omitempty" toml:"dashboardName,omitempty" yaml:"dashboardName,omitempty" export:"true"`
 	AuthUser           string `description:"Basic auth username for dashboard/API." json:"authUser,omitempty" toml:"authUser,omitempty" yaml:"authUser,omitempty"`
 	AuthPassword       string `description:"Basic auth password for dashboard/API." json:"authPassword,omitempty" toml:"authPassword,omitempty" yaml:"authPassword,omitempty" loggable:"false"`
+	RedisURL           string `description:"Redis URL for shared auth state (HA)." json:"redisUrl,omitempty" toml:"redisUrl,omitempty" yaml:"redisUrl,omitempty"`
 	// TODO: Re-enable statistics
 	// Statistics      *types.Statistics `description:"Enable more detailed statistics." json:"statistics,omitempty" toml:"statistics,omitempty" yaml:"statistics,omitempty" label:"allowEmpty" file:"allowEmpty" export:"true"`
 }

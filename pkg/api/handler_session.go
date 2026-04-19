@@ -20,6 +20,7 @@ type sessionManager struct {
 	secret    []byte
 	tokenTTL  time.Duration
 	usersFile string
+	redis    *redisStore
 }
 
 type sessionInfo struct {
@@ -66,6 +67,7 @@ func (sm *sessionManager) generateToken(user string) string {
 	sm.mu.Lock()
 	sm.tokens[token] = sessionInfo{user: user, expires: time.Now().Add(sm.tokenTTL)}
 	sm.mu.Unlock()
+	sm.persistSession(token, user)
 	return token
 }
 
@@ -73,16 +75,21 @@ func (sm *sessionManager) validateToken(token string) (string, bool) {
 	sm.mu.RLock()
 	info, ok := sm.tokens[token]
 	sm.mu.RUnlock()
-	if !ok || time.Now().After(info.expires) {
-		return "", false
+	if ok && time.Now().Before(info.expires) {
+		return info.user, true
 	}
-	return info.user, true
+	// Check Redis
+	if user, ok := sm.checkSessionRedis(token); ok {
+		return user, true
+	}
+	return "", false
 }
 
 func (sm *sessionManager) invalidateToken(token string) {
 	sm.mu.Lock()
 	delete(sm.tokens, token)
 	sm.mu.Unlock()
+	sm.persistDeleteSession(token)
 }
 
 func (sm *sessionManager) cleanup() {
@@ -194,7 +201,7 @@ func (sm *sessionManager) handleAddUser(rw http.ResponseWriter, req *http.Reques
 	sm.mu.Lock()
 	sm.users[lr.Username] = lr.Password
 	sm.mu.Unlock()
-	sm.saveUsersToFile()
+	sm.persistUser(lr.Username, lr.Password)
 	rw.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(rw).Encode(map[string]string{"status": "created", "username": lr.Username})
 }
@@ -208,7 +215,7 @@ func (sm *sessionManager) handleDeleteUser(rw http.ResponseWriter, req *http.Req
 	sm.mu.Lock()
 	delete(sm.users, body.Username)
 	sm.mu.Unlock()
-	sm.saveUsersToFile()
+	sm.persistDeleteUser(body.Username)
 	rw.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(rw).Encode(map[string]string{"status": "deleted", "username": body.Username})
 }

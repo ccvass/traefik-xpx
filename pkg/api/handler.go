@@ -174,6 +174,7 @@ func (h *Handler) createRouter() *mux.Router {
 	// Auth endpoints
 	if h.staticConfig.API != nil && h.staticConfig.API.AuthUser != "" {
 		sm := newSessionManager(h.staticConfig.API.AuthUser, h.staticConfig.API.AuthPassword)
+		sm.initRedis(h.staticConfig.API.RedisURL)
 		apiRouter.Methods(http.MethodPost).Path("/api/auth/login").HandlerFunc(sm.handleLogin)
 		apiRouter.Methods(http.MethodPost).Path("/api/auth/logout").HandlerFunc(sm.handleLogout)
 		apiRouter.Methods(http.MethodGet).Path("/api/auth/me").HandlerFunc(sm.handleMe)
