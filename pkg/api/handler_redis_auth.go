@@ -13,20 +13,20 @@ type redisStore struct {
 	prefix string
 }
 
-func newRedisStore(redisURL string) *redisStore {
-	opts, err := redis.ParseURL(redisURL)
+func newValkeyStore(valkeyURL string) *redisStore {
+	opts, err := redis.ParseURL(valkeyURL)
 	if err != nil {
-		log.Warn().Err(err).Msg("Invalid Redis URL for auth store, using file fallback")
+		log.Warn().Err(err).Msg("Invalid Valkey URL for auth store, using file fallback")
 		return nil
 	}
 	client := redis.NewClient(opts)
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 	if err := client.Ping(ctx).Err(); err != nil {
-		log.Warn().Err(err).Msg("Redis not reachable for auth store, using file fallback")
+		log.Warn().Err(err).Msg("Valkey not reachable for auth store, using file fallback")
 		return nil
 	}
-	log.Info().Msg("Redis connected for auth store (users + sessions)")
+	log.Info().Msg("Valkey connected for auth store (users + sessions)")
 	return &redisStore{client: client, prefix: "traefik-xp:"}
 }
 
@@ -74,21 +74,21 @@ func (r *redisStore) deleteSession(token string) {
 
 // Integration with sessionManager
 
-func (sm *sessionManager) initRedis(redisURL string) {
-	if redisURL == "" {
+func (sm *sessionManager) initRedis(valkeyURL string) {
+	if valkeyURL == "" {
 		return
 	}
-	sm.redis = newRedisStore(redisURL)
+	sm.redis = newValkeyStore(valkeyURL)
 	if sm.redis == nil {
 		return
 	}
-	// Load users from Redis
+	// Load users from Valkey
 	users := sm.redis.getUsers()
 	sm.mu.Lock()
 	for k, v := range users {
 		sm.users[k] = v
 	}
-	// Push local users to Redis (ensure admin exists)
+	// Push local users to Valkey (ensure admin exists)
 	for k, v := range sm.users {
 		sm.redis.setUser(k, v)
 	}

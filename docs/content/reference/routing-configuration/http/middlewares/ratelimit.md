@@ -18,7 +18,7 @@ For a rate below 1 req/s, define a `period` larger than a second
 ```yaml tab="Structured (YAML)"
 # Here, an average of 100 requests per second is allowed.
 # In addition, a burst of 200 requests is allowed.
-# Redis distributed rate limiting is configured with all available options.
+# Valkey distributed rate limiting is configured with all available options.
 http:
   middlewares:
     test-ratelimit:
@@ -26,7 +26,7 @@ http:
         average: 100
         period: 1s
         burst: 200
-        redis:
+        valkey:
           endpoints:
             - "redis-primary.example.com:6379"
             - "redis-replica.example.com:6379"
@@ -49,7 +49,7 @@ http:
 ```toml tab="Structured (TOML)"
 # Here, an average of 100 requests per second is allowed.
 # In addition, a burst of 200 requests is allowed.
-# Redis distributed rate limiting is configured with all available options.
+# Valkey distributed rate limiting is configured with all available options.
 [http.middlewares]
   [http.middlewares.test-ratelimit.rateLimit]
     average = 100
@@ -76,7 +76,7 @@ http:
 ```yaml tab="Labels"
 # Here, an average of 100 requests per second is allowed.
 # In addition, a burst of 200 requests is allowed.
-# Redis distributed rate limiting is configured with all available options.
+# Valkey distributed rate limiting is configured with all available options.
 labels:
   - "traefik.http.middlewares.test-ratelimit.ratelimit.average=100"
   - "traefik.http.middlewares.test-ratelimit.ratelimit.period=1s"
@@ -100,7 +100,7 @@ labels:
 ```json tab="Tags"
 // Here, an average of 100 requests per second is allowed.
 // In addition, a burst of 200 requests is allowed.
-// Redis distributed rate limiting is configured with all available options.
+// Valkey distributed rate limiting is configured with all available options.
 {
   "Tags": [
     "traefik.http.middlewares.test-ratelimit.ratelimit.average=100",
@@ -127,7 +127,7 @@ labels:
 ```yaml tab="Kubernetes"
 # Here, an average of 100 requests per second is allowed.
 # In addition, a burst of 200 requests is allowed.
-# Redis distributed rate limiting is configured with all available options.
+# Valkey distributed rate limiting is configured with all available options.
 apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
@@ -137,7 +137,7 @@ spec:
     average: 100
     period: 1s
     burst: 200
-    redis:
+    valkey:
       endpoints:
         - "redis-primary.example.com:6379"
         - "redis-replica.example.com:6379"
@@ -196,21 +196,21 @@ data:
 | <a id="opt-sourceCriterion-ipStrategy-depth" href="#opt-sourceCriterion-ipStrategy-depth" title="#opt-sourceCriterion-ipStrategy-depth">`sourceCriterion.ipStrategy.depth`</a> | Depth position of the IP to select in the `X-Forwarded-For` header (starting from the right).<br />0 means no depth.<br />If greater than the total number of IPs in `X-Forwarded-For`, then the client IP is empty<br />If higher than 0, the `excludedIPs` options is not evaluated.<br />More information about [`sourceCriterion`](#sourcecriterion), [`ipStrategy`](#ipstrategy), and [`depth`](#sourcecriterionipstrategydepth) below. | 0      | No      |
 | <a id="opt-sourceCriterion-ipStrategy-excludedIPs" href="#opt-sourceCriterion-ipStrategy-excludedIPs" title="#opt-sourceCriterion-ipStrategy-excludedIPs">`sourceCriterion.ipStrategy.excludedIPs`</a> | Allows scanning the `X-Forwarded-For` header and select the first IP not in the list.<br />If `depth` is specified, `excludedIPs` is ignored.<br />More information about [`sourceCriterion`](#sourcecriterion), [`ipStrategy`](#ipstrategy), and [`excludedIPs`](#sourcecriterionipstrategyexcludedips) below. |       | No      |
 | <a id="opt-sourceCriterion-ipStrategy-ipv6Subnet" href="#opt-sourceCriterion-ipStrategy-ipv6Subnet" title="#opt-sourceCriterion-ipStrategy-ipv6Subnet">`sourceCriterion.ipStrategy.ipv6Subnet`</a> |  If `ipv6Subnet` is provided and the selected IP is IPv6, the IP is transformed into the first IP of the subnet it belongs to. <br />More information about [`sourceCriterion`](#sourcecriterion), [`ipStrategy.ipv6Subnet`](#sourcecriterionipstrategyipv6subnet) below. |       | No      |
-| <a id="opt-redis" href="#opt-redis" title="#opt-redis">`redis`</a> | The `redis` configuration enables distributed rate limiting by using Redis to store rate limit tokens across multiple Traefik instances. This allows you to enforce consistent rate limits across a cluster of Traefik proxies. <br />When Redis is not configured, Traefik uses in-memory storage for rate limiting, which works only for the individual Traefik instance.|       | No      |
-| <a id="opt-redis-endpoints" href="#opt-redis-endpoints" title="#opt-redis-endpoints">`redis.endpoints`</a> | List of Redis server endpoints for distributed rate limiting. You can specify multiple endpoints for Redis cluster or high availability setups. | "127.0.0.1:6379" | No |
-| <a id="opt-redis-username" href="#opt-redis-username" title="#opt-redis-username">`redis.username`</a> | Username for Redis authentication. | "" | No |
-| <a id="opt-redis-password" href="#opt-redis-password" title="#opt-redis-password">`redis.password`</a> | Password for Redis authentication. In Kubernetes, these can be provided via secrets. | "" | No |
-| <a id="opt-redis-db" href="#opt-redis-db" title="#opt-redis-db">`redis.db`</a> | Redis database number to select. | 0 | No |
+| <a id="opt-redis" href="#opt-redis" title="#opt-redis">`redis`</a> | The `redis` configuration enables distributed rate limiting by using Valkey to store rate limit tokens across multiple Traefik instances. This allows you to enforce consistent rate limits across a cluster of Traefik proxies. <br />When Valkey is not configured, Traefik uses in-memory storage for rate limiting, which works only for the individual Traefik instance.|       | No      |
+| <a id="opt-redis-endpoints" href="#opt-redis-endpoints" title="#opt-redis-endpoints">`redis.endpoints`</a> | List of Valkey server endpoints for distributed rate limiting. You can specify multiple endpoints for Valkey cluster or high availability setups. | "127.0.0.1:6379" | No |
+| <a id="opt-redis-username" href="#opt-redis-username" title="#opt-redis-username">`redis.username`</a> | Username for Valkey authentication. | "" | No |
+| <a id="opt-redis-password" href="#opt-redis-password" title="#opt-redis-password">`redis.password`</a> | Password for Valkey authentication. In Kubernetes, these can be provided via secrets. | "" | No |
+| <a id="opt-redis-db" href="#opt-redis-db" title="#opt-redis-db">`redis.db`</a> | Valkey database number to select. | 0 | No |
 | <a id="opt-redis-poolSize" href="#opt-redis-poolSize" title="#opt-redis-poolSize">`redis.poolSize`</a> | Defines the base number of socket connections in the pool. If set to 0, it defaults to 10 connections per CPU core as reported by `runtime.GOMAXPROCS`. <br />If there are not enough connections in the pool, new connections will be allocated beyond `poolSize`, up to `maxActiveConns`. | 0 | No |
 | <a id="opt-redis-minIdleConns" href="#opt-redis-minIdleConns" title="#opt-redis-minIdleConns">`redis.minIdleConns`</a> | Minimum number of idle connections to maintain in the pool. This is useful when establishing new connections is slow. A value of 0 means idle connections are not automatically closed. | 0 | No |
 | <a id="opt-redis-maxActiveConns" href="#opt-redis-maxActiveConns" title="#opt-redis-maxActiveConns">`redis.maxActiveConns`</a> | Maximum number of connections the pool can allocate at any given time. A value of 0 means no limit. | 0 | No |
 | <a id="opt-redis-readTimeout" href="#opt-redis-readTimeout" title="#opt-redis-readTimeout">`redis.readTimeout`</a> | Timeout for socket reads. If reached, commands will fail with a timeout instead of blocking. Zero means no timeout. | 3s | No |
 | <a id="opt-redis-writeTimeout" href="#opt-redis-writeTimeout" title="#opt-redis-writeTimeout">`redis.writeTimeout`</a> | Timeout for socket writes. If reached, commands will fail with a timeout instead of blocking. Zero means no timeout. | 3s | No |
 | <a id="opt-redis-dialTimeout" href="#opt-redis-dialTimeout" title="#opt-redis-dialTimeout">`redis.dialTimeout`</a> | Timeout for establishing new connections. Zero means no timeout. | 5s | No |
-| <a id="opt-redis-tls-ca" href="#opt-redis-tls-ca" title="#opt-redis-tls-ca">`redis.tls.ca`</a> | Path to the certificate authority used for the secure connection to Redis, it defaults to the system bundle. | "" | No |
-| <a id="opt-redis-tls-cert" href="#opt-redis-tls-cert" title="#opt-redis-tls-cert">`redis.tls.cert`</a> | Path to the public certificate used for the secure connection to Redis. When this option is set, the `key` option is required. | "" | No |
-| <a id="opt-redis-tls-key" href="#opt-redis-tls-key" title="#opt-redis-tls-key">`redis.tls.key`</a> | Path to the private key used for the secure connection to Redis. When this option is set, the `cert` option is required. | "" | No |
-| <a id="opt-redis-tls-insecureSkipVerify" href="#opt-redis-tls-insecureSkipVerify" title="#opt-redis-tls-insecureSkipVerify">`redis.tls.insecureSkipVerify`</a> | If `insecureSkipVerify` is `true`, the TLS connection to Redis accepts any certificate presented by the server regardless of the hostnames it covers. | false | No |
+| <a id="opt-redis-tls-ca" href="#opt-redis-tls-ca" title="#opt-redis-tls-ca">`redis.tls.ca`</a> | Path to the certificate authority used for the secure connection to Valkey, it defaults to the system bundle. | "" | No |
+| <a id="opt-redis-tls-cert" href="#opt-redis-tls-cert" title="#opt-redis-tls-cert">`redis.tls.cert`</a> | Path to the public certificate used for the secure connection to Valkey. When this option is set, the `key` option is required. | "" | No |
+| <a id="opt-redis-tls-key" href="#opt-redis-tls-key" title="#opt-redis-tls-key">`redis.tls.key`</a> | Path to the private key used for the secure connection to Valkey. When this option is set, the `cert` option is required. | "" | No |
+| <a id="opt-redis-tls-insecureSkipVerify" href="#opt-redis-tls-insecureSkipVerify" title="#opt-redis-tls-insecureSkipVerify">`redis.tls.insecureSkipVerify`</a> | If `insecureSkipVerify` is `true`, the TLS connection to Valkey accepts any certificate presented by the server regardless of the hostnames it covers. | false | No |
 
 ### sourceCriterion
 

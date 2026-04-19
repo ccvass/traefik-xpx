@@ -9,7 +9,7 @@ description: 'Traefik Hub API Gateway - The OAuth 2.0 Client Credentials Authent
 The OAuth 2.0 Client Credentials Authentication middleware allows Traefik Hub to secure routes using the OAuth 2.0 Client Credentials flow as described in the [RFC 6749](https://www.rfc-editor.org/rfc/rfc6749.html#section-4.4).
 Access tokens can be cached using an external KV store.
 
-The OAuth Client Credentials Authentication middleware allows using Redis (or Sentinel) as persistent KV store to authorization access tokens
+The OAuth Client Credentials Authentication middleware allows using Valkey (or Sentinel) as persistent KV store to authorization access tokens
 while they are valid. This reduces latency and the number of calls made to the authorization server.
 
 ---
@@ -61,11 +61,11 @@ stringData:
 | <a id="opt-clientSecret" href="#opt-clientSecret" title="#opt-clientSecret">`clientSecret`</a> | Defines the unique client secret for an account on the OpenID Connect provider, must be set when the `clientID` option is set.<br />More information [here](#storing-secret-values-in-kubernetes-secrets). | ""      | Yes       |
 | <a id="opt-forwardHeaders" href="#opt-forwardHeaders" title="#opt-forwardHeaders">`forwardHeaders`</a> | Defines the HTTP headers to add to requests and populates them with values extracted from the access token claims returned by the authorization server. <br /> Claims to be forwarded that are not found in the JWT result in empty headers. <br /> The `forwardHeaders` option can only be used with JWT-formatted token. | []      | No       |
 | <a id="opt-store-keyPrefix" href="#opt-store-keyPrefix" title="#opt-store-keyPrefix">`store.keyPrefix`</a> | Defines the prefix of the key for the entries that store the sessions. | ""      | No       |
-| <a id="opt-store-redis-endpoints" href="#opt-store-redis-endpoints" title="#opt-store-redis-endpoints">`store.redis.endpoints`</a> | Endpoints of the Redis instances to connect to (example: `redis.traefik-hub.svc.cluster.local:6379`) | "" | Yes      |
-| <a id="opt-store-redis-username" href="#opt-store-redis-username" title="#opt-store-redis-username">`store.redis.username`</a> | The username Traefik Hub will use to connect to Redis          | "" | No       |
-| <a id="opt-store-redis-password" href="#opt-store-redis-password" title="#opt-store-redis-password">`store.redis.password`</a> | The password Traefik Hub will use to connect to Redis    | "" | No       |
+| <a id="opt-store-redis-endpoints" href="#opt-store-redis-endpoints" title="#opt-store-redis-endpoints">`store.redis.endpoints`</a> | Endpoints of the Valkey instances to connect to (example: `redis.traefik-hub.svc.cluster.local:6379`) | "" | Yes      |
+| <a id="opt-store-redis-username" href="#opt-store-redis-username" title="#opt-store-redis-username">`store.redis.username`</a> | The username Traefik Hub will use to connect to Valkey          | "" | No       |
+| <a id="opt-store-redis-password" href="#opt-store-redis-password" title="#opt-store-redis-password">`store.redis.password`</a> | The password Traefik Hub will use to connect to Valkey    | "" | No       |
 | <a id="opt-store-redis-database" href="#opt-store-redis-database" title="#opt-store-redis-database">`store.redis.database`</a> | The database Traefik Hub will use to sore information (default: `0`)                                 | "" | No       |
-| <a id="opt-store-redis-cluster" href="#opt-store-redis-cluster" title="#opt-store-redis-cluster">`store.redis.cluster`</a> | Enable Redis Cluster           | "" | No       |
+| <a id="opt-store-redis-cluster" href="#opt-store-redis-cluster" title="#opt-store-redis-cluster">`store.redis.cluster`</a> | Enable Valkey Cluster           | "" | No       |
 | <a id="opt-store-redis-tls-caBundle" href="#opt-store-redis-tls-caBundle" title="#opt-store-redis-tls-caBundle">`store.redis.tls.caBundle`</a> | Custom CA bundle    | "" | No       |
 | <a id="opt-store-redis-tls-cert" href="#opt-store-redis-tls-cert" title="#opt-store-redis-tls-cert">`store.redis.tls.cert`</a> | TLS certificate         | "" | No       |
 | <a id="opt-store-redis-tls-key" href="#opt-store-redis-tls-key" title="#opt-store-redis-tls-key">`store.redis.tls.key`</a> | TLS   | "" | No       |
@@ -235,21 +235,21 @@ stringData:
 
 ### store.redis
 
-Connection parameters to your [Redis](https://redis.io/ "Link to website of Redis") server are attached to your Middleware deployment.
+Connection parameters to your [Valkey](https://redis.io/ "Link to website of Valkey") server are attached to your Middleware deployment.
 
-The following Redis modes are supported:
+The following Valkey modes are supported:
 
 - Single instance mode
-- [Redis Cluster](https://redis.io/docs/management/scaling "Link to official Redis documentation about Redis Cluster mode")
-- [Redis Sentinel](https://redis.io/docs/management/sentinel "Link to official Redis documentation about Redis Sentinel mode")
+- [Valkey Cluster](https://redis.io/docs/management/scaling "Link to official Valkey documentation about Valkey Cluster mode")
+- [Valkey Sentinel](https://redis.io/docs/management/sentinel "Link to official Valkey documentation about Valkey Sentinel mode")
 
 !!! info
 
-    If you use Redis in single instance mode or Redis Sentinel, you can configure the `database` field.
-    This value won't be taken into account if you use Redis Cluster (only database `0` is available).
+    If you use Valkey in single instance mode or Valkey Sentinel, you can configure the `database` field.
+    This value won't be taken into account if you use Valkey Cluster (only database `0` is available).
 
     In this case, a warning is displayed, and the value is ignored.
 
-For more information about Redis, we recommend the [official Redis documentation](https://redis.io/docs/ "Link to official Redis documentation").
+For more information about Valkey, we recommend the [official Valkey documentation](https://redis.io/docs/ "Link to official Valkey documentation").
 
 {% include-markdown "includes/traefik-for-business-applications.md" %}

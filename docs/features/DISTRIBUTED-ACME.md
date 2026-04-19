@@ -1,6 +1,6 @@
 # Distributed ACME (Let's Encrypt)
 
-Redis-backed ACME certificate storage shared across instances.
+Valkey-backed ACME certificate storage shared across instances.
 
 ## Configuration
 
@@ -10,14 +10,14 @@ certificatesResolvers:
   letsencrypt:
     acme:
       email: "admin@example.com"
-      storage: "redis://localhost:6379/0"
+      storage: "valkey://localhost:6379/0"
       httpChallenge:
         entryPoint: web
 ```
 
 ## Behavior
 
-- ACME certificates stored in Redis instead of local file
+- ACME certificates stored in Valkey instead of local file
 - Multiple instances share certificates without conflicts
 - Leader election for challenge solving
 - Auto-renewal before expiry

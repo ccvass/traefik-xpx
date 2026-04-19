@@ -66,7 +66,7 @@
 | HashiCorp Vault | Secrets, PKI certs, KV TLS store |
 | FIPS 140-2 | BoringCrypto compliance build |
 
-### ⚡ Distributed (Redis-backed)
+### ⚡ Distributed (Valkey-backed)
 
 | Feature | Description |
 |---------|-------------|

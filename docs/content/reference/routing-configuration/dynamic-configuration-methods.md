@@ -148,7 +148,7 @@ For [KV providers](./other-providers/kv.md) you can configure Traefik with key-v
     etcdctl put /traefik/http/services/my-service/loadbalancer/servers/0/url "http://localhost:8080"
     ```
 
-    ```bash tab="Redis"
+    ```bash tab="Valkey"
     # Set a router rule
     redis-cli set traefik/http/routers/my-router/rule "Host(`example.com`)"
     # Define the service associated with the router

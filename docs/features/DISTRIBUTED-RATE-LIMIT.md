@@ -1,6 +1,6 @@
 # Distributed Rate Limiting
 
-Redis-backed rate limiting shared across multiple traefik-api-srv instances.
+Valkey-backed rate limiting shared across multiple traefik-api-srv instances.
 
 ## File Provider Configuration
 
@@ -16,9 +16,9 @@ http:
         failOpen: false
         sourceCriterion:
           requestHost: true
-        redis:
+        valkey:
           endpoints:
-            - "redis:6379"
+            - "valkey:6379"
           password: "redis-secret"
           db: 0
 
@@ -29,9 +29,9 @@ http:
         period: 1m
         sourceCriterion:
           requestHeaderName: "X-User-ID"
-        redis:
+        valkey:
           endpoints:
-            - "redis:6379"
+            - "valkey:6379"
 
   routers:
     api-route:
@@ -59,11 +59,11 @@ services:
         # Distributed rate limit
         - "traefik.http.middlewares.rate-limit.rateLimit.average=100"
         - "traefik.http.middlewares.rate-limit.rateLimit.burst=50"
-        - "traefik.http.middlewares.rate-limit.rateLimit.redis.endpoints=redis:6379"
+        - "traefik.http.middlewares.rate-limit.rateLimit.redis.endpoints=valkey:6379"
         - "traefik.http.middlewares.rate-limit.rateLimit.failOpen=false"
 
-  redis:
-    image: redis:7-alpine
+  valkey:
+    image: valkey:7-alpine
     deploy:
       replicas: 1
 ```
@@ -95,8 +95,8 @@ services:
       placement:
         constraints: [node.role == manager]
 
-  redis:
-    image: redis:7-alpine
+  valkey:
+    image: valkey:7-alpine
     networks:
       - traefik-public
     deploy:
@@ -114,19 +114,19 @@ networks:
 | `average` | Max requests per period | Required |
 | `burst` | Max burst above average | 1 |
 | `period` | Time window (e.g., `1s`, `1m`, `1h`) | 1s |
-| `failOpen` | Allow requests on Redis failure | false |
+| `failOpen` | Allow requests on Valkey failure | false |
 | `sourceCriterion.requestHost` | Key by request host | false |
 | `sourceCriterion.requestHeaderName` | Key by header value | - |
 | `sourceCriterion.ipStrategy.depth` | Key by IP at depth | - |
-| `redis.endpoints` | Redis server addresses | Required for distributed |
-| `redis.password` | Redis password | - |
-| `redis.db` | Redis database number | 0 |
+| `redis.endpoints` | Valkey server addresses | Required for distributed |
+| `redis.password` | Valkey password | - |
+| `redis.db` | Valkey database number | 0 |
 
 ## Failure Modes
 
 | Mode | Behavior | Use Case |
 |------|----------|----------|
-| `failOpen: false` (default) | Returns 500 on Redis errors | Security-critical APIs |
+| `failOpen: false` (default) | Returns 500 on Valkey errors | Security-critical APIs |
 | `failOpen: true` | Allows requests through, logs warning | Availability-critical APIs |
 
 ## Response Headers

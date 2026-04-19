@@ -63,7 +63,7 @@ Below is the list of the currently supported providers in Traefik.
 | <a id="opt-Consul" href="#opt-Consul" title="#opt-Consul">[Consul](./hashicorp/consul.md)</a> | KV           | KV                   | `consul`            |
 | <a id="opt-Etcd" href="#opt-Etcd" title="#opt-Etcd">[Etcd](./kv/etcd.md)</a> | KV           | KV                   | `etcd`              |
 | <a id="opt-ZooKeeper" href="#opt-ZooKeeper" title="#opt-ZooKeeper">[ZooKeeper](./kv/zk.md)</a> | KV           | KV                   | `zookeeper`         |
-| <a id="opt-Redis" href="#opt-Redis" title="#opt-Redis">[Redis](./kv/redis.md)</a> | KV           | KV                   | `redis`             |
+| <a id="opt-Valkey" href="#opt-Valkey" title="#opt-Valkey">[Valkey](./kv/redis.md)</a> | KV           | KV                   | `redis`             |
 | <a id="opt-HTTP" href="#opt-HTTP" title="#opt-HTTP">[HTTP](./others/http.md)</a> | Manual       | JSON/YAML format          | `http`              |
 
 !!! info "More Providers"

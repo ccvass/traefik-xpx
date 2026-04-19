@@ -460,17 +460,17 @@ ETCD provider `tls.CAOptional` option has been removed in v3, as TLS client auth
 
 The `tls.caOptional` option should be removed from the ETCD provider install configuration.
 
-### Redis Provider
+### Valkey Provider
 
 #### TLS.CAOptional
 
-Redis provider `tls.CAOptional` option has been removed in v3, as TLS client authentication is a server side option (see https://pkg.go.dev/crypto/tls#ClientAuthType).
+Valkey provider `tls.CAOptional` option has been removed in v3, as TLS client authentication is a server side option (see https://pkg.go.dev/crypto/tls#ClientAuthType).
 
 ??? example "An example usage of the TLS.CAOptional option"
 
     ```yaml tab="File (YAML)"
     providers:
-      redis:
+      valkey:
         tls: 
           caOptional: true
     ```
@@ -486,7 +486,7 @@ Redis provider `tls.CAOptional` option has been removed in v3, as TLS client aut
 
 ##### Remediation
 
-The `tls.caOptional` option should be removed from the Redis provider install configuration.
+The `tls.caOptional` option should be removed from the Valkey provider install configuration.
 
 ### InfluxDB v1
 
@@ -761,7 +761,7 @@ In v3, we renamed the `IPWhiteList` middleware to `IPAllowList` without changing
 ### Deprecated Options Removal
 
 - The `tracing.datadog.globaltag` option has been removed.
-- The `tls.caOptional` option has been removed from the ForwardAuth middleware, as well as from the HTTP, Consul, Etcd, Redis, ZooKeeper, Consul Catalog, and Docker providers.
+- The `tls.caOptional` option has been removed from the ForwardAuth middleware, as well as from the HTTP, Consul, Etcd, Valkey, ZooKeeper, Consul Catalog, and Docker providers.
 - `sslRedirect`, `sslTemporaryRedirect`, `sslHost`, `sslForceHost` and `featurePolicy` options of the Headers middleware have been removed.
 - The `forceSlash` option of the StripPrefix middleware has been removed.
 - The `preferServerCipherSuites` option has been removed.

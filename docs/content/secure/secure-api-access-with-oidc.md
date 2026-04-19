@@ -105,6 +105,6 @@ spec:
 
     For example, you can find how to customize the session storage:
     - Using a cookie ([Options `session`](../reference/routing-configuration/http/middlewares/oidc.md#configuration-options) (default behavior))
-    - Using a [Redis store](../reference/routing-configuration/http/middlewares/oidc.md#sessionstore).  
+    - Using a [Valkey store](../reference/routing-configuration/http/middlewares/oidc.md#sessionstore).  
 
 {% include-markdown "includes/traefik-for-business-applications.md" %}

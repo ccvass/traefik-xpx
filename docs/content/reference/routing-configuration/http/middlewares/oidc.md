@@ -100,11 +100,11 @@ stringData:
 | <a id="opt-session-sameSite" href="#opt-session-sameSite" title="#opt-session-sameSite">`session.sameSite`</a> | Inform browsers how they should handle the session cookie on cross-site requests. <br /> Setting it to `lax` or `strict` can provide some protection against cross-site request forgery attacks ([CSRF](https://developer.mozilla.org/en-US/docs/Glossary/CSRF)). <br /> More information [here](#samesite---accepted-values). | lax | No |
 | <a id="opt-session-httpOnly" href="#opt-session-httpOnly" title="#opt-session-httpOnly">`session.httpOnly`</a> | Forbids JavaScript from accessing the cookie. <br /> For example, through the `Document.cookie` property, the `XMLHttpRequest` API, or the `Request` API. <br /> This mitigates attacks against cross-site scripting ([XSS](https://developer.mozilla.org/en-US/docs/Glossary/XSS)). | true | No |
 | <a id="opt-session-secure" href="#opt-session-secure" title="#opt-session-secure">`session.secure`</a> | Defines whether the session cookie is only sent to the server when a request is made with the `https` scheme. | false | No |
-| <a id="opt-session-store-redis-endpoints" href="#opt-session-store-redis-endpoints" title="#opt-session-store-redis-endpoints">`session.store.redis.endpoints`</a> | Endpoints of the Redis instances to connect to (example: `redis.traefik-hub.svc.cluster.local:6379`) | "" | Yes      |
-| <a id="opt-session-store-redis-username" href="#opt-session-store-redis-username" title="#opt-session-store-redis-username">`session.store.redis.username`</a> | The username Traefik Hub will use to connect to Redis                                                | "" | No       |
-| <a id="opt-session-store-redis-password" href="#opt-session-store-redis-password" title="#opt-session-store-redis-password">`session.store.redis.password`</a> | The password Traefik Hub will use to connect to Redis                                                | "" | No       |
+| <a id="opt-session-store-redis-endpoints" href="#opt-session-store-redis-endpoints" title="#opt-session-store-redis-endpoints">`session.store.redis.endpoints`</a> | Endpoints of the Valkey instances to connect to (example: `redis.traefik-hub.svc.cluster.local:6379`) | "" | Yes      |
+| <a id="opt-session-store-redis-username" href="#opt-session-store-redis-username" title="#opt-session-store-redis-username">`session.store.redis.username`</a> | The username Traefik Hub will use to connect to Valkey                                                | "" | No       |
+| <a id="opt-session-store-redis-password" href="#opt-session-store-redis-password" title="#opt-session-store-redis-password">`session.store.redis.password`</a> | The password Traefik Hub will use to connect to Valkey                                                | "" | No       |
 | <a id="opt-session-store-redis-database" href="#opt-session-store-redis-database" title="#opt-session-store-redis-database">`session.store.redis.database`</a> | The database Traefik Hub will use to sore information (default: `0`)                                 | "" | No       |
-| <a id="opt-session-store-redis-cluster" href="#opt-session-store-redis-cluster" title="#opt-session-store-redis-cluster">`session.store.redis.cluster`</a> | Enable Redis Cluster                                                                                 | "" | No       |
+| <a id="opt-session-store-redis-cluster" href="#opt-session-store-redis-cluster" title="#opt-session-store-redis-cluster">`session.store.redis.cluster`</a> | Enable Valkey Cluster                                                                                 | "" | No       |
 | <a id="opt-session-store-redis-tls-caBundle" href="#opt-session-store-redis-tls-caBundle" title="#opt-session-store-redis-tls-caBundle">`session.store.redis.tls.caBundle`</a> | Custom CA bundle                                                                                     | "" | No       |
 | <a id="opt-session-store-redis-tls-cert" href="#opt-session-store-redis-tls-cert" title="#opt-session-store-redis-tls-cert">`session.store.redis.tls.cert`</a> | TLS certificate                                                                                      | "" | No       |
 | <a id="opt-session-store-redis-tls-key" href="#opt-session-store-redis-tls-key" title="#opt-session-store-redis-tls-key">`session.store.redis.tls.key`</a> | TLS key                                                                                              | "" | No       |
@@ -369,26 +369,26 @@ An OpenID Connect Authentication middleware can use a persistent KV storage to s
 instead of keeping all the state in cookies.
 It avoids cookies growing inconveniently large, which can lead to latency issues.
 
-Refer to the [redis options](#configuration-options) to configure the Redis connection.
+Refer to the [redis options](#configuration-options) to configure the Valkey connection.
 
-Connection parameters to your [Redis](https://redis.io/ "Link to website of Redis") server are attached to your Middleware deployment.
+Connection parameters to your [Valkey](https://redis.io/ "Link to website of Valkey") server are attached to your Middleware deployment.
 
-The following Redis modes are supported:
+The following Valkey modes are supported:
 
 - Single instance mode
-- [Redis Cluster](https://redis.io/docs/management/scaling "Link to official Redis documentation about Redis Cluster mode")
-- [Redis Sentinel](https://redis.io/docs/management/sentinel "Link to official Redis documentation about Redis Sentinel mode")
+- [Valkey Cluster](https://redis.io/docs/management/scaling "Link to official Valkey documentation about Valkey Cluster mode")
+- [Valkey Sentinel](https://redis.io/docs/management/sentinel "Link to official Valkey documentation about Valkey Sentinel mode")
 
 !!! info
 
-    If you use Redis in single instance mode or Redis Sentinel, you can configure the `database` field.
-    This value won't be taken into account if you use Redis Cluster (only database `0` is available).
+    If you use Valkey in single instance mode or Valkey Sentinel, you can configure the `database` field.
+    This value won't be taken into account if you use Valkey Cluster (only database `0` is available).
 
     In this case, a warning is displayed, and the value is ignored.
 
-For more information about Redis, we recommend the [official Redis documentation](https://redis.io/docs/ "Link to official Redis documentation").
+For more information about Valkey, we recommend the [official Valkey documentation](https://redis.io/docs/ "Link to official Valkey documentation").
 
-```yaml tab="Defining Redis connection"
+```yaml tab="Defining Valkey connection"
 apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
@@ -402,7 +402,7 @@ spec:
       clientSecret: mysecret
       session:
         store:
-          redis:
+          valkey:
             endpoints:
               - redis-master.traefik-hub.svc.cluster.local:6379
             password: "urn:k8s:secret:oidc:redisPass"

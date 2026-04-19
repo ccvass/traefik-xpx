@@ -14,7 +14,7 @@ It is based on a [token bucket](https://en.wikipedia.org/wiki/Token_bucket) impl
 
 ## Configuration Example
 
-Below is an advanced configuration that enables the Distributed RateLimit middleware with Redis backend for cluster-wide rate limiting.
+Below is an advanced configuration that enables the Distributed RateLimit middleware with Valkey backend for cluster-wide rate limiting.
 
 ```yaml tab="Middleware Distributed Rate Limit"
 # Here, a limit of 100 requests per second is allowed.
@@ -37,11 +37,11 @@ spec:
           excludedIPs:
             - 172.20.176.201
       store:
-        redis:
+        valkey:
           endpoints:
             - my-release-redis-master.default.svc.cluster.local:6379
           # Use the field password of the Secret redis in the same namespace
-          password: urn:k8s:secret:redis:password
+          password: urn:k8s:secret:valkey:password
           timeout: 500ms
 ```
 
@@ -90,11 +90,11 @@ When the bucket is not full, on token is generated every 10 seconds (6 every 1 m
 | <a id="opt-burst" href="#opt-burst" title="#opt-burst">`burst`</a> | Maximum number of requests allowed to go through at the very same moment.<br />More information [here](#rate-and-burst). | 1 | No |
 | <a id="opt-denyOnError" href="#opt-denyOnError" title="#opt-denyOnError">`denyOnError`</a> | Forces to return a 429 error if the number of remaining requests accepted cannot be get.<br /> Set to `false`, this option allows the request to reach the backend. | true    | No       |
 | <a id="opt-responseHeaders" href="#opt-responseHeaders" title="#opt-responseHeaders">`responseHeaders`</a> | Injects the following rate limiting headers in the response:<br />- `X-Rate-Limit-Remaining`<br />- `X-Rate-Limit-Limit`<br />- `X-Rate-Limit-Period`<br />- `X-Rate-Limit-Reset`<br />The added headers indicate how many tokens are left in the bucket (in the token bucket analogy) after the reservation for the request was made. | false   | No       |
-| <a id="opt-store-redis-endpoints" href="#opt-store-redis-endpoints" title="#opt-store-redis-endpoints">`store.redis.endpoints`</a> | Endpoints of the Redis instances to connect to (example: `redis.traefik-hub.svc.cluster.local:6379`) | "" | Yes      |
-| <a id="opt-store-redis-username" href="#opt-store-redis-username" title="#opt-store-redis-username">`store.redis.username`</a> | The username Traefik Hub will use to connect to Redis                                                | "" | No       |
-| <a id="opt-store-redis-password" href="#opt-store-redis-password" title="#opt-store-redis-password">`store.redis.password`</a> | The password Traefik Hub will use to connect to Redis                                                | "" | No       |
+| <a id="opt-store-redis-endpoints" href="#opt-store-redis-endpoints" title="#opt-store-redis-endpoints">`store.redis.endpoints`</a> | Endpoints of the Valkey instances to connect to (example: `redis.traefik-hub.svc.cluster.local:6379`) | "" | Yes      |
+| <a id="opt-store-redis-username" href="#opt-store-redis-username" title="#opt-store-redis-username">`store.redis.username`</a> | The username Traefik Hub will use to connect to Valkey                                                | "" | No       |
+| <a id="opt-store-redis-password" href="#opt-store-redis-password" title="#opt-store-redis-password">`store.redis.password`</a> | The password Traefik Hub will use to connect to Valkey                                                | "" | No       |
 | <a id="opt-store-redis-database" href="#opt-store-redis-database" title="#opt-store-redis-database">`store.redis.database`</a> | The database Traefik Hub will use to sore information (default: `0`)                                 | "" | No       |
-| <a id="opt-store-redis-cluster" href="#opt-store-redis-cluster" title="#opt-store-redis-cluster">`store.redis.cluster`</a> | Enable Redis Cluster                                                                                 | "" | No       |
+| <a id="opt-store-redis-cluster" href="#opt-store-redis-cluster" title="#opt-store-redis-cluster">`store.redis.cluster`</a> | Enable Valkey Cluster                                                                                 | "" | No       |
 | <a id="opt-store-redis-tls-caBundle" href="#opt-store-redis-tls-caBundle" title="#opt-store-redis-tls-caBundle">`store.redis.tls.caBundle`</a> | Custom CA bundle                                                                                     | "" | No       |
 | <a id="opt-store-redis-tls-cert" href="#opt-store-redis-tls-cert" title="#opt-store-redis-tls-cert">`store.redis.tls.cert`</a> | TLS certificate                                                                                      | "" | No       |
 | <a id="opt-store-redis-tls-key" href="#opt-store-redis-tls-key" title="#opt-store-redis-tls-key">`store.redis.tls.key`</a> | TLS key                                                                                              | "" | No       |
@@ -161,21 +161,21 @@ Example to group IPs together as same source:
 
 A Distributed Rate Limit middleware uses a persistent KV storage to store data.
 
-Refer to the [redis options](#configuration-options) to configure the Redis connection.
+Refer to the [redis options](#configuration-options) to configure the Valkey connection.
 
-Connection parameters to your [Redis](https://redis.io/ "Link to website of Redis") server are attached to your Middleware deployment.
+Connection parameters to your [Valkey](https://redis.io/ "Link to website of Valkey") server are attached to your Middleware deployment.
 
-The following Redis modes are supported:
+The following Valkey modes are supported:
 
 - Single instance mode
-- [Redis Cluster](https://redis.io/docs/management/scaling "Link to official Redis documentation about Redis Cluster mode")
-- [Redis Sentinel](https://redis.io/docs/management/sentinel "Link to official Redis documentation about Redis Sentinel mode")
+- [Valkey Cluster](https://redis.io/docs/management/scaling "Link to official Valkey documentation about Valkey Cluster mode")
+- [Valkey Sentinel](https://redis.io/docs/management/sentinel "Link to official Valkey documentation about Valkey Sentinel mode")
 
-For more information about Redis, we recommend the [official Redis documentation](https://redis.io/docs/ "Link to official Redis documentation").
+For more information about Valkey, we recommend the [official Valkey documentation](https://redis.io/docs/ "Link to official Valkey documentation").
 
 !!! info
 
-    If you use Redis in single instance mode or Redis Sentinel, you can configure the `database` field.
-    This value won't be taken into account if you use Redis Cluster (only database `0` is available).
+    If you use Valkey in single instance mode or Valkey Sentinel, you can configure the `database` field.
+    This value won't be taken into account if you use Valkey Cluster (only database `0` is available).
 
     In this case, a warning is displayed, and the value is ignored.

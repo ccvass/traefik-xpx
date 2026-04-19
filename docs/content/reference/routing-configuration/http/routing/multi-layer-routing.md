@@ -24,7 +24,7 @@ Multi-layer routing is particularly useful for progressive request enrichment, w
     Multi-layer routing is supported by the following providers:
 
     - **File provider** (YAML, TOML, JSON)
-    - **KV stores** (Consul, etcd, Redis, ZooKeeper)
+    - **KV stores** (Consul, etcd, Valkey, ZooKeeper)
     - **Kubernetes CRD** (IngressRoute)
 
     Multi-layer routing is not available for other providers (Docker, Kubernetes Ingress, Gateway API, etc.).
@@ -157,7 +157,7 @@ Request → EntryPoint → Parent Router → Middleware → Child Router A → S
           url = "http://user-backend:8080"
     ```
 
-    ```txt tab="KV (Consul/etcd/Redis/ZK)"
+    ```txt tab="KV (Consul/etcd/Valkey/ZK)"
     | Key                                                                    | Value                           |
     |------------------------------------------------------------------------|---------------------------------|
     | `traefik/http/routers/api-parent/rule`                                 | `PathPrefix(\`/api\`)`          |
