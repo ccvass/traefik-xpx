@@ -10,9 +10,9 @@ import type { Overview, Entrypoint, Middleware } from '@/types/api'
 
 function StatCard({ value, label }: { value: number | string; label: string }) {
   return (
-    <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl px-5 py-4 min-w-[120px]">
-      <p className="text-4xl font-extrabold tracking-tight">{value}</p>
-      <p className="text-[10px] text-zinc-500 mt-1 uppercase tracking-widest font-semibold">{label}</p>
+    <div className="bg-zinc-900/50 border border-zinc-800 rounded-lg px-3 py-2 min-w-[90px]">
+      <p className="text-2xl font-extrabold tracking-tight">{value}</p>
+      <p className="text-[9px] text-zinc-500 uppercase tracking-widest font-semibold">{label}</p>
     </div>
   )
 }
@@ -24,11 +24,11 @@ function FeaturePanel({ icon, title, to, active, metrics }: {
   return (
     <Link to={to} className="group block">
       <div className={cn(
-        'bg-zinc-900 border rounded-xl p-5 h-full transition-all duration-200',
+        'bg-zinc-900 border rounded-lg p-3 h-full transition-all duration-200',
         'hover:border-brand/50 hover:shadow-lg hover:shadow-brand/5 hover:-translate-y-0.5',
         active ? 'border-emerald-800' : 'border-zinc-800'
       )}>
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2.5">
             <div className={cn('p-2 rounded-lg', active ? 'bg-emerald-500/10 text-emerald-400' : 'bg-zinc-800 text-zinc-400')}>
               {icon}
@@ -61,7 +61,7 @@ function HealthBanner({ overview, entrypoints }: { overview: Overview; entrypoin
 
   return (
     <div className={cn(
-      'rounded-xl p-5 border',
+      'rounded-xl p-3 border',
       errors > 0 ? 'bg-red-950/30 border-red-900/50' : 'bg-emerald-950/20 border-emerald-900/30'
     )}>
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
@@ -93,13 +93,13 @@ function EntrypointList({ entrypoints }: { entrypoints: Entrypoint[] }) {
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
       {entrypoints.map((ep) => (
-        <div key={ep.name} className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 flex items-center gap-4">
-          <div className="p-3 rounded-lg bg-brand/10">
+        <div key={ep.name} className="bg-zinc-900 border border-zinc-800 rounded-lg p-3 flex items-center gap-3">
+          <div className="p-2 rounded-md bg-brand/10">
             <Activity size={20} className="text-brand" />
           </div>
           <div>
             <p className="text-sm font-bold uppercase tracking-wide">{ep.name}</p>
-            <p className="text-lg text-zinc-300 font-mono">{ep.address}</p>
+            <p className="text-sm text-zinc-300 font-mono">{ep.address}</p>
           </div>
         </div>
       ))}
@@ -115,7 +115,7 @@ function QuickActions() {
   return (
     <div className="flex gap-2">
       {actions.map((a) => (
-        <Link key={a.label} to={a.to} className="flex items-center gap-1.5 px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-xs text-zinc-300 transition-colors">
+        <Link key={a.label} to={a.to} className="flex items-center gap-1.5 px-2 py-1 bg-zinc-800 hover:bg-zinc-700 rounded text-[10px] text-zinc-300 transition-colors">
           {a.icon} {a.label}
         </Link>
       ))}
@@ -147,13 +147,13 @@ export function DashboardPage() {
   const fileApis = (mws.filter(m => m.provider === 'file') || []).length
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-3">
       {/* Health */}
       <HealthBanner overview={overview} entrypoints={entrypoints} />
 
       {/* Features */}
       <div>
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-2">
           <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide">Platform Features</h2>
           <QuickActions />
         </div>
@@ -187,13 +187,13 @@ export function DashboardPage() {
 
       {/* Entrypoints */}
       <div>
-        <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide mb-3">Entrypoints</h2>
+        <h2 className="text-xs font-semibold text-zinc-400 uppercase tracking-wide mb-2">Entrypoints</h2>
         <EntrypointList entrypoints={entrypoints} />
       </div>
 
       {/* Proxy Summary */}
       <div>
-        <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide mb-4">Proxy Overview</h2>
+        <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide mb-2">Proxy Overview</h2>
         <div className="grid grid-cols-3 gap-4">
           {(['http', 'tcp', 'udp'] as const).map(proto => {
             const data = overview[proto]
@@ -201,21 +201,21 @@ export function DashboardPage() {
             const total = (data.routers?.total || 0) + (data.services?.total || 0) + ('middlewares' in data ? data.middlewares?.total || 0 : 0)
             // show all protocols even if empty
             return (
-              <div key={proto} className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
-                <h3 className="font-bold uppercase text-sm text-brand mb-4 tracking-wider">{proto}</h3>
+              <div key={proto} className="bg-zinc-900 border border-zinc-800 rounded-lg p-4">
+                <h3 className="font-bold uppercase text-sm text-brand mb-2 tracking-wider">{proto}</h3>
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
                     <span className="text-zinc-400">Routers</span>
-                    <span className="text-2xl font-bold">{data.routers.total}</span>
+                    <span className="text-xl font-bold">{data.routers.total}</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-zinc-400">Services</span>
-                    <span className="text-2xl font-bold">{data.services.total}</span>
+                    <span className="text-xl font-bold">{data.services.total}</span>
                   </div>
                   {'middlewares' in data && (
                     <div className="flex justify-between items-center">
                       <span className="text-zinc-400">Middlewares</span>
-                      <span className="text-2xl font-bold">{data.middlewares.total}</span>
+                      <span className="text-xl font-bold">{data.middlewares.total}</span>
                     </div>
                   )}
                   {data.routers.errors > 0 && (
