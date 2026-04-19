@@ -49,8 +49,12 @@ func newSessionManager(authUser, authPassword string) *sessionManager {
 		tokenTTL:  24 * time.Hour,
 		usersFile: "/etc/traefik/users.json",
 	}
-	hashed, _ := bcrypt.GenerateFromPassword([]byte(authPassword), bcrypt.DefaultCost)
-	sm.users[authUser] = string(hashed)
+	hashed := authPassword
+	if !strings.HasPrefix(authPassword, "$2") {
+		h, _ := bcrypt.GenerateFromPassword([]byte(authPassword), bcrypt.DefaultCost)
+		hashed = string(h)
+	}
+	sm.users[authUser] = hashed
 	sm.loadUsersFromFile()
 	// Cleanup expired tokens periodically
 	go func() {
