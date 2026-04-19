@@ -1,4 +1,4 @@
-import { Badge, Card, CSS, Flex, Grid, H2, Text } from '@traefik-labs/faency'
+import { Badge, Button, Card, CSS, Flex, Grid, H2, Text } from '@traefik-labs/faency'
 import { ReactNode, useMemo } from 'react'
 import useSWR from 'swr'
 
@@ -141,6 +141,21 @@ export const Dashboard = () => {
 
       {/* Platform Status */}
       <PlatformStatus />
+
+      {/* Quick Actions */}
+      <Card css={{ p: '$4', background: '$blue2' }}>
+        <Flex justify="between" align="center" wrap="wrap" gap={2}>
+          <Text css={{ fontWeight: 600 }}>⚙️ Quick Actions</Text>
+          <Flex gap={2} wrap="wrap">
+            <a href="#/config"><Button size="small">🔧 Config Manager</Button></a>
+            <a href="#/ai"><Button size="small" variant="secondary">🤖 AI Gateway</Button></a>
+            <a href="#/mcp"><Button size="small" variant="secondary">🔧 MCP Gateway</Button></a>
+            <a href="#/security"><Button size="small" variant="secondary">🛡️ Security</Button></a>
+            <a href="#/distributed"><Button size="small" variant="secondary">⚡ Distributed</Button></a>
+            <a href="#/grafana"><Button size="small" variant="secondary">📊 Grafana</Button></a>
+          </Flex>
+        </Flex>
+      </Card>
 
       <SectionContainer title="Entrypoints" css={{ mt: 0 }}>
         {entrypoints?.map((i, idx) => (
