@@ -143,9 +143,15 @@ func (h *Handler) createRouter() *mux.Router {
 	apiRouter.Methods(http.MethodGet).Path("/api/grafana/dashboards").HandlerFunc(h.getGrafanaDashboards)
 
 	// CRUD: Dynamic configuration management.
-	if h.staticConfig.Providers != nil && h.staticConfig.Providers.File != nil && h.staticConfig.Providers.File.Filename != "" {
-		dcm := newDynamicConfigManager(h.staticConfig.Providers.File.Filename)
-		dcm.RegisterCRUDRoutes(apiRouter, h.authWrap)
+	if h.staticConfig.Providers != nil && h.staticConfig.Providers.File != nil {
+		dynamicFile := h.staticConfig.Providers.File.Filename
+		if dynamicFile == "" && h.staticConfig.Providers.File.Directory != "" {
+			dynamicFile = h.staticConfig.Providers.File.Directory + "/dynamic.yml"
+		}
+		if dynamicFile != "" {
+			dcm := newDynamicConfigManager(dynamicFile)
+			dcm.RegisterCRUDRoutes(apiRouter, h.authWrap)
+		}
 	}
 
 	// Static configuration management (for AI/MCP/APIMgmt settings).
@@ -165,6 +171,9 @@ func (h *Handler) createRouter() *mux.Router {
 		dynamicPath := ""
 		if h.staticConfig.Providers != nil && h.staticConfig.Providers.File != nil {
 			dynamicPath = h.staticConfig.Providers.File.Filename
+			if dynamicPath == "" && h.staticConfig.Providers.File.Directory != "" {
+				dynamicPath = h.staticConfig.Providers.File.Directory + "/dynamic.yml"
+			}
 		}
 		bh := newBackupHandler(staticPath, dynamicPath)
 		apiRouter.Methods(http.MethodGet).Path("/api/config/backup").HandlerFunc(h.authWrap(bh.handleBackup))
