@@ -9,6 +9,7 @@ import { AIPage } from '@/pages/AI'
 import { MCPPage } from '@/pages/MCP'
 import { SecurityPage, DistributedPage, APIMgmtPage } from '@/pages/Features'
 import { ClustersPage, GrafanaPage, ProxyPage } from '@/pages/Operations'
+import { UsersPage } from '@/pages/Users'
 
 export function App() {
   const [token, setToken] = useState(localStorage.getItem('token') || '')
@@ -32,6 +33,7 @@ export function App() {
             <Route path="/clusters" element={<ClustersPage />} />
             <Route path="/grafana" element={<GrafanaPage />} />
             <Route path="/proxy/*" element={<ProxyPage />} />
+            <Route path="/users" element={<UsersPage />} />
           </Routes>
         </Shell>
       </HashRouter>
