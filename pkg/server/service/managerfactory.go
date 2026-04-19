@@ -46,21 +46,13 @@ func NewManagerFactory(staticConfiguration static.Configuration, routinesPool *s
 		apiRouterBuilder := api.NewBuilder(staticConfiguration, tlsManager)
 
 		if staticConfiguration.API.Dashboard {
-			dh := dashboard.Handler{BasePath: staticConfiguration.API.BasePath}
-			if staticConfiguration.API.AuthUser != "" && staticConfiguration.API.AuthPassword != "" {
-				factory.dashboardHandler = basicAuthWrap(dh, staticConfiguration.API.AuthUser, staticConfiguration.API.AuthPassword)
-			} else {
-				factory.dashboardHandler = dh
-			}
+			factory.dashboardHandler = dashboard.Handler{BasePath: staticConfiguration.API.BasePath}
 			factory.api = func(configuration *runtime.Configuration) http.Handler {
 				router := apiRouterBuilder(configuration).(*mux.Router)
 				if err := dashboard.Append(router, staticConfiguration.API.BasePath, nil); err != nil {
 					log.Error().Err(err).Msg("Error appending dashboard to API router")
 				}
 
-				if staticConfiguration.API.AuthUser != "" && staticConfiguration.API.AuthPassword != "" {
-					return basicAuthWrap(router, staticConfiguration.API.AuthUser, staticConfiguration.API.AuthPassword)
-				}
 				return router
 			}
 		} else {
