@@ -82,7 +82,7 @@ export function GrafanaPage() {
         {Array.isArray(dashboards) && dashboards.map((d: any) => (
           <div key={d.uid} className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 flex justify-between items-center">
             <div><p className="font-semibold">{d.title}</p><p className="text-sm text-zinc-500">{d.description}</p><p className="text-xs text-zinc-600 mt-1">{d.panels?.length || 0} panels • {d.uid}</p></div>
-            <button onClick={() => copy(d)} className={`px-4 py-2 rounded-lg text-sm font-semibold ${copied === d.uid ? 'bg-emerald-600 text-white' : 'bg-zinc-800 hover:bg-zinc-700'}`}>{copied === d.uid ? '✓ Copied!' : '📋 Copy JSON'}</button>
+            <button onClick={() => copy(d)} className={`px-4 py-2 rounded-lg text-sm font-semibold ${copied === d.uid ? 'bg-emerald-600 text-white' : 'bg-zinc-800 hover:bg-zinc-700'}`}>{copied === d.uid ? '✓ Copied!' : 'Copy JSON'}</button>
           </div>
         ))}
       </div>

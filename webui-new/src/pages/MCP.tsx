@@ -25,7 +25,7 @@ export function MCPPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3"><Link to="/" className="text-zinc-500 hover:text-white"><ArrowLeft size={20}/></Link><span className="text-2xl">🔧</span><h1 className="text-2xl font-bold">MCP Gateway</h1></div>
+        <div className="flex items-center gap-3"><Link to="/" className="text-zinc-500 hover:text-white"><ArrowLeft size={20}/></Link><h1 className="text-2xl font-bold">MCP Gateway</h1></div>
         <div className="flex gap-2">
           <button onClick={() => startAdd('tbac')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-lg text-xs font-medium hover:bg-brand/20"><Plus size={14}/>Add TBAC Rule</button>
           <button onClick={() => startAdd('mcpaudit')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-lg text-xs font-medium hover:bg-brand/20"><Plus size={14}/>Add Audit Logger</button>

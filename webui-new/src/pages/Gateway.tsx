@@ -6,29 +6,29 @@ import { ArrowLeft, Plus, Trash2, Save, X, Activity, Shield, Zap, Globe, Lock, E
 import { AddForm, Item, Stat, mutateAll } from './shared'
 
 const ALL_MW_TYPES: Record<string, { label: string; icon: string; template: unknown }> = {
-  apiKey: { label: '🔑 API Key', icon: '🔑', template: { apiKey: { headerName: 'X-API-Key', keys: [{ value: 'key', metadata: 'user' }] } } },
-  rateLimit: { label: '⚡ Rate Limit', icon: '⚡', template: { rateLimit: { average: 100, burst: 50, period: '1s' } } },
-  waf: { label: '🛡️ WAF', icon: '🛡️', template: { waf: { inlineRules: 'SecRuleEngine On\nSecRule ARGS "@detectSQLi" "id:1,phase:2,deny,status:403"' } } },
-  jwtAuth: { label: '🔐 JWT', icon: '🔐', template: { jwtAuth: { jwksUrl: 'https://auth.example.com/.well-known/jwks.json' } } },
-  oidc: { label: '🔓 OIDC', icon: '🔓', template: { oidc: { issuerUrl: 'https://accounts.google.com', clientId: 'id', clientSecret: 'secret', redirectUrl: 'https://app/cb' } } },
-  hmac: { label: '✍️ HMAC', icon: '✍️', template: { hmac: { secret: 'secret', algorithm: 'sha256', headerName: 'X-Signature' } } },
-  basicAuth: { label: '👤 Basic Auth', icon: '👤', template: { basicAuth: { users: ['admin:$apr1$hash'] } } },
-  httpCache: { label: '💾 HTTP Cache', icon: '💾', template: { httpCache: { defaultTtl: '300s', maxEntries: 5000 } } },
-  inFlightReq: { label: '🚦 In-Flight', icon: '🚦', template: { inFlightReq: { amount: 100 } } },
-  circuitBreaker: { label: '⚡ Circuit Breaker', icon: '⚡', template: { circuitBreaker: { expression: 'NetworkErrorRatio() > 0.5' } } },
-  retry: { label: '🔄 Retry', icon: '🔄', template: { retry: { attempts: 3, initialInterval: '100ms' } } },
-  compress: { label: '📦 Compress', icon: '📦', template: { compress: {} } },
-  headers: { label: '📋 Headers', icon: '📋', template: { headers: { customRequestHeaders: { 'X-Custom': 'value' } } } },
-  ipAllowList: { label: '🌐 IP Allow List', icon: '🌐', template: { ipAllowList: { sourceRange: ['10.0.0.0/8', '172.16.0.0/12'] } } },
-  redirectScheme: { label: '↗️ Redirect HTTPS', icon: '↗️', template: { redirectScheme: { scheme: 'https', permanent: true } } },
-  redirectRegex: { label: '↗️ Redirect Regex', icon: '↗️', template: { redirectRegex: { regex: '^http://(.*)$', replacement: 'https://${1}' } } },
-  stripPrefix: { label: '✂️ Strip Prefix', icon: '✂️', template: { stripPrefix: { prefixes: ['/api'] } } },
-  addPrefix: { label: '➕ Add Prefix', icon: '➕', template: { addPrefix: { prefix: '/api' } } },
-  replacePath: { label: '🔀 Replace Path', icon: '🔀', template: { replacePath: { path: '/new' } } },
-  forwardAuth: { label: '🔑 Forward Auth', icon: '🔑', template: { forwardAuth: { address: 'http://auth-service:4181' } } },
-  buffering: { label: '📥 Buffering', icon: '📥', template: { buffering: { maxRequestBodyBytes: 10485760 } } },
-  passTLSClientCert: { label: '🔒 mTLS Headers', icon: '🔒', template: { passTLSClientCert: { pem: true, info: { subject: true, issuer: true } } } },
-  apiMock: { label: '🎭 API Mock', icon: '🎭', template: { apiMock: { specFile: '/etc/traefik/specs/api.yaml', defaultStatus: 200 } } },
+  apiKey: { label: 'API Key', icon: 'key', template: { apiKey: { headerName: 'X-API-Key', keys: [{ value: 'key', metadata: 'user' }] } } },
+  rateLimit: { label: 'Rate Limit', icon: 'zap', template: { rateLimit: { average: 100, burst: 50, period: '1s' } } },
+  waf: { label: 'WAF', icon: 'shield', template: { waf: { inlineRules: 'SecRuleEngine On\nSecRule ARGS "@detectSQLi" "id:1,phase:2,deny,status:403"' } } },
+  jwtAuth: { label: 'JWT', icon: 'lock', template: { jwtAuth: { jwksUrl: 'https://auth.example.com/.well-known/jwks.json' } } },
+  oidc: { label: 'OIDC', icon: 'lock', template: { oidc: { issuerUrl: 'https://accounts.google.com', clientId: 'id', clientSecret: 'secret', redirectUrl: 'https://app/cb' } } },
+  hmac: { label: 'HMAC', icon: 'pen', template: { hmac: { secret: 'secret', algorithm: 'sha256', headerName: 'X-Signature' } } },
+  basicAuth: { label: 'Basic Auth', icon: 'user', template: { basicAuth: { users: ['admin:$apr1$hash'] } } },
+  httpCache: { label: 'HTTP Cache', icon: 'db', template: { httpCache: { defaultTtl: '300s', maxEntries: 5000 } } },
+  inFlightReq: { label: 'In-Flight', icon: 'gauge', template: { inFlightReq: { amount: 100 } } },
+  circuitBreaker: { label: 'Circuit Breaker', icon: 'zap', template: { circuitBreaker: { expression: 'NetworkErrorRatio() > 0.5' } } },
+  retry: { label: 'Retry', icon: 'repeat', template: { retry: { attempts: 3, initialInterval: '100ms' } } },
+  compress: { label: 'Compress', icon: 'box', template: { compress: {} } },
+  headers: { label: 'Headers', icon: 'list', template: { headers: { customRequestHeaders: { 'X-Custom': 'value' } } } },
+  ipAllowList: { label: 'IP Allow List', icon: 'globe', template: { ipAllowList: { sourceRange: ['10.0.0.0/8', '172.16.0.0/12'] } } },
+  redirectScheme: { label: 'Redirect HTTPS', icon: 'arrow', template: { redirectScheme: { scheme: 'https', permanent: true } } },
+  redirectRegex: { label: 'Redirect Regex', icon: 'arrow', template: { redirectRegex: { regex: '^http://(.*)$', replacement: 'https://${1}' } } },
+  stripPrefix: { label: 'Strip Prefix', icon: 'scissors', template: { stripPrefix: { prefixes: ['/api'] } } },
+  addPrefix: { label: 'Add Prefix', icon: 'plus', template: { addPrefix: { prefix: '/api' } } },
+  replacePath: { label: 'Replace Path', icon: 'shuffle', template: { replacePath: { path: '/new' } } },
+  forwardAuth: { label: 'Forward Auth', icon: 'key', template: { forwardAuth: { address: 'http://auth-service:4181' } } },
+  buffering: { label: 'Buffering', icon: 'download', template: { buffering: { maxRequestBodyBytes: 10485760 } } },
+  passTLSClientCert: { label: 'mTLS Headers', icon: 'lock', template: { passTLSClientCert: { pem: true, info: { subject: true, issuer: true } } } },
+  apiMock: { label: 'API Mock', icon: 'mask', template: { apiMock: { specFile: '/etc/traefik/specs/api.yaml', defaultStatus: 200 } } },
 }
 
 const TABS = ['Services', 'Routes', 'Middlewares', 'TLS & Certs', 'Entrypoints', 'Providers'] as const
@@ -127,7 +127,7 @@ export function GatewayPage() {
                 <p className="text-xs text-zinc-500 mt-0.5">{r.rule}</p>
                 <div className="flex gap-2 mt-1 text-xs text-zinc-600">
                   <span>→ {r.service}</span>
-                  {r.tls && <span className="text-emerald-500">🔒 TLS</span>}
+                  {r.tls && <span className="text-emerald-500">TLS</span>}
                   {r.middlewares?.length > 0 && <span>MW: {r.middlewares.join(', ')}</span>}
                   {r.entryPoints && <span>EP: {r.entryPoints.join(', ')}</span>}
                 </div>
@@ -145,7 +145,7 @@ export function GatewayPage() {
       {tab === 'Middlewares' && <>
         <div className="flex gap-1 flex-wrap">
           {Object.entries(ALL_MW_TYPES).map(([k, v]) => (
-            <button key={k} onClick={() => startMw(k)} className="flex items-center gap-1 px-2 py-1 bg-zinc-800 hover:bg-zinc-700 rounded text-[10px] text-zinc-300 transition-colors">{v.icon} {v.label.split(' ').slice(1).join(' ')}</button>
+            <button key={k} onClick={() => startMw(k)} className="flex items-center gap-1 px-2 py-1 bg-zinc-800 hover:bg-zinc-700 rounded text-[10px] text-zinc-300 transition-colors">{v.label}</button>
           ))}
         </div>
         {form === 'middleware' && <>
