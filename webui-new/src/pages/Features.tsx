@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom'
 import useSWR from 'swr'
 import { fetcher, api } from '@/lib/api'
 import { ArrowLeft, Plus } from 'lucide-react'
-import { Badge as TypeBadge, StatusBadge, getTypeColor } from '@/components/Badge'
 import type { Middleware } from '@/types/api'
-import { AddForm, Item, Stat, mutateAll } from './shared'
+import { AddForm, Item, Stat, ActionBtn, mutateAll } from './shared'
+import { COLORS } from '@/lib/design'
 
 export function SecurityPage() {
   const { data: mws } = useSWR<Middleware[]>('/http/middlewares', fetcher)
@@ -30,11 +30,11 @@ export function SecurityPage() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3"><Link to="/" className="text-zinc-500 hover:text-white"><ArrowLeft size={20}/></Link><h1 className="text-2xl font-bold">Security</h1></div>
         <div className="flex gap-2 flex-wrap">
-          <button onClick={() => startAdd('waf')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-full text-xs font-semibold hover:bg-brand/20 border border-brand/20 hover:border-brand/40 transition-all"><Plus size={14}/>Add WAF</button>
-          <button onClick={() => startAdd('apikey')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-full text-xs font-semibold hover:bg-brand/20 border border-brand/20 hover:border-brand/40 transition-all"><Plus size={14}/>Add API Key</button>
-          <button onClick={() => startAdd('jwt')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-full text-xs font-semibold hover:bg-brand/20 border border-brand/20 hover:border-brand/40 transition-all"><Plus size={14}/>Add JWT</button>
-          <button onClick={() => startAdd('oidc')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-full text-xs font-semibold hover:bg-brand/20 border border-brand/20 hover:border-brand/40 transition-all"><Plus size={14}/>Add OIDC</button>
-          <button onClick={() => startAdd('hmac')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-full text-xs font-semibold hover:bg-brand/20 border border-brand/20 hover:border-brand/40 transition-all"><Plus size={14}/>Add HMAC</button>
+          <ActionBtn label="Add WAF" onClick={() => startAdd('waf')} color={COLORS.security.accent} />
+          <ActionBtn label="Add API Key" onClick={() => startAdd('apikey')} color={COLORS.auth.accent} />
+          <ActionBtn label="Add JWT" onClick={() => startAdd('jwt')} color={COLORS.identity.accent} />
+          <ActionBtn label="Add OIDC" onClick={() => startAdd('oidc')} color={COLORS.identity.accent} />
+          <ActionBtn label="Add HMAC" onClick={() => startAdd('hmac')} color={COLORS.identity.accent} />
         </div>
       </div>
       {adding && <AddForm title={`New ${adding}`} name={name} setName={setName} json={json} setJson={setJson} color="brand" onSave={save} onCancel={() => setAdding(null)} disabled={!name} />}
@@ -72,9 +72,9 @@ export function DistributedPage() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3"><Link to="/" className="text-zinc-500 hover:text-white"><ArrowLeft size={20}/></Link><h1 className="text-2xl font-bold">Distributed</h1></div>
         <div className="flex gap-2">
-          <button onClick={() => startAdd('ratelimit')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-full text-xs font-semibold hover:bg-brand/20 border border-brand/20 hover:border-brand/40 transition-all"><Plus size={14}/>Add Rate Limiter</button>
-          <button onClick={() => startAdd('httpcache')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-full text-xs font-semibold hover:bg-brand/20 border border-brand/20 hover:border-brand/40 transition-all"><Plus size={14}/>Add HTTP Cache</button>
-          <button onClick={() => startAdd('inflightreq')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-full text-xs font-semibold hover:bg-brand/20 border border-brand/20 hover:border-brand/40 transition-all"><Plus size={14}/>Add In-Flight</button>
+          <ActionBtn label="Add Rate Limiter" onClick={() => startAdd('ratelimit')} color={COLORS.traffic.accent} />
+          <ActionBtn label="Add HTTP Cache" onClick={() => startAdd('httpcache')} color={COLORS.cache.accent} />
+          <ActionBtn label="Add In-Flight" onClick={() => startAdd('inflightreq')} color={COLORS.traffic.accent} />
         </div>
       </div>
       {adding && <AddForm title={`New ${adding}`} name={name} setName={setName} json={json} setJson={setJson} color="brand" onSave={save} onCancel={() => setAdding(null)} disabled={!name} />}
@@ -118,8 +118,8 @@ export function APIMgmtPage() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3"><Link to="/" className="text-zinc-500 hover:text-white"><ArrowLeft size={20}/></Link><h1 className="text-2xl font-bold">API Management</h1></div>
         <div className="flex gap-2">
-          <button onClick={() => startAdd('router')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-full text-xs font-semibold hover:bg-brand/20 border border-brand/20 hover:border-brand/40 transition-all"><Plus size={14}/>Add API Route</button>
-          <button onClick={() => startAdd('apimock')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-full text-xs font-semibold hover:bg-brand/20 border border-brand/20 hover:border-brand/40 transition-all"><Plus size={14}/>Add Mock</button>
+          <ActionBtn label="Add API Route" onClick={() => startAdd('router')} color={COLORS.network.accent} />
+          <ActionBtn label="Add Mock" onClick={() => startAdd('apimock')} color={COLORS.mock.accent} />
         </div>
       </div>
       {adding && <AddForm title={`New ${adding}`} name={name} setName={setName} json={json} setJson={setJson} color="brand" onSave={save} onCancel={() => setAdding(null)} disabled={!name} />}

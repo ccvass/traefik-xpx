@@ -3,9 +3,10 @@ import { Link, useLocation } from 'react-router-dom'
 import useSWR, { mutate } from 'swr'
 import { fetcher, api } from '@/lib/api'
 import { ArrowLeft, Plus, Trash2, Save, X, Activity, Shield, Zap, Globe, Lock, Eye } from 'lucide-react'
-import { Badge as TypeBadge, StatusBadge, getTypeColor } from '@/components/Badge'
 import { AddForm, Item, Stat, mutateAll } from './shared'
 import { EditForm, RouterFormFull, CertUploadForm } from './forms'
+import { StatusBadge as SB, TypeBadge as TB, StatusDot } from '@/components/Badge'
+import { COLORS, statAccent, editableAccent } from '@/lib/design'
 import { MiddlewareWizard } from '@/components/MiddlewareWizard'
 
 const ALL_MW_TYPES: Record<string, { label: string; icon: string; template: unknown }> = {
