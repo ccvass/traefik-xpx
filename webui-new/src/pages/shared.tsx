@@ -11,7 +11,7 @@ function AddForm({ title, name, setName, json, setJson, color, onSave, onCancel,
   color: string; onSave: () => void; onCancel: () => void; disabled: boolean
 }) {
   return (
-    <Modal open={true} onClose={onCancel}>
+    <Modal open={true} onClose={onCancel} color={color}>
       <p className="font-semibold text-sm mb-3" style={{ color: color || COLORS.brand }}>{title}</p>
       <div className="space-y-3">
         <div>

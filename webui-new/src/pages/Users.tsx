@@ -39,12 +39,12 @@ export function UsersPage() {
           <Users size={24} className="text-brand" />
           <h1 className="text-2xl font-bold">User Management</h1>
         </div>
-        <button onClick={() => setShow(true)} className="flex items-center gap-1.5 px-4 py-2 bg-brand hover:bg-brand/80 text-white font-semibold rounded-lg text-sm">
+        <button onClick={() => setShow(true)} className="flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold transition-all" style={{ backgroundColor: '#2AA2C115', color: '#2AA2C1', borderWidth: 1, borderStyle: 'solid', borderColor: '#2AA2C130' }}>
           <Plus size={14} />Add User
         </button>
       </div>
 
-      {show && <Modal open={true} onClose={() => setShow(false)}>
+      {show && <Modal open={true} onClose={() => setShow(false)} color="#2AA2C1">
           <p className="font-semibold text-sm text-brand">New User</p>
           <div className="grid grid-cols-2 gap-3">
             <div>
