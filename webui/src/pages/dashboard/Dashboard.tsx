@@ -12,60 +12,118 @@ import { capitalizeFirstLetter } from 'utils/string'
 
 const API_BASE = (window as any).APIUrl || '/api'
 
-const PlatformStatusCard = ({ title, status, detail, href }: { title: string; status: string; detail: string; href: string }) => (
+const FeaturePanel = ({ title, icon, href, status, children }: { title: string; icon: string; href: string; status: 'active' | 'available' | 'off'; children: React.ReactNode }) => (
   <a href={`#${href}`} style={{ textDecoration: 'none' }}>
-    <Card css={{ p: '$3', cursor: 'pointer', '&:hover': { borderColor: '$blue7' } }}>
-      <Flex direction="column" gap={1}>
+    <Card css={{ p: '$4', cursor: 'pointer', transition: 'all 0.2s', '&:hover': { transform: 'translateY(-2px)', boxShadow: '$3' }, height: '100%' }}>
+      <Flex direction="column" gap={2} css={{ height: '100%' }}>
         <Flex justify="between" align="center">
-          <Text css={{ fontWeight: 600, fontSize: '$3' }}>{title}</Text>
+          <Text css={{ fontSize: '$5' }}>{icon}</Text>
           <Badge variant={status === 'active' ? 'green' : status === 'available' ? 'blue' : 'gray'} css={{ fontSize: '$1' }}>
-            {status}
+            {status === 'active' ? '● Active' : status === 'available' ? '○ Available' : '○ Off'}
           </Badge>
         </Flex>
-        <Text css={{ fontSize: '$2', color: '$textSubtle' }}>{detail}</Text>
+        <Text css={{ fontWeight: 700, fontSize: '$4' }}>{title}</Text>
+        <Flex direction="column" gap={1} css={{ flex: 1 }}>
+          {children}
+        </Flex>
+        <Text css={{ fontSize: '$1', color: '$blue9', fontWeight: 500 }}>Configure →</Text>
       </Flex>
     </Card>
   </a>
 )
 
-const PlatformStatus = () => {
+const Metric = ({ label, value }: { label: string; value: string | number }) => (
+  <Flex justify="between" align="center">
+    <Text css={{ fontSize: '$2', color: '$textSubtle' }}>{label}</Text>
+    <Text css={{ fontSize: '$2', fontWeight: 600 }}>{value}</Text>
+  </Flex>
+)
+
+const PlatformOverview = () => {
   const { data: aiStatus } = useSWR('ai-status', () => fetch(`${API_BASE}/ai/status`).then(r => r.json()).catch(() => null))
   const { data: mcpStatus } = useSWR('mcp-status', () => fetch(`${API_BASE}/mcp/status`).then(r => r.json()).catch(() => null))
   const { data: middlewares } = useSWR('/http/middlewares')
+  const { data: overview } = useSWR('/overview')
+  const { data: routers } = useSWR('/http/routers')
+  const { data: services } = useSWR('/http/services')
 
-  const securityCount = Array.isArray(middlewares)
-    ? middlewares.filter((m: any) => ['waf', 'apikey', 'jwt', 'oidc', 'hmac', 'ldap', 'opa'].includes(m.type)).length
-    : 0
-  const cacheCount = Array.isArray(middlewares) ? middlewares.filter((m: any) => m.type === 'httpcache').length : 0
-  const rateLimitCount = Array.isArray(middlewares) ? middlewares.filter((m: any) => m.type === 'ratelimit').length : 0
+  const mws = Array.isArray(middlewares) ? middlewares : []
+  const wafCount = mws.filter((m: any) => m.type === 'waf').length
+  const authCount = mws.filter((m: any) => ['apikey', 'jwt', 'oidc', 'hmac', 'ldap', 'basicauth', 'forwardauth'].includes(m.type)).length
+  const opaCount = mws.filter((m: any) => m.type === 'opa').length
+  const cacheCount = mws.filter((m: any) => m.type === 'httpcache').length
+  const rateLimitCount = mws.filter((m: any) => ['ratelimit', 'distributedratelimit'].includes(m.type)).length
+  const inflightCount = mws.filter((m: any) => ['inflightreq', 'distributedInflightReq'].includes(m.type)).length
+  const totalRouters = Array.isArray(routers) ? routers.length : 0
+  const totalServices = Array.isArray(services) ? services.length : 0
+  const fileRouters = Array.isArray(routers) ? routers.filter((r: any) => r.provider === 'file').length : 0
 
   return (
-    <Grid columns={{ '@initial': 2, '@md': 4 }} gap={3}>
-      <PlatformStatusCard
-        title="🤖 AI Gateway"
-        status={aiStatus?.enabled ? 'active' : 'available'}
-        detail={aiStatus?.enabled ? `${aiStatus.components} providers` : 'Not configured'}
-        href="/ai"
-      />
-      <PlatformStatusCard
-        title="🔧 MCP Gateway"
-        status={mcpStatus?.enabled ? 'active' : 'available'}
-        detail={mcpStatus?.enabled ? `${mcpStatus.components} servers` : 'Not configured'}
-        href="/mcp"
-      />
-      <PlatformStatusCard
-        title="🛡️ Security"
-        status={securityCount > 0 ? 'active' : 'available'}
-        detail={securityCount > 0 ? `${securityCount} active middlewares` : 'No security middlewares'}
-        href="/security"
-      />
-      <PlatformStatusCard
-        title="⚡ Distributed"
-        status={rateLimitCount + cacheCount > 0 ? 'active' : 'available'}
-        detail={`${rateLimitCount} rate limits, ${cacheCount} caches`}
-        href="/distributed"
-      />
-    </Grid>
+    <Flex direction="column" gap={4}>
+      {/* Summary Bar */}
+      <Card css={{ p: '$3', background: '$gray2' }}>
+        <Flex justify="between" align="center" wrap="wrap" gap={3}>
+          <Flex gap={4}>
+            <Flex direction="column" align="center">
+              <Text css={{ fontSize: '$7', fontWeight: 700 }}>{totalRouters}</Text>
+              <Text css={{ fontSize: '$1', color: '$textSubtle' }}>Routers</Text>
+            </Flex>
+            <Flex direction="column" align="center">
+              <Text css={{ fontSize: '$7', fontWeight: 700 }}>{totalServices}</Text>
+              <Text css={{ fontSize: '$1', color: '$textSubtle' }}>Services</Text>
+            </Flex>
+            <Flex direction="column" align="center">
+              <Text css={{ fontSize: '$7', fontWeight: 700 }}>{mws.length}</Text>
+              <Text css={{ fontSize: '$1', color: '$textSubtle' }}>Middlewares</Text>
+            </Flex>
+            <Flex direction="column" align="center">
+              <Text css={{ fontSize: '$7', fontWeight: 700 }}>{fileRouters}</Text>
+              <Text css={{ fontSize: '$1', color: '$textSubtle' }}>Managed APIs</Text>
+            </Flex>
+          </Flex>
+          <a href="#/config"><Button>⚙️ Config Manager</Button></a>
+        </Flex>
+      </Card>
+
+      {/* Feature Panels */}
+      <Grid columns={{ '@initial': 1, '@sm': 2, '@lg': 3 }} gap={3}>
+        <FeaturePanel title="AI Gateway" icon="🤖" href="/ai" status={aiStatus?.enabled ? 'active' : 'available'}>
+          <Metric label="Providers" value={aiStatus?.components || 0} />
+          <Metric label="Semantic Cache" value={mws.some((m: any) => m.type === 'semanticcache') ? 'On' : 'Off'} />
+          <Metric label="PII Guard" value={mws.some((m: any) => m.type === 'piiguard') ? 'On' : 'Off'} />
+        </FeaturePanel>
+
+        <FeaturePanel title="MCP Gateway" icon="🔧" href="/mcp" status={mcpStatus?.enabled ? 'active' : 'available'}>
+          <Metric label="Servers" value={mcpStatus?.components || 0} />
+          <Metric label="TBAC Rules" value={mws.filter((m: any) => m.type === 'tbac').length} />
+          <Metric label="Audit Logger" value={mws.some((m: any) => m.type === 'mcpaudit') ? 'On' : 'Off'} />
+        </FeaturePanel>
+
+        <FeaturePanel title="Security" icon="🛡️" href="/security" status={wafCount + authCount + opaCount > 0 ? 'active' : 'available'}>
+          <Metric label="WAF Rules" value={wafCount} />
+          <Metric label="Auth Middlewares" value={authCount} />
+          <Metric label="OPA Policies" value={opaCount} />
+        </FeaturePanel>
+
+        <FeaturePanel title="Distributed" icon="⚡" href="/distributed" status={rateLimitCount + cacheCount + inflightCount > 0 ? 'active' : 'available'}>
+          <Metric label="Rate Limiters" value={rateLimitCount} />
+          <Metric label="HTTP Caches" value={cacheCount} />
+          <Metric label="In-Flight Limiters" value={inflightCount} />
+        </FeaturePanel>
+
+        <FeaturePanel title="API Management" icon="📦" href="/api-management" status={fileRouters > 0 ? 'active' : 'available'}>
+          <Metric label="Managed APIs" value={fileRouters} />
+          <Metric label="Total Middlewares" value={mws.length} />
+          <Metric label="Mock Endpoints" value={mws.filter((m: any) => m.type === 'apimock').length} />
+        </FeaturePanel>
+
+        <FeaturePanel title="Observability" icon="📊" href="/grafana" status="active">
+          <Metric label="Grafana Dashboards" value="5" />
+          <Metric label="Metrics" value={overview?.features?.metrics ? 'On' : 'Off'} />
+          <Metric label="Tracing" value={overview?.features?.tracing ? 'On' : 'Off'} />
+        </FeaturePanel>
+      </Grid>
+    </Flex>
   )
 }
 
@@ -139,23 +197,8 @@ export const Dashboard = () => {
     <Flex direction="column" gap={6}>
       <PageTitle title="Dashboard" />
 
-      {/* Platform Status */}
-      <PlatformStatus />
-
-      {/* Quick Actions */}
-      <Card css={{ p: '$4', background: '$blue2' }}>
-        <Flex justify="between" align="center" wrap="wrap" gap={2}>
-          <Text css={{ fontWeight: 600 }}>⚙️ Quick Actions</Text>
-          <Flex gap={2} wrap="wrap">
-            <a href="#/config"><Button size="small">🔧 Config Manager</Button></a>
-            <a href="#/ai"><Button size="small" variant="secondary">🤖 AI Gateway</Button></a>
-            <a href="#/mcp"><Button size="small" variant="secondary">🔧 MCP Gateway</Button></a>
-            <a href="#/security"><Button size="small" variant="secondary">🛡️ Security</Button></a>
-            <a href="#/distributed"><Button size="small" variant="secondary">⚡ Distributed</Button></a>
-            <a href="#/grafana"><Button size="small" variant="secondary">📊 Grafana</Button></a>
-          </Flex>
-        </Flex>
-      </Card>
+      {/* Platform Overview */}
+      <PlatformOverview />
 
       <SectionContainer title="Entrypoints" css={{ mt: 0 }}>
         {entrypoints?.map((i, idx) => (
