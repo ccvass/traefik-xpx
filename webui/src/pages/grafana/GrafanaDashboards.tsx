@@ -6,7 +6,7 @@ import useSWR from 'swr'
 const API_BASE = (window as any).APIUrl || '/api'
 
 async function fetchDashboards() {
-  const res = await fetch(`${API_BASE}/grafana/dashboards`)
+  const res = await fetch(`${API_BASE}/grafana/dashboards`, { credentials: 'include' })
   if (!res.ok) return []
   return res.json()
 }

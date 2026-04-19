@@ -6,7 +6,7 @@ import useSWR, { mutate } from 'swr'
 const API_BASE = (window as any).APIUrl || '/api'
 
 async function fetchSection(section: string) {
-  const res = await fetch(`${API_BASE}/config/static?section=${section}`)
+  const res = await fetch(`${API_BASE}/config/static?section=${section}`, { credentials: 'include' })
   if (!res.ok) return null
   return res.json()
 }
