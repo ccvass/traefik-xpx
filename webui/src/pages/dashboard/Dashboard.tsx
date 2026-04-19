@@ -302,7 +302,7 @@ export const Dashboard = () => {
       {features.length > 0 && (
         <SectionContainer title="Features" childrenContainerCss={{ gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))' }}>
           {features.map((i, idx) => (
-            <FeatureCard key={`feature-${i.name}-${idx}`} name={i.name} value={i.value} />
+            <FeatureCard key={`feature-${i.name}-${idx}`} feature={i} />
           ))}
         </SectionContainer>
       )}
