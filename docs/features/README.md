@@ -1,3 +1,5 @@
+<p align="center"><img src="../assets/logo-light.svg" alt="Traefik-XPX" width="300"></p>
+
 # Traefik-XPX Feature Documentation
 
 ## Authentication & Security

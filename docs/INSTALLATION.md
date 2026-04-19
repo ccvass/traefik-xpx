@@ -1,3 +1,5 @@
+<p align="center"><img src="assets/logo-light.svg" alt="Traefik-XPX" width="300"></p>
+
 # Installation Guide
 
 ## Docker Swarm (Production)
