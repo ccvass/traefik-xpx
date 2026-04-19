@@ -33,13 +33,13 @@ export function ClustersPage() {
       </div>
 
       {show && <Modal open={true} onClose={() => setShow(false)} color="#2AA2C1" size="sm">
-          <p className="font-semibold text-sm" style={{ color: '#2AA2C1' }}>Add Cluster Instance</p>
-          <div className="grid grid-cols-3 gap-3">
-            <div><label className="text-xs text-zinc-500">Name</label><input value={name} onChange={e => setName(e.target.value)} placeholder="e.g. prod-us-east" className="w-full mt-1 rounded-lg px-3 py-2.5 text-sm outline-none transition-colors" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }} /></div>
-            <div><label className="text-xs text-zinc-500">API URL</label><input value={url} onChange={e => setUrl(e.target.value)} placeholder="e.g. https://node2:8099" className="w-full mt-1 rounded-lg px-3 py-2.5 text-sm outline-none transition-colors" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }} /></div>
-            <div><label className="text-xs text-zinc-500">Region</label><input value={region} onChange={e => setRegion(e.target.value)} placeholder="e.g. us-east-1" className="w-full mt-1 rounded-lg px-3 py-2.5 text-sm outline-none transition-colors" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }} /></div>
+          <p className="font-semibold text-lg mb-4" style={{ color: '#2AA2C1' }}>Add Cluster Instance</p>
+          <div className="space-y-4">
+            <div><label className="text-xs text-zinc-400 font-medium">Instance Name</label><input value={name} onChange={e => setName(e.target.value)} placeholder="e.g. prod-us-east" className="w-full mt-1 rounded-lg px-3 py-2.5 text-sm outline-none transition-colors" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }} /></div>
+            <div><label className="text-xs text-zinc-400 font-medium">API URL</label><input value={url} onChange={e => setUrl(e.target.value)} placeholder="e.g. https://node2:8099" className="w-full mt-1 rounded-lg px-3 py-2.5 text-sm outline-none transition-colors" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }} /></div>
+            <div><label className="text-xs text-zinc-400 font-medium">Region (optional)</label><input value={region} onChange={e => setRegion(e.target.value)} placeholder="e.g. us-east-1" className="w-full mt-1 rounded-lg px-3 py-2.5 text-sm outline-none transition-colors" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }} /></div>
           </div>
-          <div className="flex gap-2 justify-end"><button onClick={() => setShow(false)} className="px-3 py-1.5 text-xs rounded-lg bg-zinc-800"><X size={12} className="inline mr-1" />Cancel</button><button onClick={add} disabled={!name||!url} className="px-3 py-1.5 text-xs rounded-lg text-white font-semibold disabled:opacity-40" style={{ backgroundColor: '#2AA2C1' }}><Save size={12} className="inline mr-1" />Add</button></div>
+          <div className="flex gap-2 justify-end mt-6"><button onClick={() => setShow(false)} className="px-4 py-2 text-sm rounded-lg bg-zinc-800 hover:bg-zinc-700"><X size={14} className="inline mr-1" />Cancel</button><button onClick={add} disabled={!name||!url} className="px-4 py-2 text-sm rounded-lg text-white font-semibold disabled:opacity-40" style={{ backgroundColor: '#2AA2C1' }}><Save size={14} className="inline mr-1" />Add Instance</button></div>
       </Modal>}
 
       <div className="glass p-6">
