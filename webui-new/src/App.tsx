@@ -3,6 +3,7 @@ import { HashRouter, Routes, Route } from 'react-router-dom'
 import { SWRConfig } from 'swr'
 import { fetcher } from '@/lib/api'
 import { Shell } from '@/components/layout/Shell'
+import { CommandPalette } from '@/components/CommandPalette'
 import { DashboardPage } from '@/pages/Dashboard'
 import { LoginPage } from '@/pages/Login'
 import { AIPage } from '@/pages/AI'
@@ -26,6 +27,7 @@ export function App() {
     <SWRConfig value={{ fetcher, refreshInterval: 10000, revalidateOnFocus: true }}>
       <HashRouter>
         <Shell>
+          <CommandPalette />
           <Routes>
             <Route path="/" element={<DashboardPage />} />
             <Route path="/ai" element={<AIPage />} />

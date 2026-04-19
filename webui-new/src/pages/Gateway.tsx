@@ -5,6 +5,7 @@ import { fetcher, api } from '@/lib/api'
 import { ArrowLeft, Plus, Trash2, Save, X, Activity, Shield, Zap, Globe, Lock, Eye } from 'lucide-react'
 import { AddForm, Item, Stat, mutateAll } from './shared'
 import { EditForm, RouterFormFull, CertUploadForm } from './forms'
+import { MiddlewareWizard } from '@/components/MiddlewareWizard'
 
 const ALL_MW_TYPES: Record<string, { label: string; icon: string; template: unknown }> = {
   apiKey: { label: 'API Key', icon: 'key', template: { apiKey: { headerName: 'X-API-Key', keys: [{ value: 'key', metadata: 'user' }] } } },
@@ -154,12 +155,16 @@ export function GatewayPage() {
 
       {/* Middlewares Tab */}
       {tab === 'Middlewares' && <>
+        <div className="flex gap-2 mb-2">
+          <button onClick={() => setForm('wizard')} className="flex items-center gap-1 px-3 py-1.5 bg-brand text-white rounded-lg text-xs font-semibold hover:bg-brand/80">Middleware Wizard</button>
+        </div>
         <div className="flex gap-1 flex-wrap">
           {Object.entries(ALL_MW_TYPES).map(([k, v]) => (
             <button key={k} onClick={() => startMw(k)} className="flex items-center gap-1 px-2 py-1 bg-zinc-800 hover:bg-zinc-700 rounded text-[10px] text-zinc-300 transition-colors">{v.label}</button>
           ))}
         </div>
-        {form === 'middleware' && <>
+        {form === 'wizard' && <MiddlewareWizard onDone={() => setForm(null)} />}
+      {form === 'middleware' && <>
           <div className="flex gap-2 items-center mb-2">
             <span className="text-xs text-zinc-500">Selected:</span>
             <select value={mwType} onChange={e => { setMwType(e.target.value); setJson(JSON.stringify(ALL_MW_TYPES[e.target.value]?.template || {}, null, 2)) }} className="bg-zinc-800 border border-zinc-700 rounded px-2 py-1 text-xs outline-none">

@@ -108,7 +108,7 @@ export function Shell({ children }: { children: ReactNode }) {
           <button className="lg:hidden text-zinc-400" onClick={() => setMobileOpen(true)}>
             <Menu size={20} />
           </button>
-          <div />
+          <kbd className="hidden lg:flex items-center gap-1 px-2 py-1 bg-zinc-800 rounded text-[10px] text-zinc-500 border border-zinc-700">Ctrl+K</kbd>
           <div className="flex items-center gap-3">
             <span className="text-xs text-zinc-500">{localStorage.getItem('user') || 'admin'}</span>
             <button onClick={logout} className="flex items-center gap-1 px-2 py-1 rounded-lg text-zinc-500 hover:text-red-400 hover:bg-red-950/50 transition-colors text-xs" title="Logout">
