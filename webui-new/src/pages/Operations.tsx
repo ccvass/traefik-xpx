@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import useSWR from 'swr'
 import { fetcher, api } from '@/lib/api'
 import { ArrowLeft, Plus, Trash2, Save, X } from 'lucide-react'
@@ -91,7 +91,9 @@ export function GrafanaPage() {
 }
 
 export function ProxyPage() {
-  const [proto, setProto] = useState('http')
+  const location = useLocation()
+  const proto = location.pathname.split('/proxy/')[1]?.split('/')[0] || 'http'
+  const setProto = (p: string) => { window.location.hash = `/proxy/${p}` }
   const { data: routers } = useSWR(`/${proto}/routers`, fetcher)
   const { data: services } = useSWR(`/${proto}/services`, fetcher)
   const { data: middlewares } = useSWR(`/${proto}/middlewares`, fetcher)

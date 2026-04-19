@@ -3,7 +3,6 @@ import { SWRConfig } from 'swr'
 import { fetcher } from '@/lib/api'
 import { Shell } from '@/components/layout/Shell'
 import { DashboardPage } from '@/pages/Dashboard'
-import { ConfigPage } from '@/pages/Config'
 import { AIPage } from '@/pages/AI'
 import { MCPPage } from '@/pages/MCP'
 import { SecurityPage, DistributedPage, APIMgmtPage } from '@/pages/Features'
@@ -16,7 +15,6 @@ export function App() {
         <Shell>
           <Routes>
             <Route path="/" element={<DashboardPage />} />
-            <Route path="/config" element={<ConfigPage />} />
             <Route path="/ai" element={<AIPage />} />
             <Route path="/mcp" element={<MCPPage />} />
             <Route path="/security" element={<SecurityPage />} />

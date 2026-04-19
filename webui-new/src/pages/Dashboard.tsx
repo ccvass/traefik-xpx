@@ -109,7 +109,6 @@ function EntrypointList({ entrypoints }: { entrypoints: Entrypoint[] }) {
 
 function QuickActions() {
   const actions = [
-    { label: 'Config Manager', to: '/config', icon: <Settings size={14} /> },
     { label: 'Multi-Cluster', to: '/clusters', icon: <MonitorDot size={14} /> },
     { label: 'Grafana', to: '/grafana', icon: <BarChart3 size={14} /> },
   ]

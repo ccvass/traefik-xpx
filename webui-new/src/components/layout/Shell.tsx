@@ -15,7 +15,8 @@ const NAV: NavGroup[] = [
   ]},
   { title: 'Proxy', items: [
     { label: 'HTTP', path: '/proxy/http', icon: <Globe size={18} /> },
-    { label: 'TCP / UDP', path: '/proxy/tcp', icon: <Network size={18} /> },
+    { label: 'TCP', path: '/proxy/tcp', icon: <Network size={18} /> },
+    { label: 'UDP', path: '/proxy/udp', icon: <Network size={18} /> },
   ]},
   { title: 'Platform', items: [
     { label: 'AI Gateway', path: '/ai', icon: <Bot size={18} /> },
@@ -25,7 +26,6 @@ const NAV: NavGroup[] = [
     { label: 'API Management', path: '/api-mgmt', icon: <Package size={18} /> },
   ]},
   { title: 'Operations', items: [
-    { label: 'Config Manager', path: '/config', icon: <Settings size={18} /> },
     { label: 'Multi-Cluster', path: '/clusters', icon: <MonitorDot size={18} /> },
     { label: 'Grafana', path: '/grafana', icon: <BarChart3 size={18} /> },
   ]},
