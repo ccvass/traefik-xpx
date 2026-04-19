@@ -26,7 +26,7 @@ export function ClustersPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3"><Link to="/" className="text-zinc-500 hover:text-white"><ArrowLeft size={20} /></Link><h1 className="text-2xl font-bold">Multi-Cluster</h1></div>
-        <button onClick={() => setShow(true)} className="flex items-center gap-1.5 px-4 py-2 bg-brand hover:bg-brand/80 text-black font-semibold rounded-lg text-sm"><Plus size={14} />Add Instance</button>
+        <button onClick={() => setShow(true)} className="flex items-center gap-1.5 px-4 py-2 bg-brand hover:bg-brand/80 text-white font-semibold rounded-lg text-sm"><Plus size={14} />Add Instance</button>
       </div>
 
       {show && (
@@ -37,7 +37,7 @@ export function ClustersPage() {
             <div><label className="text-xs text-zinc-500">API URL</label><input value={url} onChange={e => setUrl(e.target.value)} placeholder="e.g. https://node2:8099" className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand" /></div>
             <div><label className="text-xs text-zinc-500">Region</label><input value={region} onChange={e => setRegion(e.target.value)} placeholder="e.g. us-east-1" className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand" /></div>
           </div>
-          <div className="flex gap-2 justify-end"><button onClick={() => setShow(false)} className="px-3 py-1.5 text-xs rounded-lg bg-zinc-800"><X size={12} className="inline mr-1" />Cancel</button><button onClick={add} disabled={!name||!url} className="px-3 py-1.5 text-xs rounded-lg bg-brand text-black font-semibold disabled:opacity-30"><Save size={12} className="inline mr-1" />Add</button></div>
+          <div className="flex gap-2 justify-end"><button onClick={() => setShow(false)} className="px-3 py-1.5 text-xs rounded-lg bg-zinc-800"><X size={12} className="inline mr-1" />Cancel</button><button onClick={add} disabled={!name||!url} className="px-3 py-1.5 text-xs rounded-lg bg-brand text-white font-semibold disabled:opacity-30"><Save size={12} className="inline mr-1" />Add</button></div>
         </div>
       )}
 
@@ -100,7 +100,7 @@ export function ProxyPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3"><Link to="/" className="text-zinc-500 hover:text-white"><ArrowLeft size={20} /></Link><h1 className="text-2xl font-bold">Proxy</h1></div>
-        <Link to="/config" className="flex items-center gap-1.5 px-4 py-2 bg-brand hover:bg-brand/80 text-black font-semibold rounded-lg text-sm"><Plus size={14} />Config Manager</Link>
+        <Link to="/config" className="flex items-center gap-1.5 px-4 py-2 bg-brand hover:bg-brand/80 text-white font-semibold rounded-lg text-sm"><Plus size={14} />Config Manager</Link>
       </div>
 
       <div className="flex border-b border-zinc-800">

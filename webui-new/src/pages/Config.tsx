@@ -56,7 +56,7 @@ function RouterForm({ onDone }: { onDone: () => void }) {
         <div><label className="text-xs text-zinc-500">Middlewares</label><input value={m} onChange={e => setM(e.target.value)} placeholder="e.g. auth,rate-limit" className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm focus:border-brand outline-none" /></div>
       </div>
       <p className="text-[10px] text-zinc-600">Entry points: web (HTTP), websecure (HTTPS). Middlewares: comma-separated names.</p>
-      <div className="flex gap-2 justify-end"><button onClick={onDone} className="px-3 py-1.5 text-xs rounded-lg bg-zinc-800 hover:bg-zinc-700"><X size={12} className="inline mr-1" />Cancel</button><button onClick={save} disabled={!n||!r||!s} className="px-3 py-1.5 text-xs rounded-lg bg-brand hover:bg-brand/80 text-black font-semibold disabled:opacity-30"><Save size={12} className="inline mr-1" />Create</button></div>
+      <div className="flex gap-2 justify-end"><button onClick={onDone} className="px-3 py-1.5 text-xs rounded-lg bg-zinc-800 hover:bg-zinc-700"><X size={12} className="inline mr-1" />Cancel</button><button onClick={save} disabled={!n||!r||!s} className="px-3 py-1.5 text-xs rounded-lg bg-brand hover:bg-brand/80 text-white font-semibold disabled:opacity-30"><Save size={12} className="inline mr-1" />Create</button></div>
     </div>
   )
 }
@@ -108,7 +108,7 @@ function OpsTab() {
       <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 space-y-4">
         <h3 className="font-semibold">System Operations</h3>
         <div className="flex gap-3">
-          <button onClick={async () => { await api.post('/reload'); setSt('Reload triggered'); setTimeout(() => setSt(''), 3000) }} className="px-4 py-2 bg-brand hover:bg-brand/80 text-black font-semibold rounded-lg text-sm">🔄 Reload Config</button>
+          <button onClick={async () => { await api.post('/reload'); setSt('Reload triggered'); setTimeout(() => setSt(''), 3000) }} className="px-4 py-2 bg-brand hover:bg-brand/80 text-white font-semibold rounded-lg text-sm">🔄 Reload Config</button>
           <button onClick={() => window.open('/api/config/backup', '_blank')} className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-sm">📥 Download Backup</button>
         </div>
         {st && <p className="text-emerald-400 text-sm">✓ {st}</p>}
