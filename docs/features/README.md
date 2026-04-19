@@ -1,4 +1,4 @@
-# traefik-api-srv Documentation
+# Traefik-XP Documentation
 
 Complete feature documentation with configuration examples.
 
