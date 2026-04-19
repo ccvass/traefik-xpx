@@ -74,7 +74,7 @@ export function DistributedPage() {
         <div className="flex gap-2">
           <ActionBtn label="Add Rate Limiter" onClick={() => startAdd('ratelimit')} color={COLORS.traffic.accent} />
           <ActionBtn label="Add HTTP Cache" onClick={() => startAdd('httpcache')} color={COLORS.cache.accent} />
-          <ActionBtn label="Add In-Flight" onClick={() => startAdd('inflightreq')} color={COLORS.traffic.accent} />
+          <ActionBtn label="Add In-Flight" onClick={() => startAdd('inflightreq')} color={COLORS.resilience.accent} />
         </div>
       </div>
       {adding && <AddForm title={`New ${getTypeLabel(adding || '')}`} name={name} setName={setName} json={json} setJson={setJson} color={getCategoryColors(adding || "").accent} onSave={save} onCancel={() => setAdding(null)} disabled={!name} />}
