@@ -17,7 +17,7 @@ Docker Swarm:
 cp GeoLite2-Country.mmdb /mnt/traefik/
 
 # Add mount to service
-docker service update traefik-xp \
+docker service update traefik-xpx \
   --mount-add type=bind,source=/mnt/traefik/GeoLite2-Country.mmdb,target=/etc/traefik/GeoLite2-Country.mmdb
 ```
 

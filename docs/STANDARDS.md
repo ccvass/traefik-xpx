@@ -1,4 +1,4 @@
-# Development Standards — Traefik-XP
+# Development Standards — Traefik-XPX
 
 ## Backend (Go)
 - Go 1.24+
@@ -39,14 +39,14 @@
 cd webui-new && npm ci && npx vite build
 
 # Backend
-go build -o traefik-xp ./cmd/traefik
+go build -o traefik-xpx ./cmd/traefik
 
 # FIPS
-CGO_ENABLED=1 GOEXPERIMENT=boringcrypto go build -o traefik-xp ./cmd/traefik
+CGO_ENABLED=1 GOEXPERIMENT=boringcrypto go build -o traefik-xpx ./cmd/traefik
 
 # Docker
-docker build -t traefik-xp .
-docker build -f Dockerfile.fips -t traefik-xp:fips .
+docker build -t traefik-xpx .
+docker build -f Dockerfile.fips -t traefik-xpx:fips .
 ```
 
 ## Deploy

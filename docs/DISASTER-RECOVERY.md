@@ -7,7 +7,7 @@
 curl -o backup.tar.gz http://localhost:8099/api/config/backup
 
 # Manual backup
-tar -czf traefik-xp-backup-$(date +%Y%m%d).tar.gz \
+tar -czf traefik-xpx-backup-$(date +%Y%m%d).tar.gz \
   /etc/traefik/ \
   /certificates/ \
   /var/log/traefik/
@@ -22,29 +22,29 @@ curl -X POST http://localhost:8099/api/config/restore \
   --data-binary @backup.tar.gz
 
 # Manual restore
-tar -xzf traefik-xp-backup-*.tar.gz -C /
-systemctl restart traefik-xp
+tar -xzf traefik-xpx-backup-*.tar.gz -C /
+systemctl restart traefik-xpx
 ```
 
 ## Valkey Recovery
 
 ```bash
 # Valkey data is in the valkey-data volume
-# If Valkey is lost, Traefik-XP falls back to file-based auth
+# If Valkey is lost, Traefik-XPX falls back to file-based auth
 # Users are also persisted in /etc/traefik/users.json
 
 # Re-sync users to Valkey after recovery:
-# Just restart Traefik-XP — it loads from file and pushes to Valkey
+# Just restart Traefik-XPX — it loads from file and pushes to Valkey
 ```
 
 ## Rollback
 
 ```bash
 # Docker Swarm rollback
-docker service rollback traefik-xp_traefik-xp
+docker service rollback traefik-xpx_traefik-xpx
 
 # Manual rollback to previous image
-docker service update traefik-xp_traefik-xp --image traefik-xp:previous-tag
+docker service update traefik-xpx_traefik-xpx --image traefik-xpx:previous-tag
 ```
 
 ## Health Verification

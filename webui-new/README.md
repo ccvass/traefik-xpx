@@ -1,4 +1,4 @@
-# Traefik-XP Dashboard
+# Traefik-XPX Dashboard
 
 React 19 + TypeScript + Vite + Tailwind CSS
 

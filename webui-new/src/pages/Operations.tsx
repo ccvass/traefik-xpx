@@ -34,7 +34,7 @@ export function ClustersPage() {
 
       {show && <Modal open={true} onClose={() => setShow(false)} color="#2AA2C1" size="sm">
           <p className="font-semibold text-lg mb-1" style={{ color: '#2AA2C1' }}>Add Cluster Instance</p>
-          <p className="text-xs text-zinc-400 mb-3">Register a remote Traefik-XP node for multi-cluster monitoring.</p>
+          <p className="text-xs text-zinc-400 mb-3">Register a remote Traefik-XPX node for multi-cluster monitoring.</p>
           <div className="space-y-4">
             <div><label className="text-xs text-zinc-400 font-medium">Instance Name <span className="text-zinc-600 font-normal">— identifier (e.g. prod-us-east)</span></label><input value={name} onChange={e => setName(e.target.value)} placeholder="e.g. prod-us-east" className="w-full mt-1 rounded-lg px-3 py-2.5 text-sm outline-none transition-colors" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }} /></div>
             <div><label className="text-xs text-zinc-400 font-medium">API URL <span className="text-zinc-600 font-normal">— endpoint (e.g. https://node2:8099)</span></label><input value={url} onChange={e => setUrl(e.target.value)} placeholder="e.g. https://node2:8099" className="w-full mt-1 rounded-lg px-3 py-2.5 text-sm outline-none transition-colors" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }} /></div>

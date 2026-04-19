@@ -1,4 +1,4 @@
-# Traefik-XP Feature Documentation
+# Traefik-XPX Feature Documentation
 
 ## Authentication & Security
 

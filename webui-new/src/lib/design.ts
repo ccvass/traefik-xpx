@@ -193,7 +193,7 @@ export const TYPE_HELP: Record<string, { desc: string; fields: string }> = {
     fields: 'loadBalancer.servers[].url: Backend URL (e.g. "http://10.0.0.1:8080")\nhealthCheck.path: Health endpoint (e.g. "/health")\nhealthCheck.interval: Check frequency (e.g. "10s")',
   },
   user: {
-    desc: 'Dashboard User — JWT-authenticated access to the Traefik-XP dashboard.',
+    desc: 'Dashboard User — JWT-authenticated access to the Traefik-XPX dashboard.',
     fields: 'username: Unique login name\npassword: Minimum 8 characters, stored as bcrypt hash',
   },
   geoip: {
@@ -205,7 +205,7 @@ export const TYPE_HELP: Record<string, { desc: string; fields: string }> = {
     fields: 'blockKnownBots: true to block known malicious UAs (sqlmap, nikto, scrapy)\nallowGoodBots: true to allow Googlebot, Bingbot, Cloudflare\nrateThreshold: Max requests/minute per IP (e.g. 60)\nchallengeMode: true returns 429 instead of 403',
   },
   cluster: {
-    desc: 'Remote Instance — register another Traefik-XP node for multi-cluster monitoring.',
+    desc: 'Remote Instance — register another Traefik-XPX node for multi-cluster monitoring.',
     fields: 'name: Identifier (e.g. "prod-us-east")\nurl: API endpoint (e.g. "https://node2:8099")\nregion: Optional location tag (e.g. "us-east-1")',
   },
 }

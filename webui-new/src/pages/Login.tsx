@@ -41,7 +41,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
       <div className="w-full max-w-sm">
         <div className="flex items-center justify-center gap-3 mb-8">
           <Cpu size={32} className="text-brand" />
-          <h1 className="text-2xl font-bold text-white">Traefik-XP</h1>
+          <h1 className="text-2xl font-bold text-white">Traefik-XPX</h1>
         </div>
 
         <form onSubmit={handleSubmit} className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 space-y-4">

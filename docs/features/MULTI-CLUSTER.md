@@ -1,6 +1,6 @@
 # Multi-Cluster Management
 
-Register and monitor multiple Traefik-XP instances.
+Register and monitor multiple Traefik-XPX instances.
 
 ## Dashboard
 
