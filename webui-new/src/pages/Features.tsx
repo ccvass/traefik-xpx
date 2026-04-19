@@ -27,7 +27,7 @@ export function SecurityPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3"><Link to="/" className="text-zinc-500 hover:text-white"><ArrowLeft size={20}/></Link><span className="text-2xl">🛡️</span><h1 className="text-2xl font-bold">Security</h1></div>
+        <div className="flex items-center gap-3"><Link to="/" className="text-zinc-500 hover:text-white"><ArrowLeft size={20}/></Link><h1 className="text-2xl font-bold">Security</h1></div>
         <div className="flex gap-2 flex-wrap">
           <button onClick={() => startAdd('waf')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-lg text-xs font-medium hover:bg-brand/20"><Plus size={14}/>Add WAF</button>
           <button onClick={() => startAdd('apikey')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-lg text-xs font-medium hover:bg-brand/20"><Plus size={14}/>Add API Key</button>
@@ -69,7 +69,7 @@ export function DistributedPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3"><Link to="/" className="text-zinc-500 hover:text-white"><ArrowLeft size={20}/></Link><span className="text-2xl">⚡</span><h1 className="text-2xl font-bold">Distributed</h1></div>
+        <div className="flex items-center gap-3"><Link to="/" className="text-zinc-500 hover:text-white"><ArrowLeft size={20}/></Link><h1 className="text-2xl font-bold">Distributed</h1></div>
         <div className="flex gap-2">
           <button onClick={() => startAdd('ratelimit')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-lg text-xs font-medium hover:bg-brand/20"><Plus size={14}/>Add Rate Limiter</button>
           <button onClick={() => startAdd('httpcache')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-lg text-xs font-medium hover:bg-brand/20"><Plus size={14}/>Add HTTP Cache</button>
@@ -115,7 +115,7 @@ export function APIMgmtPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3"><Link to="/" className="text-zinc-500 hover:text-white"><ArrowLeft size={20}/></Link><span className="text-2xl">📦</span><h1 className="text-2xl font-bold">API Management</h1></div>
+        <div className="flex items-center gap-3"><Link to="/" className="text-zinc-500 hover:text-white"><ArrowLeft size={20}/></Link><h1 className="text-2xl font-bold">API Management</h1></div>
         <div className="flex gap-2">
           <button onClick={() => startAdd('router')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-lg text-xs font-medium hover:bg-brand/20"><Plus size={14}/>Add API Route</button>
           <button onClick={() => startAdd('apimock')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-lg text-xs font-medium hover:bg-brand/20"><Plus size={14}/>Add Mock</button>

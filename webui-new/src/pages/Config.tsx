@@ -89,9 +89,9 @@ function MiddlewareForm({ onDone }: { onDone: () => void }) {
       <div className="grid grid-cols-2 gap-3">
         <div><label className="text-xs text-zinc-500">Name</label><input value={n} onChange={e => setN(e.target.value)} placeholder="e.g. my-auth" className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm focus:border-brand outline-none" /></div>
         <div><label className="text-xs text-zinc-500">Type</label><select value={t} onChange={e => changeType(e.target.value)} className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm focus:border-brand outline-none">
-          <option value="apiKey">🔑 API Key</option><option value="rateLimit">⚡ Rate Limit</option><option value="waf">🛡️ WAF</option>
-          <option value="jwtAuth">🔐 JWT</option><option value="oidc">🔓 OIDC</option><option value="hmac">✍️ HMAC</option>
-          <option value="httpCache">💾 Cache</option><option value="apiMock">🎭 Mock</option><option value="basicAuth">👤 Basic Auth</option>
+          <option value="apiKey">API Key</option><option value="rateLimit">Rate Limit</option><option value="waf">WAF</option>
+          <option value="jwtAuth">JWT</option><option value="oidc">OIDC</option><option value="hmac">HMAC</option>
+          <option value="httpCache">Cache</option><option value="apiMock">Mock</option><option value="basicAuth">Basic Auth</option>
         </select></div>
       </div>
       <p className="text-[10px] text-zinc-600">Select type to auto-fill template. Edit values as needed.</p>
@@ -108,8 +108,8 @@ function OpsTab() {
       <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 space-y-4">
         <h3 className="font-semibold">System Operations</h3>
         <div className="flex gap-3">
-          <button onClick={async () => { await api.post('/reload'); setSt('Reload triggered'); setTimeout(() => setSt(''), 3000) }} className="px-4 py-2 bg-brand hover:bg-brand/80 text-white font-semibold rounded-lg text-sm">🔄 Reload Config</button>
-          <button onClick={() => window.open('/api/config/backup', '_blank')} className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-sm">📥 Download Backup</button>
+          <button onClick={async () => { await api.post('/reload'); setSt('Reload triggered'); setTimeout(() => setSt(''), 3000) }} className="px-4 py-2 bg-brand hover:bg-brand/80 text-white font-semibold rounded-lg text-sm">Reload Config</button>
+          <button onClick={() => window.open('/api/config/backup', '_blank')} className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-sm">Download Backup</button>
         </div>
         {st && <p className="text-emerald-400 text-sm">✓ {st}</p>}
       </div>
