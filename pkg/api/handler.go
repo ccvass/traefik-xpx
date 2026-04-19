@@ -182,6 +182,10 @@ func (h *Handler) createRouter() *mux.Router {
 		apiRouter.Methods(http.MethodPost).Path("/api/auth/users").HandlerFunc(sm.handleAddUser)
 		apiRouter.Methods(http.MethodDelete).Path("/api/auth/users").HandlerFunc(sm.handleDeleteUser)
 	}
+	// Monitoring endpoints
+	apiRouter.Methods(http.MethodGet).Path("/api/logs").HandlerFunc(handleLogs)
+	apiRouter.Methods(http.MethodGet).Path("/api/health-checks").HandlerFunc(h.handleHealthChecks)
+	apiRouter.Methods(http.MethodGet).Path("/api/metrics/internal").HandlerFunc(h.handleMetrics)
 	// Certificate management
 	cm := newCertManager("")
 	apiRouter.Methods(http.MethodGet).Path("/api/certs/managed").HandlerFunc(cm.handleListCerts)

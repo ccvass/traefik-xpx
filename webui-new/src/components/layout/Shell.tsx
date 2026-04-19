@@ -24,6 +24,11 @@ const NAV: NavGroup[] = [
     { label: 'Distributed', path: '/distributed', icon: <Zap size={18} /> },
     { label: 'API Management', path: '/api-mgmt', icon: <Package size={18} /> },
   ]},
+  { title: 'Monitoring', items: [
+    { label: 'Logs', path: '/logs', icon: <BarChart3 size={18} /> },
+    { label: 'Metrics', path: '/metrics', icon: <Zap size={18} /> },
+    { label: 'Health', path: '/health', icon: <Shield size={18} /> },
+  ]},
   { title: 'Operations', items: [
     { label: 'Multi-Cluster', path: '/clusters', icon: <MonitorDot size={18} /> },
     { label: 'Grafana', path: '/grafana', icon: <BarChart3 size={18} /> },
