@@ -29,8 +29,8 @@ export function AIPage() {
         <div className="flex items-center gap-3"><Link to="/" className="text-zinc-500 hover:text-white"><ArrowLeft size={20}/></Link><h1 className="text-2xl font-bold">AI Gateway</h1></div>
         <div className="flex gap-2">
           <ActionBtn label="Add AI Gateway" onClick={() => startAdd('aigateway')} color={COLORS.identity.accent} />
-          <ActionBtn label="Add Semantic Cache" onClick={() => startAdd('semanticcache')} color={COLORS.identity.accent} />
-          <ActionBtn label="Add PII Guard" onClick={() => startAdd('piiguard')} color={COLORS.identity.accent} />
+          <ActionBtn label="Add Semantic Cache" onClick={() => startAdd('semanticcache')} color={COLORS.cache.accent} />
+          <ActionBtn label="Add PII Guard" onClick={() => startAdd('piiguard')} color={COLORS.security.accent} />
         </div>
       </div>
       {adding && <AddForm title={`New ${adding}`} name={name} setName={setName} json={json} setJson={setJson} color="brand" onSave={save} onCancel={() => setAdding(null)} disabled={!name} />}

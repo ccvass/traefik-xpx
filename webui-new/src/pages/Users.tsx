@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import useSWR from 'swr'
 import { fetcher, api } from '@/lib/api'
 import { ArrowLeft, Plus, Trash2, Save, X, Users } from 'lucide-react'
+import { Modal } from '@/components/Modal'
 
 export function UsersPage() {
   const { data: users, mutate } = useSWR<{ username: string }[]>('/auth/users', fetcher)
@@ -43,8 +44,7 @@ export function UsersPage() {
         </button>
       </div>
 
-      {show && (
-        <div className="bg-zinc-900 border border-brand/30 rounded-xl p-5 space-y-3">
+      {show && <Modal open={true} onClose={() => setShow(false)}>
           <p className="font-semibold text-sm text-brand">New User</p>
           <div className="grid grid-cols-2 gap-3">
             <div>
@@ -60,8 +60,7 @@ export function UsersPage() {
             <button onClick={() => setShow(false)} className="px-3 py-1.5 text-xs rounded-lg bg-zinc-800 hover:bg-zinc-700 flex items-center gap-1"><X size={12} />Cancel</button>
             <button onClick={add} disabled={!username || !password} className="px-3 py-1.5 text-xs rounded-lg bg-brand hover:bg-brand/80 text-white font-semibold disabled:opacity-30 flex items-center gap-1"><Save size={12} />Create User</button>
           </div>
-        </div>
-      )}
+      </Modal>}
 
       <div className="space-y-2">
         {(users || []).map(u => (

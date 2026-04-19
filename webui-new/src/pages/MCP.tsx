@@ -29,8 +29,8 @@ export function MCPPage() {
         <div className="flex items-center gap-3"><Link to="/" className="text-zinc-500 hover:text-white"><ArrowLeft size={20}/></Link><h1 className="text-2xl font-bold">MCP Gateway</h1></div>
         <div className="flex gap-2">
           <ActionBtn label="Add TBAC Rule" onClick={() => startAdd('tbac')} color={COLORS.resilience.accent} />
-          <ActionBtn label="Add Audit Logger" onClick={() => startAdd('mcpaudit')} color={COLORS.resilience.accent} />
-          <ActionBtn label="Add Policy" onClick={() => startAdd('mcppolicy')} color={COLORS.resilience.accent} />
+          <ActionBtn label="Add Audit Logger" onClick={() => startAdd('mcpaudit')} color={COLORS.security.accent} />
+          <ActionBtn label="Add Policy" onClick={() => startAdd('mcppolicy')} color={COLORS.traffic.accent} />
         </div>
       </div>
       {adding && <AddForm title={`New ${adding}`} name={name} setName={setName} json={json} setJson={setJson} color="brand" onSave={save} onCancel={() => setAdding(null)} disabled={!name} />}

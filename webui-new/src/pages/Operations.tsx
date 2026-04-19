@@ -5,6 +5,7 @@ import { fetcher, api } from '@/lib/api'
 import { COLORS, statAccent } from '@/lib/design'
 import { StatusBadge, StatusDot } from '@/components/Badge'
 import { ArrowLeft, Plus, Trash2, Save, X } from 'lucide-react'
+import { Modal } from '@/components/Modal'
 
 export function ClustersPage() {
   const { data: overview } = useSWR('/overview', fetcher)
@@ -31,8 +32,7 @@ export function ClustersPage() {
         <button onClick={() => setShow(true)} className="flex items-center gap-1.5 px-4 py-2 bg-brand hover:bg-brand/80 text-white font-semibold rounded-lg text-sm"><Plus size={14} />Add Instance</button>
       </div>
 
-      {show && (
-        <div className="bg-zinc-900 border border-brand/30 rounded-xl p-5 space-y-3">
+      {show && <Modal open={true} onClose={() => setShow(false)}>
           <p className="font-semibold text-sm text-brand">Add Cluster Instance</p>
           <div className="grid grid-cols-3 gap-3">
             <div><label className="text-xs text-zinc-500">Name</label><input value={name} onChange={e => setName(e.target.value)} placeholder="e.g. prod-us-east" className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand" /></div>
@@ -40,8 +40,7 @@ export function ClustersPage() {
             <div><label className="text-xs text-zinc-500">Region</label><input value={region} onChange={e => setRegion(e.target.value)} placeholder="e.g. us-east-1" className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand" /></div>
           </div>
           <div className="flex gap-2 justify-end"><button onClick={() => setShow(false)} className="px-3 py-1.5 text-xs rounded-lg bg-zinc-800"><X size={12} className="inline mr-1" />Cancel</button><button onClick={add} disabled={!name||!url} className="px-3 py-1.5 text-xs rounded-lg bg-brand text-white font-semibold disabled:opacity-30"><Save size={12} className="inline mr-1" />Add</button></div>
-        </div>
-      )}
+      </Modal>}
 
       <div className="bg-zinc-900 border border-emerald-900/50 rounded-xl p-6">
         <div className="flex justify-between items-center mb-4">

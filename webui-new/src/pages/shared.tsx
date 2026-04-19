@@ -1,5 +1,6 @@
 import { Trash2, Save, X } from 'lucide-react'
 import { TypeBadge, StatusBadge } from '@/components/Badge'
+import { Modal } from '@/components/Modal'
 import { statAccent, editableAccent, btnStyle, COLORS } from '@/lib/design'
 import { mutate } from 'swr'
 
@@ -10,21 +11,23 @@ function AddForm({ title, name, setName, json, setJson, color, onSave, onCancel,
   color: string; onSave: () => void; onCancel: () => void; disabled: boolean
 }) {
   return (
-    <div className="bg-zinc-900 border border-zinc-700 rounded-xl p-5 space-y-3" style={editableAccent(color || COLORS.brand)}>
-      <p className="font-semibold text-sm" style={{ color: color || COLORS.brand }}>{title}</p>
-      <div>
-        <label className="text-xs text-zinc-500">Name</label>
-        <input value={name} onChange={e => setName(e.target.value)} placeholder="e.g. my-resource" className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand" />
+    <Modal open={true} onClose={onCancel}>
+      <p className="font-semibold text-sm mb-3" style={{ color: color || COLORS.brand }}>{title}</p>
+      <div className="space-y-3">
+        <div>
+          <label className="text-xs text-zinc-500">Name</label>
+          <input value={name} onChange={e => setName(e.target.value)} placeholder="e.g. my-resource" className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand" />
+        </div>
+        <div>
+          <label className="text-xs text-zinc-500">Configuration (JSON)</label>
+          <textarea value={json} onChange={e => setJson(e.target.value)} rows={10} className="w-full mt-1 bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-3 text-xs font-mono outline-none leading-relaxed text-emerald-300 resize-y" style={{ borderColor: '#3f3f46' }} />
+        </div>
+        <div className="flex gap-2 justify-end">
+          <button onClick={onCancel} className="px-3 py-1.5 text-xs rounded-lg bg-zinc-800 hover:bg-zinc-700 flex items-center gap-1"><X size={12} />Cancel</button>
+          <button onClick={onSave} disabled={disabled} className="px-3 py-1.5 text-xs rounded-lg text-white font-semibold disabled:opacity-30 flex items-center gap-1" style={{ backgroundColor: color || COLORS.brand }}><Save size={12} />Create</button>
+        </div>
       </div>
-      <div>
-        <label className="text-xs text-zinc-500">Configuration (JSON)</label>
-        <textarea value={json} onChange={e => setJson(e.target.value)} rows={10} className="w-full mt-1 bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-3 text-xs font-mono outline-none leading-relaxed text-emerald-300 resize-y" style={{ borderColor: '#3f3f46' }} />
-      </div>
-      <div className="flex gap-2 justify-end">
-        <button onClick={onCancel} className="px-3 py-1.5 text-xs rounded-lg bg-zinc-800 hover:bg-zinc-700 flex items-center gap-1"><X size={12} />Cancel</button>
-        <button onClick={onSave} disabled={disabled} className="px-3 py-1.5 text-xs rounded-lg text-white font-semibold disabled:opacity-30 flex items-center gap-1" style={{ backgroundColor: color || COLORS.brand }}><Save size={12} />Create</button>
-      </div>
-    </div>
+    </Modal>
   )
 }
 

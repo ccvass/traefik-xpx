@@ -5,6 +5,7 @@ import { fetcher, api } from '@/lib/api'
 import { ArrowLeft, Plus, Trash2, Save, X, Activity, Shield, Zap, Globe, Lock, Eye } from 'lucide-react'
 import { AddForm, Item, Stat, mutateAll } from './shared'
 import { EditForm, RouterFormFull, CertUploadForm } from './forms'
+import { Modal } from '@/components/Modal'
 import { StatusBadge, TypeBadge, StatusDot } from '@/components/Badge'
 import { COLORS, statAccent, editableAccent } from '@/lib/design'
 import { MiddlewareWizard } from '@/components/MiddlewareWizard'
@@ -99,7 +100,7 @@ export function GatewayPage() {
       {/* Services Tab */}
       {tab === 'Services' && <>
         <button onClick={() => { setForm('service'); setName(''); setJson(JSON.stringify({ loadBalancer: { servers: [{ url: 'http://127.0.0.1:8080' }], healthCheck: { path: '/health', interval: '10s' } } }, null, 2)) }} className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-semibold transition-all" style={{ backgroundColor: '#a855f715', color: '#a855f7', borderWidth: 1, borderStyle: 'solid', borderColor: '#a855f730' }}><Plus size={14} />Add Service</button>
-        {form === 'service' && <AddForm title="New Service" name={name} setName={setName} json={json} setJson={setJson} color="brand" onSave={saveService} onCancel={() => setForm(null)} disabled={!name} />}
+        {form === 'service' && <AddForm title="New Service" name={name} setName={setName} json={json} setJson={setJson} color="#a855f7" onSave={saveService} onCancel={() => setForm(null)} disabled={!name} />}
         <div className="space-y-2">{sArr.map((s: any) => (
           <div key={s.name} className={`p-4 rounded-lg border ${s.provider === 'file' ? 'border-emerald-900/50 bg-emerald-950/20' : 'border-zinc-800 bg-zinc-900'}`}>
             <div className="flex justify-between items-center">
@@ -127,7 +128,7 @@ export function GatewayPage() {
       {/* Routes Tab */}
       {tab === 'Routes' && <>
         <button onClick={() => { setForm('router'); setName(''); setJson(JSON.stringify({ rule: "Host(`app.example.com`)", service: "my-service", entryPoints: ["web"], middlewares: [] }, null, 2)) }} className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-semibold transition-all" style={{ backgroundColor: '#2AA2C115', color: '#2AA2C1', borderWidth: 1, borderStyle: 'solid', borderColor: '#2AA2C130' }}><Plus size={14} />Add Route</button>
-        {form === 'router' && <RouterFormFull middlewares={mArr.map((m: any) => m.name.replace(/@.*/, ''))} onSave={async ({name: n, config}: any) => { await api.put(`/config/http/routers/${n}`, config); mutateAll(); setForm(null) }} onCancel={() => setForm(null)} />}
+        {form === 'router' && <Modal open={true} onClose={() => setForm(null)}><RouterFormFull middlewares={mArr.map((m: any) => m.name.replace(/@.*/, ''))} onSave={async ({name: n, config}: any) => { await api.put(`/config/http/routers/${n}`, config); mutateAll(); setForm(null) }} onCancel={() => setForm(null)} /></Modal>}
         <div className="space-y-2">{rArr.map((r: any) => (
           <div key={r.name} className={`p-4 rounded-lg border ${r.provider === 'file' ? 'border-emerald-900/50 bg-emerald-950/20' : 'border-zinc-800 bg-zinc-900'}`}>
             <div className="flex justify-between items-center">
@@ -174,7 +175,7 @@ export function GatewayPage() {
             }`}>{v.label}</button>
           ))}
         </div>
-        {form === 'wizard' && <MiddlewareWizard onDone={() => setForm(null)} />}
+        {form === 'wizard' && <Modal open={true} onClose={() => setForm(null)}><MiddlewareWizard onDone={() => setForm(null)} /></Modal>}
       {form === 'middleware' && <>
           <div className="flex gap-2 items-center mb-2">
             <span className="text-xs text-zinc-500">Selected:</span>
@@ -224,7 +225,7 @@ export function GatewayPage() {
           ))}
         </div>}
         <button onClick={() => setForm('cert')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-lg text-xs font-medium hover:bg-brand/20"><Plus size={14} />Upload Certificate</button>
-        {form === 'cert' && <CertUploadForm onDone={() => setForm(null)} />}
+        {form === 'cert' && <Modal open={true} onClose={() => setForm(null)}><CertUploadForm onDone={() => setForm(null)} /></Modal>}
         {(!certs || (Array.isArray(certs) && certs.length === 0)) && <div className="bg-zinc-900 border border-dashed border-zinc-700 rounded-xl p-6 text-center">
           <Lock size={32} className="text-zinc-700 mx-auto mb-3" />
           <p className="text-zinc-400 text-sm">No certificates loaded</p>
