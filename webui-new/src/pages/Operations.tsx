@@ -32,7 +32,7 @@ export function ClustersPage() {
         <button onClick={() => setShow(true)} className="flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold transition-all" style={{ backgroundColor: '#2AA2C115', color: '#2AA2C1', borderWidth: 1, borderStyle: 'solid', borderColor: '#2AA2C130' }}><Plus size={14} />Add Instance</button>
       </div>
 
-      {show && <Modal open={true} onClose={() => setShow(false)} color="#2AA2C1">
+      {show && <Modal open={true} onClose={() => setShow(false)} color="#2AA2C1" size="sm">
           <p className="font-semibold text-sm" style={{ color: '#2AA2C1' }}>Add Cluster Instance</p>
           <div className="grid grid-cols-3 gap-3">
             <div><label className="text-xs text-zinc-500">Name</label><input value={name} onChange={e => setName(e.target.value)} placeholder="e.g. prod-us-east" className="w-full mt-1 rounded-lg px-3 py-2.5 text-sm outline-none transition-colors" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }} /></div>

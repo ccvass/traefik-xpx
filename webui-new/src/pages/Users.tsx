@@ -44,7 +44,7 @@ export function UsersPage() {
         </button>
       </div>
 
-      {show && <Modal open={true} onClose={() => setShow(false)} color="#2AA2C1">
+      {show && <Modal open={true} onClose={() => setShow(false)} color="#2AA2C1" size="sm">
           <p className="font-semibold text-sm" style={{ color: '#2AA2C1' }}>New User</p>
           <div className="grid grid-cols-2 gap-3">
             <div>

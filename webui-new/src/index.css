@@ -1,14 +1,22 @@
 @import "tailwindcss";
 
-/* Glass card effect — Vision UI inspired */
+/* Dark gradient background — Vision UI inspired */
+body {
+  background: linear-gradient(135deg, #0a0a0f 0%, #0d0d18 50%, #0a0a12 100%) !important;
+  min-height: 100vh;
+}
+
+/* Glass card effect */
 .glass {
-  background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%) !important;
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,255,255,0.06) !important;
+  background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%) !important;
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.08) !important;
   border-radius: 16px !important;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.04);
+  transition: all 0.2s ease;
 }
 .glass:hover {
-  border-color: rgba(255,255,255,0.12) !important;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.15) !important;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06);
+  transform: translateY(-1px);
 }

@@ -61,13 +61,13 @@ export function Shell({ children }: { children: ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false)
 
   return (
-    <div className="flex h-screen bg-zinc-950 text-white">
+    <div className="flex h-screen text-white">
       {/* Mobile overlay */}
       {mobileOpen && <div className="fixed inset-0 bg-black/50 z-40 lg:hidden" onClick={() => setMobileOpen(false)} />}
 
       {/* Sidebar */}
       <aside className={cn(
-        'fixed lg:static z-50 h-full bg-zinc-900 border-r border-zinc-800 flex flex-col transition-all duration-200',
+        'fixed lg:static z-50 h-full flex flex-col transition-all duration-200 glass',
         collapsed ? 'w-16' : 'w-60',
         mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
       )}>
