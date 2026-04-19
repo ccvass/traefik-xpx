@@ -68,7 +68,7 @@ export function Shell({ children }: { children: ReactNode }) {
         {/* Logo */}
         <div className="flex items-center gap-2 px-4 h-14 border-b border-zinc-800">
           <Cpu size={24} className="text-brand shrink-0" />
-          {!collapsed && <span className="font-bold text-sm tracking-tight">traefik-api-srv</span>}
+          {!collapsed && <span className="font-bold text-sm tracking-tight">Traefik-XP</span>}
         </div>
 
         {/* Nav */}
