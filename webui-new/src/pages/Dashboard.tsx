@@ -78,7 +78,7 @@ function HealthBanner({ overview, entrypoints }: { overview: Overview; entrypoin
             </p>
           </div>
         </div>
-        <div className="grid grid-cols-4 gap-6">
+        <div className="flex gap-4">
           <StatCard value={totalRoutes} label="Routes" />
           <StatCard value={totalSvc} label="Services" />
           <StatCard value={overview.http.middlewares.total} label="Middlewares" />
@@ -91,9 +91,9 @@ function HealthBanner({ overview, entrypoints }: { overview: Overview; entrypoin
 
 function EntrypointList({ entrypoints }: { entrypoints: Entrypoint[] }) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
       {entrypoints.map((ep) => (
-        <div key={ep.name} className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 flex items-center gap-4">
+        <div key={ep.name} className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 flex items-center gap-4">
           <div className="p-3 rounded-lg bg-brand/10">
             <Activity size={20} className="text-brand" />
           </div>
@@ -158,7 +158,7 @@ export function DashboardPage() {
           <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide">Platform Features</h2>
           <QuickActions />
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
           <FeaturePanel icon={<Bot size={18} />} title="AI Gateway" to="/ai" active={false} metrics={[
             { label: 'Semantic Cache', value: mws.some(m => m.type === 'semanticcache') ? 'Active' : 'Off' },
             { label: 'PII Guard', value: mws.some(m => m.type === 'piiguard') ? 'Active' : 'Off' },
@@ -195,12 +195,12 @@ export function DashboardPage() {
       {/* Proxy Summary */}
       <div>
         <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide mb-4">Proxy Overview</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-4">
           {(['http', 'tcp', 'udp'] as const).map(proto => {
             const data = overview[proto]
             if (!data) return null
             const total = (data.routers?.total || 0) + (data.services?.total || 0) + ('middlewares' in data ? data.middlewares?.total || 0 : 0)
-            if (total === 0) return null
+            // show all protocols even if empty
             return (
               <div key={proto} className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
                 <h3 className="font-bold uppercase text-sm text-brand mb-4 tracking-wider">{proto}</h3>
