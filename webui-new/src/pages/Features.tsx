@@ -15,7 +15,7 @@ export function SecurityPage() {
   const [name, setName] = useState(''); const [json, setJson] = useState('')
 
   const templates: Record<string,unknown> = {
-    waf: { waf: { inlineRules: 'SecRuleEngine On\nSecRule ARGS "@detectSQLi" "id:1,phase:2,deny,status:403"' } },
+    waf: { waf: { inlineRules: 'SecRuleEngine On\nSecRule ARGS "@detectSQLi" "id:1,phase:2,deny,status:403"\nSecRule ARGS "@detectXSS" "id:2,phase:2,deny,status:403"' } },
     apikey: { apiKey: { headerName: 'X-API-Key', keys: [{ value: 'your-key', metadata: 'user' }] } },
     jwt: { jwtAuth: { jwksUrl: 'https://auth.example.com/.well-known/jwks.json', issuer: 'https://auth.example.com' } },
     oidc: { oidc: { issuerUrl: 'https://accounts.google.com', clientId: 'id', clientSecret: 'secret', redirectUrl: 'https://app/callback' } },

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import useSWR from 'swr'
-import { fetcher } from '@/lib/api'
+import useSWR, { mutate } from 'swr'
+import { fetcher, api } from '@/lib/api'
 import { cn } from '@/lib/utils'
 import { StatusBadge, TypeBadge } from '@/components/Badge'
 import { Modal } from '@/components/Modal'
@@ -10,7 +10,7 @@ import { Stat } from './shared'
 import { COLORS } from '@/lib/design'
 import {
   Activity, CheckCircle2, XCircle, AlertTriangle, Search, Lock, ArrowRight,
-  Bot, Wrench, Shield, Zap, Package, BarChart3, MonitorDot
+  Bot, Wrench, Shield, Zap, Package, BarChart3, MonitorDot, Pencil, Trash2, Save, X
 } from 'lucide-react'
 import type { Overview, Entrypoint, Middleware } from '@/types/api'
 
@@ -42,7 +42,7 @@ function HealthBanner({ overview, entrypoints }: { overview: Overview; entrypoin
   )
 }
 
-function ResourceTable({ data, type, onSelect, search }: { data: any[]; type: 'router' | 'service' | 'middleware'; onSelect: (d: any) => void; search: string }) {
+function ResourceTable({ data, type, onSelect, onEdit, onDelete, search }: { data: any[]; type: 'router' | 'service' | 'middleware'; onSelect: (d: any) => void; onEdit: (d: any) => void; onDelete: (d: any) => void; search: string }) {
   const filtered = data.filter(d => !search || d.name?.toLowerCase().includes(search.toLowerCase()) || d.rule?.toLowerCase().includes(search.toLowerCase()))
   const [page, setPage] = useState(0)
   const perPage = 20
@@ -61,6 +61,7 @@ function ResourceTable({ data, type, onSelect, search }: { data: any[]; type: 'r
               {type === 'middleware' && <><th className="pb-3 pr-4">Type</th><th className="pb-3 pr-4">Config</th></>}
               <th className="pb-3 pr-4">Status</th>
               <th className="pb-3">Provider</th>
+              <th className="pb-3 text-right">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -83,6 +84,12 @@ function ResourceTable({ data, type, onSelect, search }: { data: any[]; type: 'r
                 </>}
                 <td className="py-3 pr-4"><StatusBadge status={d.status} /></td>
                 <td className="py-3 text-xs text-zinc-500">{d.provider}</td>
+                <td className="py-3 text-right">
+                  {d.provider === 'file' && <div className="flex gap-1 justify-end">
+                    <button onClick={e => { e.stopPropagation(); onEdit(d) }} className="p-1 rounded hover:bg-amber-950 text-zinc-600 hover:text-amber-400" title="Edit"><Pencil size={13} /></button>
+                    <button onClick={e => { e.stopPropagation(); onDelete(d) }} className="p-1 rounded hover:bg-red-950 text-zinc-600 hover:text-red-400" title="Delete"><Trash2 size={13} /></button>
+                  </div>}
+                </td>
               </tr>
             ))}
           </tbody>
@@ -157,6 +164,26 @@ export function DashboardPage() {
   const [detail, setDetail] = useState<any>(null)
   const [search, setSearch] = useState('')
   const [tab, setTab] = useState<'routers' | 'services' | 'middlewares'>('routers')
+  const [editing, setEditing] = useState<any>(null)
+  const [editJson, setEditJson] = useState('')
+
+  const typeMap = { routers: 'routers', services: 'services', middlewares: 'middlewares' }
+  const mutateAll = () => { mutate(`/${proto}/routers`); mutate(`/${proto}/services`); mutate(`/${proto}/middlewares`) }
+  const handleEdit = (d: any) => { setEditing(d); setEditJson(JSON.stringify(d, null, 2)) }
+  const handleSave = async () => {
+    if (!editing) return
+    const name = editing.name.replace(/@.*/, '')
+    const t = editing.rule ? 'routers' : editing.loadBalancer ? 'services' : 'middlewares'
+    await api.put(`/config/${proto}/${t}/${name}`, JSON.parse(editJson))
+    mutateAll(); setEditing(null)
+  }
+  const handleDelete = async (d: any) => {
+    if (!confirm(`Delete "${d.name}"?`)) return
+    const name = d.name.replace(/@.*/, '')
+    const t = d.rule ? 'routers' : d.loadBalancer ? 'services' : 'middlewares'
+    await api.del(`/config/${proto}/${t}/${name}`)
+    mutateAll()
+  }
 
   if (!overview || !entrypoints) {
     return <div className="space-y-4 animate-pulse"><div className="h-32 glass" /><div className="h-64 glass" /></div>
@@ -199,9 +226,9 @@ export function DashboardPage() {
 
       {/* Tables */}
       <div className="glass p-4">
-        {tab === 'routers' && <ResourceTable data={rArr} type="router" onSelect={setDetail} search={search} />}
-        {tab === 'services' && <ResourceTable data={sArr} type="service" onSelect={setDetail} search={search} />}
-        {tab === 'middlewares' && <ResourceTable data={mArr} type="middleware" onSelect={setDetail} search={search} />}
+        {tab === 'routers' && <ResourceTable data={rArr} type="router" onSelect={setDetail} onEdit={handleEdit} onDelete={handleDelete} search={search} />}
+        {tab === 'services' && <ResourceTable data={sArr} type="service" onSelect={setDetail} onEdit={handleEdit} onDelete={handleDelete} search={search} />}
+        {tab === 'middlewares' && <ResourceTable data={mArr} type="middleware" onSelect={setDetail} onEdit={handleEdit} onDelete={handleDelete} search={search} />}
       </div>
 
       {/* Entrypoints */}
@@ -216,6 +243,18 @@ export function DashboardPage() {
           ))}
         </div>
       </div>
+
+      {/* Edit modal */}
+      {editing && (
+        <Modal open={true} onClose={() => setEditing(null)} color="#f59e0b">
+          <h3 className="font-semibold text-lg mb-4" style={{ color: '#f59e0b' }}>Edit: {editing.name}</h3>
+          <textarea value={editJson} onChange={e => setEditJson(e.target.value)} rows={16} className="w-full rounded-lg px-4 py-3 text-xs font-mono outline-none resize-y" style={{ backgroundColor: '#09090b', borderWidth: 1, borderStyle: 'solid', borderColor: '#27272a', color: '#34d399', minHeight: 200 }} />
+          <div className="flex gap-2 justify-end mt-4">
+            <button onClick={() => setEditing(null)} className="px-4 py-2 text-sm rounded-lg bg-zinc-800 hover:bg-zinc-700 flex items-center gap-1"><X size={14} />Cancel</button>
+            <button onClick={handleSave} className="px-4 py-2 text-sm rounded-lg text-white font-semibold flex items-center gap-1" style={{ backgroundColor: '#f59e0b' }}><Save size={14} />Save</button>
+          </div>
+        </Modal>
+      )}
 
       {/* Detail modal */}
       {detail && <DetailModal data={detail} onClose={() => setDetail(null)} />}

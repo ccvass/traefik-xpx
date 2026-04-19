@@ -12,14 +12,15 @@ function AddForm({ title, name, setName, json, setJson, color, onSave, onCancel,
 }) {
   return (
     <Modal open={true} onClose={onCancel} color={color}>
-      <p className="font-semibold text-sm mb-3" style={{ color: color || COLORS.brand }}>{title}</p>
+      <p className="font-semibold text-lg mb-1" style={{ color: color || COLORS.brand }}>{title}</p>
+      <p className="text-xs text-zinc-500 mb-4">Fill in a unique name and edit the JSON configuration. The template below is pre-filled with common defaults.</p>
       <div className="space-y-3">
         <div>
-          <label className="text-xs text-zinc-500">Name</label>
+          <label className="text-xs text-zinc-400 font-medium">Name <span className="text-zinc-600 font-normal">— unique identifier, lowercase, no spaces (e.g. my-waf-rule)</span></label>
           <input value={name} onChange={e => setName(e.target.value)} placeholder="e.g. my-resource" className="w-full mt-1 rounded-lg px-3 py-2.5 text-sm outline-none transition-colors" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }} />
         </div>
         <div>
-          <label className="text-xs text-zinc-500">Configuration (JSON)</label>
+          <label className="text-xs text-zinc-400 font-medium">Configuration (JSON) <span className="text-zinc-600 font-normal">— edit values below, the template shows common defaults</span></label>
           <textarea value={json} onChange={e => setJson(e.target.value)} rows={10} className="w-full mt-1 rounded-lg px-4 py-3 text-xs font-mono outline-none leading-relaxed resize-y" style={{ backgroundColor: '#09090b', borderWidth: 1, borderStyle: 'solid', borderColor: '#27272a', color: '#34d399', minHeight: 200 }} />
         </div>
         <div className="flex gap-2 justify-end">
