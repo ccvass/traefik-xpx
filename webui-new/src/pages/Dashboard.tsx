@@ -91,7 +91,7 @@ function HealthBanner({ overview, entrypoints }: { overview: Overview; entrypoin
 
 function EntrypointList({ entrypoints }: { entrypoints: Entrypoint[] }) {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
       {entrypoints.map((ep) => (
         <div key={ep.name} className="bg-zinc-900 border border-zinc-800 rounded-lg p-3 flex items-center gap-3">
           <Activity size={16} className="text-brand shrink-0" />
@@ -131,7 +131,7 @@ export function DashboardPage() {
     return (
       <div className="space-y-4 animate-pulse">
         <div className="h-32 bg-zinc-900 rounded-xl" />
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {[1,2,3,4,5,6].map(i => <div key={i} className="h-40 bg-zinc-900 rounded-xl" />)}
         </div>
       </div>
@@ -146,7 +146,7 @@ export function DashboardPage() {
   const fileApis = (mws.filter(m => m.provider === 'file') || []).length
 
   return (
-    <div className="space-y-6 max-w-7xl">
+    <div className="space-y-6">
       {/* Health */}
       <HealthBanner overview={overview} entrypoints={entrypoints} />
 
@@ -156,7 +156,7 @@ export function DashboardPage() {
           <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide">Platform Features</h2>
           <QuickActions />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
           <FeaturePanel icon={<Bot size={18} />} title="AI Gateway" to="/ai" active={false} metrics={[
             { label: 'Semantic Cache', value: mws.some(m => m.type === 'semanticcache') ? 'Active' : 'Off' },
             { label: 'PII Guard', value: mws.some(m => m.type === 'piiguard') ? 'Active' : 'Off' },
@@ -193,7 +193,7 @@ export function DashboardPage() {
       {/* Proxy Summary */}
       <div>
         <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide mb-3">Proxy Overview</h2>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {(['http', 'tcp', 'udp'] as const).map(proto => {
             const data = overview[proto]
             if (!data) return null
