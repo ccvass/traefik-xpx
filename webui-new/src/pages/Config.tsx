@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import useSWR, { mutate } from 'swr'
 import { fetcher, api } from '@/lib/api'
 import { ArrowLeft, Plus, Trash2, Save, X } from 'lucide-react'
-import { Badge as TypeBadge, StatusBadge, getTypeColor } from '@/components/Badge'
 import type { Router, Service, Middleware } from '@/types/api'
 
 function mutateAll() { mutate('/http/routers'); mutate('/http/services'); mutate('/http/middlewares') }

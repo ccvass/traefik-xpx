@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import useSWR from 'swr'
 import { fetcher } from '@/lib/api'
 import { cn } from '@/lib/utils'
+import { COLORS } from '@/lib/design'
 import {
   Activity, Bot, Wrench, Shield, Zap, Package, BarChart3,
   Settings, MonitorDot, ArrowRight, CheckCircle2, XCircle, AlertTriangle

@@ -2,8 +2,9 @@ import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import useSWR from 'swr'
 import { fetcher, api } from '@/lib/api'
+import { COLORS, statAccent } from '@/lib/design'
+import { StatusBadge, StatusDot } from '@/components/Badge'
 import { ArrowLeft, Plus, Trash2, Save, X } from 'lucide-react'
-import { Badge as TypeBadge, StatusBadge, getTypeColor } from '@/components/Badge'
 
 export function ClustersPage() {
   const { data: overview } = useSWR('/overview', fetcher)
