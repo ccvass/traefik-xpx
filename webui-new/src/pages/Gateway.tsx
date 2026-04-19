@@ -111,7 +111,7 @@ export function GatewayPage() {
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <span className={`text-[10px] px-2 py-0.5 rounded ${s.status === 'enabled' ? 'bg-emerald-950 text-emerald-400' : 'bg-red-950 text-red-400'}`}>{s.status}</span>
+                <span className={`text-[10px] px-2.5 py-1 rounded-full font-semibold border ${s.status === 'enabled' ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/25' : 'bg-red-500/15 text-red-400 border-red-500/25'}`}>{s.status}</span>
                 {s.provider === 'file' && <>
                   <button onClick={() => setEditing({type:'services', name: s.name.replace(/@.*/,''), data: s})} className="p-1 rounded hover:bg-amber-950 text-zinc-500 hover:text-amber-400" title="Edit"><Save size={14} /></button>
                   <button onClick={() => del('services', s.name)} className="p-1 rounded hover:bg-red-950 text-zinc-500 hover:text-red-400"><Trash2 size={14} /></button>
@@ -141,7 +141,7 @@ export function GatewayPage() {
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <span className={`text-[10px] px-2 py-0.5 rounded ${r.status === 'enabled' ? 'bg-emerald-950 text-emerald-400' : 'bg-red-950 text-red-400'}`}>{r.status}</span>
+                <span className={`text-[10px] px-2.5 py-1 rounded-full font-semibold border ${r.status === 'enabled' ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/25' : 'bg-red-500/15 text-red-400 border-red-500/25'}`}>{r.status}</span>
                 {r.provider === 'file' && <>
                   <button onClick={() => setEditing({type:'routers', name: r.name.replace(/@.*/,''), data: r})} className="p-1 rounded hover:bg-amber-950 text-zinc-500 hover:text-amber-400" title="Edit"><Save size={14} /></button>
                   <button onClick={() => del('routers', r.name)} className="p-1 rounded hover:bg-red-950 text-zinc-500 hover:text-red-400"><Trash2 size={14} /></button>
@@ -190,7 +190,16 @@ export function GatewayPage() {
               <p className="text-xs text-zinc-500">{m.type} • {m.status} • {m.provider}</p>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-[10px] px-2.5 py-1 rounded-full bg-zinc-800 text-zinc-300 font-medium border border-zinc-700">{m.type}</span>
+              <span className={`text-[10px] px-2.5 py-1 rounded-full font-semibold border ${
+              m.type === 'waf' ? 'bg-red-500/15 text-red-400 border-red-500/25' :
+              m.type === 'apikey' || m.type === 'basicauth' ? 'bg-amber-500/15 text-amber-400 border-amber-500/25' :
+              m.type === 'jwt' || m.type === 'oidc' || m.type === 'hmac' || m.type === 'forwardauth' ? 'bg-purple-500/15 text-purple-400 border-purple-500/25' :
+              m.type === 'ratelimit' || m.type === 'inflightreq' ? 'bg-blue-500/15 text-blue-400 border-blue-500/25' :
+              m.type === 'httpcache' ? 'bg-cyan-500/15 text-cyan-400 border-cyan-500/25' :
+              m.type === 'redirectregex' || m.type === 'redirectscheme' ? 'bg-sky-500/15 text-sky-400 border-sky-500/25' :
+              m.type === 'stripprefix' || m.type === 'addprefix' ? 'bg-zinc-500/15 text-zinc-300 border-zinc-500/25' :
+              'bg-zinc-500/10 text-zinc-400 border-zinc-600'
+            }`}>{m.type}</span>
               {m.provider === 'file' && <>
                 <button onClick={() => setEditing({type:'middlewares', name: m.name.replace(/@.*/,''), data: m})} className="p-1 rounded hover:bg-amber-950 text-zinc-500 hover:text-amber-400" title="Edit"><Save size={14} /></button>
                 <button onClick={() => del('middlewares', m.name)} className="p-1 rounded hover:bg-red-950 text-zinc-500 hover:text-red-400"><Trash2 size={14} /></button>
