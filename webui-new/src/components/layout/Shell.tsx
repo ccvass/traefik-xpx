@@ -1,9 +1,10 @@
 import { useState, type ReactNode } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { cn } from '@/lib/utils'
+import { logout } from '@/lib/api'
 import {
   LayoutDashboard, Globe, Shield, Cpu, Zap, Package, Settings,
-  Network, BarChart3, MonitorDot, ChevronLeft, ChevronRight, Bot, Wrench, Menu
+  Network, BarChart3, MonitorDot, ChevronLeft, ChevronRight, Bot, Wrench, Menu, LogOut
 } from 'lucide-react'
 
 interface NavItem { label: string; path: string; icon: ReactNode }
@@ -104,8 +105,10 @@ export function Shell({ children }: { children: ReactNode }) {
           </button>
           <div />
           <div className="flex items-center gap-3">
-            <span className="text-xs text-zinc-500">admin</span>
-            <div className="w-7 h-7 rounded-full bg-brand/20 flex items-center justify-center text-brand text-xs font-bold">A</div>
+            <span className="text-xs text-zinc-500">{localStorage.getItem('user') || 'admin'}</span>
+            <button onClick={logout} className="flex items-center gap-1 px-2 py-1 rounded-lg text-zinc-500 hover:text-red-400 hover:bg-red-950/50 transition-colors text-xs" title="Logout">
+              <LogOut size={14} />
+            </button>
           </div>
         </header>
 

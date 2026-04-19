@@ -171,6 +171,13 @@ func (h *Handler) createRouter() *mux.Router {
 		apiRouter.Methods(http.MethodPost).Path("/api/config/restore").HandlerFunc(h.authWrap(bh.handleRestore))
 	}
 
+	// Auth endpoints
+	if h.staticConfig.API != nil && h.staticConfig.API.AuthUser != "" {
+		sm := newSessionManager(h.staticConfig.API.AuthUser, h.staticConfig.API.AuthPassword)
+		apiRouter.Methods(http.MethodPost).Path("/api/auth/login").HandlerFunc(sm.handleLogin)
+		apiRouter.Methods(http.MethodPost).Path("/api/auth/logout").HandlerFunc(sm.handleLogout)
+		apiRouter.Methods(http.MethodGet).Path("/api/auth/me").HandlerFunc(sm.handleMe)
+	}
 	version.Handler{}.Append(apiRouter)
 
 	return router
