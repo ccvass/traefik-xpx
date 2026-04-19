@@ -10,11 +10,9 @@ import PageTitle from 'layout/PageTitle'
 import { capitalizeFirstLetter } from 'utils/string'
 
 
-const API_BASE = (window as any).APIUrl || '/api'
-
 const PlatformOverview = () => {
-  const { data: aiStatus } = useSWR('ai-status', () => fetch(`${API_BASE}/ai/status`, { credentials: 'include' }).then(r => r.json()).catch(() => null))
-  const { data: mcpStatus } = useSWR('mcp-status', () => fetch(`${API_BASE}/mcp/status`, { credentials: 'include' }).then(r => r.json()).catch(() => null))
+  const { data: aiStatus } = useSWR('/ai/status')
+  const { data: mcpStatus } = useSWR('/mcp/status')
   const { data: middlewares } = useSWR('/http/middlewares')
   const { data: routers } = useSWR('/http/routers')
   const { data: services } = useSWR('/http/services')
