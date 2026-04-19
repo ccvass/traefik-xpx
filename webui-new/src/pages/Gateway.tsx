@@ -160,7 +160,17 @@ export function GatewayPage() {
         </div>
         <div className="flex gap-1 flex-wrap">
           {Object.entries(ALL_MW_TYPES).map(([k, v]) => (
-            <button key={k} onClick={() => startMw(k)} className="flex items-center gap-1 px-2.5 py-1.5 bg-zinc-800 hover:bg-brand/20 hover:text-brand rounded-full text-[10px] text-zinc-400 transition-all border border-zinc-700 hover:border-brand/40 font-medium">{v.label}</button>
+            <button key={k} onClick={() => startMw(k)} className={`px-2.5 py-1.5 rounded-full text-[10px] font-semibold transition-all border ${
+              k === 'waf' ? 'border-red-900/50 bg-red-950/30 text-red-400 hover:bg-red-900/40' :
+              k === 'apiKey' || k === 'basicAuth' ? 'border-amber-900/50 bg-amber-950/30 text-amber-400 hover:bg-amber-900/40' :
+              k === 'jwtAuth' || k === 'oidc' || k === 'hmac' || k === 'forwardAuth' ? 'border-purple-900/50 bg-purple-950/30 text-purple-400 hover:bg-purple-900/40' :
+              k === 'rateLimit' || k === 'inFlightReq' ? 'border-blue-700/50 bg-blue-950/30 text-blue-400 hover:bg-blue-900/40' :
+              k === 'circuitBreaker' || k === 'retry' ? 'border-orange-700/50 bg-orange-950/30 text-orange-400 hover:bg-orange-900/40' :
+              k === 'httpCache' ? 'border-cyan-700/50 bg-cyan-950/30 text-cyan-400 hover:bg-cyan-900/40' :
+              k === 'ipAllowList' || k === 'passTLSClientCert' ? 'border-emerald-900/50 bg-emerald-950/30 text-emerald-400 hover:bg-emerald-900/40' :
+              k === 'apiMock' ? 'border-pink-700/50 bg-pink-950/30 text-pink-400 hover:bg-pink-900/40' :
+              'border-zinc-700 bg-zinc-800/50 text-zinc-300 hover:bg-zinc-700/50'
+            }`}>{v.label}</button>
           ))}
         </div>
         {form === 'wizard' && <MiddlewareWizard onDone={() => setForm(null)} />}
