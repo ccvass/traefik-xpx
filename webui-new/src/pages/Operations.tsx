@@ -102,7 +102,6 @@ export function ProxyPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3"><Link to="/" className="text-zinc-500 hover:text-white"><ArrowLeft size={20} /></Link><h1 className="text-2xl font-bold">Proxy</h1></div>
-        <Link to="/config" className="flex items-center gap-1.5 px-4 py-2 bg-brand hover:bg-brand/80 text-white font-semibold rounded-lg text-sm"><Plus size={14} />Config Manager</Link>
       </div>
 
       <div className="flex border-b border-zinc-800">
