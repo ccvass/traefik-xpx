@@ -5,7 +5,7 @@ import { fetcher, api } from '@/lib/api'
 import { ArrowLeft, Plus } from 'lucide-react'
 import type { Middleware } from '@/types/api'
 import { AddForm, Item, Stat, ActionBtn, mutateAll } from './shared'
-import { COLORS } from '@/lib/design'
+import { COLORS, getCategoryColors } from '@/lib/design'
 
 export function SecurityPage() {
   const { data: mws } = useSWR<Middleware[]>('/http/middlewares', fetcher)
@@ -37,7 +37,7 @@ export function SecurityPage() {
           <ActionBtn label="Add HMAC" onClick={() => startAdd('hmac')} color={COLORS.resilience.accent} />
         </div>
       </div>
-      {adding && <AddForm title={`New ${adding}`} name={name} setName={setName} json={json} setJson={setJson} color="brand" onSave={save} onCancel={() => setAdding(null)} disabled={!name} />}
+      {adding && <AddForm title={`New ${adding}`} name={name} setName={setName} json={json} setJson={setJson} color={getCategoryColors(adding || "").accent} onSave={save} onCancel={() => setAdding(null)} disabled={!name} />}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
         <Stat value={all.filter(m=>m.type==='waf').length} label="WAF Rules" color="#ef4444" />
         <Stat value={all.filter(m=>m.type==='apikey').length} label="API Keys" color="#f59e0b" />
@@ -77,7 +77,7 @@ export function DistributedPage() {
           <ActionBtn label="Add In-Flight" onClick={() => startAdd('inflightreq')} color={COLORS.traffic.accent} />
         </div>
       </div>
-      {adding && <AddForm title={`New ${adding}`} name={name} setName={setName} json={json} setJson={setJson} color="brand" onSave={save} onCancel={() => setAdding(null)} disabled={!name} />}
+      {adding && <AddForm title={`New ${adding}`} name={name} setName={setName} json={json} setJson={setJson} color={getCategoryColors(adding || "").accent} onSave={save} onCancel={() => setAdding(null)} disabled={!name} />}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <Stat value={all.filter(m=>m.type==='ratelimit').length} label="Rate Limiters" color="#3b82f6" />
         <Stat value={all.filter(m=>m.type==='httpcache').length} label="HTTP Caches" color="#06b6d4" />
@@ -122,7 +122,7 @@ export function APIMgmtPage() {
           <ActionBtn label="Add Mock" onClick={() => startAdd('apimock')} color={COLORS.mock.accent} />
         </div>
       </div>
-      {adding && <AddForm title={`New ${adding}`} name={name} setName={setName} json={json} setJson={setJson} color="brand" onSave={save} onCancel={() => setAdding(null)} disabled={!name} />}
+      {adding && <AddForm title={`New ${adding}`} name={name} setName={setName} json={json} setJson={setJson} color={getCategoryColors(adding || "").accent} onSave={save} onCancel={() => setAdding(null)} disabled={!name} />}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <Stat value={fileR.length} label="Managed APIs" color={COLORS.network.accent} />
         <Stat value={all.length} label="Total Middlewares" color={COLORS.traffic.accent} />

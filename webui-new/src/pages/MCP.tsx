@@ -5,7 +5,7 @@ import { fetcher, api } from '@/lib/api'
 import { ArrowLeft, Plus } from 'lucide-react'
 import type { Middleware } from '@/types/api'
 import { AddForm, Item, Stat, ActionBtn, mutateAll } from './shared'
-import { COLORS } from '@/lib/design'
+import { COLORS, getCategoryColors } from '@/lib/design'
 
 export function MCPPage() {
   const { data: mws } = useSWR<Middleware[]>('/http/middlewares', fetcher)
@@ -33,7 +33,7 @@ export function MCPPage() {
           <ActionBtn label="Add Policy" onClick={() => startAdd('mcppolicy')} color={COLORS.traffic.accent} />
         </div>
       </div>
-      {adding && <AddForm title={`New ${adding}`} name={name} setName={setName} json={json} setJson={setJson} color="brand" onSave={save} onCancel={() => setAdding(null)} disabled={!name} />}
+      {adding && <AddForm title={`New ${adding}`} name={name} setName={setName} json={json} setJson={setJson} color={getCategoryColors(adding || "").accent} onSave={save} onCancel={() => setAdding(null)} disabled={!name} />}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <Stat value={mcp.length} label="MCP Middlewares" color={COLORS.resilience.accent} />
         <Stat value={mcp.filter(m=>m.type==='tbac').length ? 'Active' : 'Off'} label="TBAC Engine" color={COLORS.auth.accent} />
