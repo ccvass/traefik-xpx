@@ -101,8 +101,8 @@ export function MiddlewareWizard({ onDone }: { onDone: () => void }) {
       {/* Step 0: Select type */}
       {step === 0 && <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
         {Object.entries(MW_STEPS).map(([k, v]) => (
-          <button key={k} onClick={() => selectType(k)} className="p-4 bg-zinc-800 hover:bg-zinc-700 rounded-xl text-left transition-all border border-zinc-700 hover:border-brand/50 hover:shadow-lg hover:shadow-brand/5 hover:-translate-y-0.5">
-            <p className="text-sm font-medium">{v.label}</p>
+          <button key={k} onClick={() => selectType(k)} className="p-4 bg-zinc-900 hover:bg-zinc-800 rounded-xl text-left transition-all border border-zinc-700 hover:border-brand hover:shadow-lg hover:shadow-brand/10 hover:-translate-y-1 group">
+            <p className="text-sm font-semibold group-hover:text-brand transition-colors">{v.label}</p><p className="text-[10px] text-zinc-600 mt-0.5">{v.fields.length ? `${v.fields.length} settings` : "No config needed"}</p>
           </button>
         ))}
       </div>}
