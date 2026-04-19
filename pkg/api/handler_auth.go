@@ -30,3 +30,13 @@ func (h *Handler) authWrap(next http.HandlerFunc) http.HandlerFunc {
 		next(rw, req)
 	}
 }
+
+// authWrapAll wraps an entire handler (all methods) with auth.
+func (h *Handler) authWrapAll(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
+		if !h.requireAuth(rw, req) {
+			return
+		}
+		next.ServeHTTP(rw, req)
+	})
+}
