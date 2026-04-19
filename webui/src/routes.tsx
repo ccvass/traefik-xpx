@@ -111,90 +111,54 @@ export const ROUTES: RouteSections[] = [
     ],
   },
   {
-    section: 'ai-gateway',
-    sectionLabel: 'AI Gateway',
+    section: 'platform',
+    sectionLabel: 'Platform',
     items: [
       {
         path: '/ai',
         label: 'AI Gateway',
         icon: <MdOutlineSmartToy color="currentColor" size={20} />,
       },
-    ],
-  },
-  {
-    section: 'mcp-gateway',
-    sectionLabel: 'MCP Gateway',
-    items: [
       {
         path: '/mcp',
         label: 'MCP Gateway',
         icon: <MdOutlineHub color="currentColor" size={20} />,
       },
-    ],
-  },
-  {
-    section: 'security',
-    sectionLabel: 'Security',
-    items: [
       {
         path: '/security',
         label: 'Security',
         icon: <MdOutlineSecurity color="currentColor" size={20} />,
       },
-    ],
-  },
-  {
-    section: 'api-management',
-    sectionLabel: 'API Management',
-    items: [
+      {
+        path: '/distributed',
+        label: 'Distributed',
+        icon: <MdOutlineApi color="currentColor" size={20} />,
+      },
       {
         path: '/api-management',
         label: 'API Management',
-        icon: <MdOutlineApi color="currentColor" size={20} />,
+        icon: <MdOutlineDashboard color="currentColor" size={20} />,
       },
     ],
   },
   {
-    section: 'config',
-    sectionLabel: 'Configuration',
+    section: 'operations',
+    sectionLabel: 'Operations',
     items: [
       {
         path: '/config',
         label: 'Config Manager',
         icon: <MdOutlineSettings color="currentColor" size={20} />,
       },
-    ],
-  },
-  {
-    section: 'distributed',
-    sectionLabel: 'Distributed',
-    items: [
-      {
-        path: '/distributed',
-        label: 'Distributed',
-        icon: <MdOutlineHub color="currentColor" size={20} />,
-      },
-    ],
-  },
-  {
-    section: 'clusters',
-    sectionLabel: 'Clusters',
-    items: [
       {
         path: '/clusters',
         label: 'Multi-Cluster',
-        icon: <MdOutlineApi color="currentColor" size={20} />,
+        icon: <MdOutlineHub color="currentColor" size={20} />,
       },
-    ],
-  },
-  {
-    section: 'grafana',
-    sectionLabel: 'Observability',
-    items: [
       {
         path: '/grafana',
         label: 'Grafana Dashboards',
-        icon: <MdOutlineDashboard color="currentColor" size={20} />,
+        icon: <MdOutlineApi color="currentColor" size={20} />,
       },
     ],
   },

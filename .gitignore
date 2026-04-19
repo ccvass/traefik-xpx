@@ -21,3 +21,5 @@ traefik_changelog.md
 integration/tailscale.secret
 integration/gateway-api-conformance-reports/**/experimental-dev-default-report.yaml
 REMOTE.md
+debug/
+.playwright-mcp/
