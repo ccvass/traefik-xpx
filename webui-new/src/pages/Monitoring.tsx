@@ -111,7 +111,7 @@ export function HealthPage() {
         {svcs.map((s: any) => (
           <div key={s.name} className={`flex justify-between items-center p-4 rounded-lg border ${s.status === 'enabled' ? 'border-emerald-900/50 bg-emerald-950/10' : 'border-red-900/50 bg-red-950/10'}`}>
             <div className="flex items-center gap-3">
-              <div className={`w-2.5 h-2.5 rounded-full ${s.status === 'enabled' ? 'bg-emerald-400' : 'bg-red-400'}`} />
+              <div style={{ width: 10, height: 10, borderRadius: '50%', backgroundColor: s.status === 'enabled' ? '#34d399' : '#f87171' }} />
               <div>
                 <p className="font-medium text-sm">{s.name}</p>
                 <p className="text-xs text-zinc-500">

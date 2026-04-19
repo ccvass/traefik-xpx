@@ -35,7 +35,7 @@ function FeaturePanel({ icon, title, to, active, metrics }: {
             </div>
             <h3 className="font-semibold text-sm">{title}</h3>
           </div>
-          <div className={cn('w-2 h-2 rounded-full', active ? 'bg-emerald-400' : 'bg-zinc-600')} />
+          <div style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: active ? '#34d399' : '#52525b' }} />
         </div>
         <div className="space-y-2">
           {metrics.map((m, i) => (

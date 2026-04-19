@@ -35,13 +35,13 @@ export function MCPPage() {
       </div>
       {adding && <AddForm title={`New ${adding}`} name={name} setName={setName} json={json} setJson={setJson} color="brand" onSave={save} onCancel={() => setAdding(null)} disabled={!name} />}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <Stat value={mcp.length} label="MCP Middlewares" />
+        <Stat value={mcp.length} label="MCP Middlewares" color="#f97316" />
         <Stat value={mcp.filter(m=>m.type==='tbac').length ? 'Active' : 'Off'} label="TBAC Engine" />
         <Stat value={mcp.filter(m=>m.type==='mcpaudit').length ? 'Active' : 'Off'} label="Audit Logger" />
         <Stat value={mcp.filter(m=>m.type==='mcppolicy').length ? 'Active' : 'Off'} label="Policy Engine" />
       </div>
       <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide">Active MCP Middlewares ({mcp.length})</h2>
-      {mcp.length ? <div className="space-y-2">{mcp.map(m => <Item key={m.name} name={m.name} detail={`${m.type} • ${m.status}`} editable={m.provider==='file'} onDelete={() => del(m.name)} />)}</div> : <p className="text-zinc-600 text-sm">No MCP middlewares. Use the buttons above to create one.</p>}
+      {mcp.length ? <div className="space-y-2">{mcp.map(m => <Item key={m.name} name={m.name} type={m.type} status={m.status} provider={m.provider} onDelete={() => del(m.name)} />)}</div> : <p className="text-zinc-600 text-sm">No MCP middlewares. Use the buttons above to create one.</p>}
     </div>
   )
 }

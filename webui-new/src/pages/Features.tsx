@@ -39,14 +39,14 @@ export function SecurityPage() {
       </div>
       {adding && <AddForm title={`New ${adding}`} name={name} setName={setName} json={json} setJson={setJson} color="brand" onSave={save} onCancel={() => setAdding(null)} disabled={!name} />}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
-        <Stat value={all.filter(m=>m.type==='waf').length} label="WAF Rules" />
-        <Stat value={all.filter(m=>m.type==='apikey').length} label="API Keys" />
+        <Stat value={all.filter(m=>m.type==='waf').length} label="WAF Rules" color="#ef4444" />
+        <Stat value={all.filter(m=>m.type==='apikey').length} label="API Keys" color="#f59e0b" />
         <Stat value={all.filter(m=>['jwt','jwtAuth'].includes(m.type)).length} label="JWT Auth" />
         <Stat value={all.filter(m=>m.type==='opa').length} label="OPA Policies" />
         <Stat value={sec.length} label="Total Security" />
       </div>
       <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide">Active Security Middlewares ({sec.length})</h2>
-      {sec.length ? <div className="space-y-2">{sec.map(m => <Item key={m.name} name={m.name} detail={`${m.type} • ${m.status}`} editable={m.provider==='file'} onDelete={() => del(m.name)} />)}</div> : <p className="text-zinc-600 text-sm">No security middlewares. Use the buttons above to create one.</p>}
+      {sec.length ? <div className="space-y-2">{sec.map(m => <Item key={m.name} name={m.name} type={m.type} status={m.status} provider={m.provider} onDelete={() => del(m.name)} />)}</div> : <p className="text-zinc-600 text-sm">No security middlewares. Use the buttons above to create one.</p>}
     </div>
   )
 }
@@ -79,13 +79,13 @@ export function DistributedPage() {
       </div>
       {adding && <AddForm title={`New ${adding}`} name={name} setName={setName} json={json} setJson={setJson} color="brand" onSave={save} onCancel={() => setAdding(null)} disabled={!name} />}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <Stat value={all.filter(m=>m.type==='ratelimit').length} label="Rate Limiters" />
-        <Stat value={all.filter(m=>m.type==='httpcache').length} label="HTTP Caches" />
+        <Stat value={all.filter(m=>m.type==='ratelimit').length} label="Rate Limiters" color="#3b82f6" />
+        <Stat value={all.filter(m=>m.type==='httpcache').length} label="HTTP Caches" color="#06b6d4" />
         <Stat value={all.filter(m=>m.type==='inflightreq').length} label="In-Flight" />
         <Stat value={dist.length} label="Total" />
       </div>
       <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide">Active Distributed Middlewares ({dist.length})</h2>
-      {dist.length ? <div className="space-y-2">{dist.map(m => <Item key={m.name} name={m.name} detail={`${m.type} • ${m.status}`} editable={m.provider==='file'} onDelete={() => del(m.name)} />)}</div> : <p className="text-zinc-600 text-sm">No distributed middlewares. Use the buttons above to create one.</p>}
+      {dist.length ? <div className="space-y-2">{dist.map(m => <Item key={m.name} name={m.name} type={m.type} status={m.status} provider={m.provider} onDelete={() => del(m.name)} />)}</div> : <p className="text-zinc-600 text-sm">No distributed middlewares. Use the buttons above to create one.</p>}
     </div>
   )
 }
@@ -130,7 +130,7 @@ export function APIMgmtPage() {
         <Stat value={fileR.length > 0 ? 'Active' : 'Inactive'} label="Status" />
       </div>
       <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide">API Routes ({fileR.length})</h2>
-      {fileR.length ? <div className="space-y-2">{fileR.map((r: any) => <Item key={r.name} name={r.name} detail={r.rule} editable={true} onDelete={() => del(r.name, 'routers')} />)}</div> : <p className="text-zinc-600 text-sm">No managed APIs. Click "Add API Route" to create one.</p>}
+      {fileR.length ? <div className="space-y-2">{fileR.map((r: any) => <Item key={r.name} name={r.name} type="router" status="enabled" provider="file" onDelete={() => del(r.name, 'routers')} />)}</div> : <p className="text-zinc-600 text-sm">No managed APIs. Click "Add API Route" to create one.</p>}
     </div>
   )
 }
