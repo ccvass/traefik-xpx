@@ -4,13 +4,14 @@
 
 ```bash
 # Pull and run
+docker pull alfonsodg/traefik-xp:latest
 docker run -d \
   --name traefik-xp \
   -p 80:80 -p 443:443 -p 8099:8099 \
   -v /var/run/docker.sock:/var/run/docker.sock:ro \
   -v traefik-config:/etc/traefik \
   -v traefik-certs:/certificates \
-  traefik-xp:latest
+  alfonsodg/traefik-xp:latest
 
 # Dashboard at http://localhost:8099/dashboard/
 ```

@@ -32,7 +32,8 @@ Traefik-XP combines Traefik Proxy + Hub API Gateway + Hub API Management + AI Ga
 
 ```bash
 # Docker
-docker run -d -p 80:80 -p 8099:8099 traefik-xp:latest
+docker pull alfonsodg/traefik-xp:latest
+docker run -d -p 80:80 -p 8099:8099 alfonsodg/traefik-xp:latest
 
 # Docker Swarm
 docker stack deploy -c docker-compose.yml traefik-xp

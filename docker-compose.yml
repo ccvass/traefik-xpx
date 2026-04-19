@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   traefik-xp:
-    image: traefik-xp:latest
+    image: alfonsodg/traefik-xp:latest
     command:
       - --providers.swarm.endpoint=unix:///var/run/docker.sock
       - --providers.swarm.exposedByDefault=false
