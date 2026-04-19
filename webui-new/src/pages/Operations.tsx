@@ -91,30 +91,42 @@ export function GrafanaPage() {
 }
 
 export function ProxyPage() {
-  const { data: routers } = useSWR('/http/routers', fetcher)
-  const { data: services } = useSWR('/http/services', fetcher)
-  const { data: middlewares } = useSWR('/http/middlewares', fetcher)
+  const [proto, setProto] = useState('http')
+  const { data: routers } = useSWR(`/${proto}/routers`, fetcher)
+  const { data: services } = useSWR(`/${proto}/services`, fetcher)
+  const { data: middlewares } = useSWR(`/${proto}/middlewares`, fetcher)
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3"><Link to="/" className="text-zinc-500 hover:text-white"><ArrowLeft size={20} /></Link><h1 className="text-2xl font-bold">HTTP Proxy</h1></div>
-        <Link to="/config" className="px-4 py-2 bg-brand hover:bg-brand/80 text-black font-semibold rounded-lg text-sm">⚙️ Config Manager</Link>
+        <div className="flex items-center gap-3"><Link to="/" className="text-zinc-500 hover:text-white"><ArrowLeft size={20} /></Link><h1 className="text-2xl font-bold">Proxy</h1></div>
+        <Link to="/config" className="flex items-center gap-1.5 px-4 py-2 bg-brand hover:bg-brand/80 text-black font-semibold rounded-lg text-sm"><Plus size={14} />Config Manager</Link>
       </div>
-      {[['Routers', routers], ['Services', services], ['Middlewares', middlewares]].map(([title, data]) => (
+
+      <div className="flex border-b border-zinc-800">
+        {['http', 'tcp', 'udp'].map(p => (
+          <button key={p} onClick={() => setProto(p)} className={`px-4 py-2.5 text-sm font-semibold uppercase border-b-2 transition-colors ${proto === p ? 'border-brand text-brand' : 'border-transparent text-zinc-500 hover:text-white'}`}>{p}</button>
+        ))}
+      </div>
+
+      {[['Routers', routers], ['Services', services], ...(proto !== 'udp' ? [['Middlewares', middlewares]] : [])].map(([title, data]) => (
         <div key={title as string}>
           <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide mb-3">{title as string} ({Array.isArray(data) ? data.length : 0})</h2>
-          <div className="space-y-2">
-            {Array.isArray(data) && data.map((item: any) => (
-              <div key={item.name} className={`flex justify-between items-center p-4 rounded-lg border ${item.provider === 'file' ? 'border-emerald-900/50 bg-emerald-950/20' : 'border-zinc-800 bg-zinc-900'}`}>
-                <div><p className="font-medium text-sm">{item.name}</p><p className="text-xs text-zinc-500">{item.rule || item.type || item.status}</p></div>
-                <div className="flex items-center gap-2">
-                  <span className={`text-[10px] px-2 py-0.5 rounded ${item.status === 'enabled' ? 'bg-emerald-950 text-emerald-400' : 'bg-red-950 text-red-400'}`}>{item.status}</span>
-                  <span className="text-[10px] text-zinc-600">{item.provider}</span>
+          {Array.isArray(data) && data.length > 0 ? (
+            <div className="space-y-2">
+              {data.map((item: any) => (
+                <div key={item.name} className={`flex justify-between items-center p-4 rounded-lg border ${item.provider === 'file' ? 'border-emerald-900/50 bg-emerald-950/20' : 'border-zinc-800 bg-zinc-900'}`}>
+                  <div><p className="font-medium text-sm">{item.name}</p><p className="text-xs text-zinc-500">{item.rule || item.type || item.status}</p></div>
+                  <div className="flex items-center gap-2">
+                    <span className={`text-[10px] px-2 py-0.5 rounded ${item.status === 'enabled' ? 'bg-emerald-950 text-emerald-400' : 'bg-red-950 text-red-400'}`}>{item.status}</span>
+                    <span className="text-[10px] text-zinc-600">{item.provider}</span>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className="bg-zinc-900 border border-dashed border-zinc-700 rounded-lg p-6 text-center text-zinc-500 text-sm">No {proto.toUpperCase()} {(title as string).toLowerCase()} configured</div>
+          )}
         </div>
       ))}
     </div>
