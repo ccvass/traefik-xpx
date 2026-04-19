@@ -121,9 +121,11 @@ function RouterForm({ onDone }: { onDone: () => void }) {
     <Card css={{ p: '$3', borderLeft: '3px solid $colors$blue9' }}>
       <Text css={{ fontWeight: 600, mb: '$2' }}>New Router</Text>
       <Flex direction="column" gap={2}>
-        <Flex gap={2}><TextField label="Name" value={name} onChange={(e: any) => setName(e.target.value)} placeholder="my-router" css={{ flex: 1 }} /><TextField label="Service" value={service} onChange={(e: any) => setService(e.target.value)} placeholder="my-service" css={{ flex: 1 }} /></Flex>
-        <TextField label="Rule" value={rule} onChange={(e: any) => setRule(e.target.value)} placeholder="Host(`app.example.com`) && PathPrefix(`/api`)" />
-        <Flex gap={2}><TextField label="Entry Points" value={eps} onChange={(e: any) => setEps(e.target.value)} css={{ flex: 1 }} /><TextField label="Middlewares" value={mws} onChange={(e: any) => setMws(e.target.value)} placeholder="auth,rate-limit" css={{ flex: 1 }} /></Flex>
+        <Flex gap={2}><TextField label="Name" value={name} onChange={(e: any) => setName(e.target.value)} placeholder="e.g. my-api-router" css={{ flex: 1 }} /><TextField label="Service" value={service} onChange={(e: any) => setService(e.target.value)} placeholder="e.g. backend-api" css={{ flex: 1 }} /></Flex>
+        <Text css={{ fontSize: '$1', color: '$textSubtle', mt: '-$1' }}>Name must be unique. Service must match an existing service name.</Text>
+        <TextField label="Rule" value={rule} onChange={(e: any) => setRule(e.target.value)} placeholder="e.g. Host(`app.example.com`) && PathPrefix(`/api`)" />
+        <Flex gap={2}><TextField label="Entry Points (comma-separated)" value={eps} onChange={(e: any) => setEps(e.target.value)} css={{ flex: 1 }} /><TextField label="Middlewares" value={mws} onChange={(e: any) => setMws(e.target.value)} placeholder="e.g. auth,rate-limit" css={{ flex: 1 }} /></Flex>
+        <Text css={{ fontSize: '$1', color: '$textSubtle', mt: '-$1' }}>Entry points: web (HTTP), websecure (HTTPS). Middlewares: comma-separated names.</Text>
         <Flex gap={2} justify="end"><Button size="small" variant="secondary" onClick={onDone}>Cancel</Button><Button size="small" onClick={save} disabled={!name || !rule || !service}><FiSave size={14} /> Create</Button></Flex>
       </Flex>
     </Card>
@@ -143,7 +145,8 @@ function ServiceForm({ onDone }: { onDone: () => void }) {
     <Card css={{ p: '$3', borderLeft: '3px solid $colors$purple9' }}>
       <Text css={{ fontWeight: 600, mb: '$2' }}>New Service</Text>
       <Flex direction="column" gap={2}>
-        <TextField label="Name" value={name} onChange={(e: any) => setName(e.target.value)} placeholder="my-service" />
+        <TextField label="Name" value={name} onChange={(e: any) => setName(e.target.value)} placeholder="e.g. my-backend" />
+        <Text css={{ fontSize: '$1', color: '$textSubtle', mt: '-$1' }}>Unique name for this service. Used in router configuration.</Text>
         <Box><Text css={{ fontSize: '$2', mb: '$1' }}>Backend URLs (one per line)</Text><textarea value={urls} onChange={e => setUrls(e.target.value)} style={{ width: '100%', minHeight: 60, fontFamily: 'monospace', fontSize: 12, padding: 8, borderRadius: 4, border: '1px solid #ccc' }} /></Box>
         <TextField label="Health Check Path" value={health} onChange={(e: any) => setHealth(e.target.value)} />
         <Flex gap={2} justify="end"><Button size="small" variant="secondary" onClick={onDone}>Cancel</Button><Button size="small" onClick={save} disabled={!name}><FiSave size={14} /> Create</Button></Flex>
@@ -177,16 +180,17 @@ function MiddlewareForm({ onDone }: { onDone: () => void }) {
       <Text css={{ fontWeight: 600, mb: '$2' }}>New Middleware</Text>
       <Flex direction="column" gap={2}>
         <Flex gap={2}>
-          <TextField label="Name" value={name} onChange={(e: any) => setName(e.target.value)} placeholder="my-middleware" css={{ flex: 1 }} />
+          <TextField label="Name" value={name} onChange={(e: any) => setName(e.target.value)} placeholder="e.g. my-auth" css={{ flex: 1 }} />
           <Box css={{ flex: 1 }}><Text css={{ fontSize: '$2', mb: '$1' }}>Type</Text>
             <select value={type} onChange={e => changeType(e.target.value)} style={{ width: '100%', padding: 8, borderRadius: 4, border: '1px solid #ccc' }}>
-              <option value="apiKey">API Key</option><option value="rateLimit">Rate Limit</option><option value="waf">WAF (Coraza)</option>
-              <option value="jwtAuth">JWT Auth</option><option value="oidc">OIDC</option><option value="hmac">HMAC</option>
-              <option value="httpCache">HTTP Cache</option><option value="apiMock">API Mock</option><option value="inFlightReq">In-Flight Limit</option>
-              <option value="basicAuth">Basic Auth</option>
+              <option value="apiKey">🔑 API Key Authentication</option><option value="rateLimit">⚡ Rate Limiting</option><option value="waf">🛡️ WAF (Coraza Firewall)</option>
+              <option value="jwtAuth">🔐 JWT Authentication</option><option value="oidc">🔓 OpenID Connect</option><option value="hmac">✍️ HMAC Signature</option>
+              <option value="httpCache">💾 HTTP Cache</option><option value="apiMock">🎭 API Mock (OpenAPI)</option><option value="inFlightReq">🚦 In-Flight Request Limit</option>
+              <option value="basicAuth">👤 Basic Auth</option>
             </select>
           </Box>
         </Flex>
+        <Text css={{ fontSize: '$1', color: '$textSubtle', mt: '-$1' }}>Select a type to auto-fill the configuration template below. Edit values as needed.</Text>
         <Box><Text css={{ fontSize: '$2', mb: '$1' }}>Configuration (JSON)</Text><textarea value={json} onChange={e => setJson(e.target.value)} style={{ width: '100%', minHeight: 120, fontFamily: 'monospace', fontSize: 12, padding: 8, borderRadius: 4, border: '1px solid #ccc' }} /></Box>
         <Flex gap={2} justify="end"><Button size="small" variant="secondary" onClick={onDone}>Cancel</Button><Button size="small" onClick={save} disabled={!name}><FiSave size={14} /> Create</Button></Flex>
       </Flex>
@@ -224,9 +228,9 @@ function ProviderForm({ onSave, onCancel }: { onSave: (p: any) => void; onCancel
   return (
     <Card css={{ p: '$3', borderLeft: '3px solid $colors$blue9' }}>
       <Flex direction="column" gap={2}>
-        <Flex gap={2}><TextField label="Name" value={name} onChange={(e: any) => setName(e.target.value)} css={{ flex: 1 }} /><TextField label="Type" value={type} onChange={(e: any) => setType(e.target.value)} css={{ flex: 1 }} /></Flex>
-        <TextField label="Endpoint" value={endpoint} onChange={(e: any) => setEndpoint(e.target.value)} placeholder="https://api.openai.com/v1" />
-        <TextField label="Models (comma-sep)" value={models} onChange={(e: any) => setModels(e.target.value)} placeholder="gpt-4,gpt-3.5-turbo" />
+        <Flex gap={2}><TextField label="Name" value={name} onChange={(e: any) => setName(e.target.value)} css={{ flex: 1 }} /><Box css={{ flex: 1 }}><Text css={{ fontSize: '$2', mb: '$1' }}>Provider Type</Text><select value={type} onChange={e => setType(e.target.value)} style={{ width: '100%', padding: 8, borderRadius: 4, border: '1px solid #ccc' }}><option value="openai">OpenAI</option><option value="anthropic">Anthropic</option><option value="ollama">Ollama (Local)</option><option value="azure">Azure OpenAI</option><option value="mistral">Mistral AI</option></select></Box></Flex>
+        <TextField label="Endpoint" value={endpoint} onChange={(e: any) => setEndpoint(e.target.value)} placeholder="e.g. https://api.openai.com/v1" />
+        <TextField label="Models (comma-sep)" value={models} onChange={(e: any) => setModels(e.target.value)} placeholder="e.g. gpt-4, gpt-3.5-turbo, claude-3-opus" />
         <Flex gap={2} justify="end"><Button size="small" variant="secondary" onClick={onCancel}>Cancel</Button><Button size="small" onClick={() => onSave({ name, type, endpoint, models: models.split(',').map(s => s.trim()).filter(Boolean) })} disabled={!name || !endpoint}><FiSave size={14} /> Save</Button></Flex>
       </Flex>
     </Card>
@@ -245,7 +249,7 @@ function MCPTab() {
   return (
     <Flex direction="column" gap={4}>
       <Flex justify="between" align="center"><Text css={{ fontWeight: 600 }}>MCP Servers</Text><Button size="small" onClick={() => setShowServer(true)}><FiPlus size={14} /> Add Server</Button></Flex>
-      {showServer && <Card css={{ p: '$3', borderLeft: '3px solid $colors$blue9' }}><SimpleForm fields={[{l:'Name',k:'name'},{l:'Endpoint',k:'endpoint'},{l:'Protocol',k:'protocol',d:'stdio'}]} onSave={v => { saveS([...servers, v]); setShowServer(false) }} onCancel={() => setShowServer(false)} /></Card>}
+      {showServer && <Card css={{ p: '$3', borderLeft: '3px solid $colors$blue9' }}><SimpleForm fields={[{l:'Name',k:'name'},{l:'Endpoint',k:'endpoint'},{l:'Protocol',k:'protocol',d:'stdio',opts:['stdio','http','sse']}]} onSave={v => { saveS([...servers, v]); setShowServer(false) }} onCancel={() => setShowServer(false)} /></Card>}
       {servers.map((s: any, i: number) => (
         <Flex key={i} justify="between" align="center" css={{ py: '$2', px: '$3', border: '1px solid $colors$blue4', borderRadius: '$1', background: '$blue1' }}>
           <Flex direction="column"><Text css={{ fontWeight: 500 }}>{s.name}</Text><Text css={{ fontSize: '$2', color: '$textSubtle' }}>{s.protocol} — {s.endpoint}</Text></Flex>
@@ -255,7 +259,7 @@ function MCPTab() {
       {!servers.length && !showServer && <Text css={{ color: '$textSubtle' }}>No MCP servers configured.</Text>}
 
       <Flex justify="between" align="center"><Text css={{ fontWeight: 600 }}>Policies</Text><Button size="small" onClick={() => setShowPolicy(true)}><FiPlus size={14} /> Add Policy</Button></Flex>
-      {showPolicy && <Card css={{ p: '$3', borderLeft: '3px solid $colors$green9' }}><SimpleForm fields={[{l:'Name',k:'name'},{l:'Action',k:'action',d:'allow'},{l:'Priority',k:'priority',d:'0'}]} onSave={v => { saveP([...policies, {...v, priority: parseInt(v.priority)||0}]); setShowPolicy(false) }} onCancel={() => setShowPolicy(false)} /></Card>}
+      {showPolicy && <Card css={{ p: '$3', borderLeft: '3px solid $colors$green9' }}><SimpleForm fields={[{l:'Name',k:'name'},{l:'Action',k:'action',d:'allow',opts:['allow','deny','audit','rateLimit']},{l:'Priority',k:'priority',d:'0'}]} onSave={v => { saveP([...policies, {...v, priority: parseInt(v.priority)||0}]); setShowPolicy(false) }} onCancel={() => setShowPolicy(false)} /></Card>}
       {policies.map((p: any, i: number) => (
         <Flex key={i} justify="between" align="center" css={{ py: '$2', px: '$3', border: '1px solid $colors$green4', borderRadius: '$1', background: '$green1' }}>
           <Flex direction="column"><Text css={{ fontWeight: 500 }}>{p.name}</Text><Text css={{ fontSize: '$2', color: '$textSubtle' }}>{p.action} (priority: {p.priority})</Text></Flex>
@@ -267,11 +271,11 @@ function MCPTab() {
   )
 }
 
-function SimpleForm({ fields, onSave, onCancel }: { fields: {l:string,k:string,d?:string}[]; onSave: (v: any) => void; onCancel: () => void }) {
+function SimpleForm({ fields, onSave, onCancel }: { fields: {l:string,k:string,d?:string,opts?:string[]}[]; onSave: (v: any) => void; onCancel: () => void }) {
   const [vals, setVals] = useState<Record<string,string>>(Object.fromEntries(fields.map(f => [f.k, f.d || ''])))
   return (
     <Flex direction="column" gap={2}>
-      <Flex gap={2} wrap="wrap">{fields.map(f => <TextField key={f.k} label={f.l} value={vals[f.k]} onChange={(e: any) => setVals({...vals, [f.k]: e.target.value})} css={{ flex: 1, minWidth: 120 }} />)}</Flex>
+      <Flex gap={2} wrap="wrap">{fields.map(f => f.opts ? <Box key={f.k} css={{ flex: 1, minWidth: 120 }}><Text css={{ fontSize: '$2', mb: '$1' }}>{f.l}</Text><select value={vals[f.k]} onChange={e => setVals({...vals, [f.k]: e.target.value})} style={{ width: '100%', padding: 8, borderRadius: 4, border: '1px solid #ccc' }}>{f.opts.map((o: string) => <option key={o} value={o}>{o}</option>)}</select></Box> : <TextField key={f.k} label={f.l} value={vals[f.k]} onChange={(e: any) => setVals({...vals, [f.k]: e.target.value})} css={{ flex: 1, minWidth: 120 }} />)}</Flex>
       <Flex gap={2} justify="end"><Button size="small" variant="secondary" onClick={onCancel}>Cancel</Button><Button size="small" onClick={() => onSave(vals)}><FiSave size={14} /> Save</Button></Flex>
     </Flex>
   )
