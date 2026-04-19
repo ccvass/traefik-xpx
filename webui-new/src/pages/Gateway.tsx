@@ -41,6 +41,7 @@ export function GatewayPage() {
   const { data: middlewares } = useSWR(`/${proto}/middlewares`, fetcher)
   const { data: entrypoints } = useSWR('/entrypoints', fetcher)
   const { data: overview } = useSWR('/overview', fetcher)
+  const { data: certs } = useSWR('/certificates', fetcher)
   const [form, setForm] = useState<string | null>(null)
   const [mwType, setMwType] = useState('apiKey')
   const [name, setName] = useState('')
@@ -173,13 +174,42 @@ export function GatewayPage() {
 
       {/* TLS Tab */}
       {tab === 'TLS & Certs' && <div className="space-y-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <Stat value={Array.isArray(certs) ? certs.length : 0} label="Certificates" />
+          <Stat value={rArr.filter((r: any) => r.tls).length} label="TLS Routes" />
+          <Stat value={ov?.features?.acme ? 'Active' : 'Off'} label="ACME" />
+          <Stat value={rArr.filter((r: any) => r.tls?.certResolver).length} label="Auto-Managed" />
+        </div>
+        {Array.isArray(certs) && certs.length > 0 && <div className="space-y-2">
+          <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide">Certificates</h3>
+          {certs.map((cert: any, i: number) => (
+            <div key={i} className="bg-zinc-900 border border-zinc-800 rounded-lg p-4">
+              <div className="flex justify-between items-center">
+                <div>
+                  <p className="font-medium text-sm">{cert.sans?.join(', ') || cert.domain?.main || 'Unknown'}</p>
+                  <p className="text-xs text-zinc-500">{cert.domain?.sans?.length ? cert.domain.sans.length + ' SANs' : ''} {cert.resolverName ? '• Resolver: ' + cert.resolverName : ''}</p>
+                </div>
+                <Lock size={14} className="text-emerald-400" />
+              </div>
+            </div>
+          ))}
+        </div>}
+        {(!certs || (Array.isArray(certs) && certs.length === 0)) && <div className="bg-zinc-900 border border-dashed border-zinc-700 rounded-xl p-6 text-center">
+          <Lock size={32} className="text-zinc-700 mx-auto mb-3" />
+          <p className="text-zinc-400 text-sm">No certificates loaded</p>
+          <p className="text-zinc-600 text-xs mt-1">Configure ACME (Let's Encrypt) in traefik.yml or add TLS certs via file provider</p>
+        </div>}
         <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
-          <h3 className="font-semibold text-sm mb-3 flex items-center gap-2"><Lock size={16} className="text-brand" />TLS Configuration</h3>
-          <div className="grid grid-cols-2 gap-4">
-            <Stat value={ov?.features?.acme ? 'Active' : 'Off'} label="ACME / Let's Encrypt" />
-            <Stat value={rArr.filter((r: any) => r.tls).length} label="TLS Routes" />
+          <h3 className="font-semibold text-sm mb-2">TLS Routes</h3>
+          <div className="space-y-2">
+            {rArr.filter((r: any) => r.tls).map((r: any) => (
+              <div key={r.name} className="flex justify-between items-center p-3 bg-zinc-800 rounded-lg text-sm">
+                <div><p className="font-medium">{r.name}</p><p className="text-xs text-zinc-500">{r.rule}</p></div>
+                <div className="text-xs text-zinc-400">{r.tls?.certResolver || 'manual cert'}</div>
+              </div>
+            ))}
+            {rArr.filter((r: any) => r.tls).length === 0 && <p className="text-zinc-600 text-sm">No TLS routes configured</p>}
           </div>
-          <p className="text-xs text-zinc-600 mt-3">TLS certificates and options are configured in the static config file. Use the file provider to manage TLS options.</p>
         </div>
       </div>}
 
