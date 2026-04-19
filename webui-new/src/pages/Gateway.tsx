@@ -4,6 +4,7 @@ import useSWR, { mutate } from 'swr'
 import { fetcher, api } from '@/lib/api'
 import { ArrowLeft, Plus, Trash2, Save, X, Activity, Shield, Zap, Globe, Lock, Eye } from 'lucide-react'
 import { AddForm, Item, Stat, mutateAll } from './shared'
+import { EditForm, RouterFormFull, CertUploadForm } from './forms'
 
 const ALL_MW_TYPES: Record<string, { label: string; icon: string; template: unknown }> = {
   apiKey: { label: 'API Key', icon: 'key', template: { apiKey: { headerName: 'X-API-Key', keys: [{ value: 'key', metadata: 'user' }] } } },
@@ -43,6 +44,7 @@ export function GatewayPage() {
   const { data: overview } = useSWR('/overview', fetcher)
   const { data: certs } = useSWR('/certificates', fetcher)
   const [form, setForm] = useState<string | null>(null)
+  const [editing, setEditing] = useState<{type: string; name: string; data: unknown} | null>(null)
   const [mwType, setMwType] = useState('apiKey')
   const [name, setName] = useState('')
   const [json, setJson] = useState('')
@@ -109,11 +111,15 @@ export function GatewayPage() {
               </div>
               <div className="flex items-center gap-2">
                 <span className={`text-[10px] px-2 py-0.5 rounded ${s.status === 'enabled' ? 'bg-emerald-950 text-emerald-400' : 'bg-red-950 text-red-400'}`}>{s.status}</span>
-                {s.provider === 'file' && <button onClick={() => del('services', s.name)} className="p-1 rounded hover:bg-red-950 text-zinc-500 hover:text-red-400"><Trash2 size={14} /></button>}
+                {s.provider === 'file' && <>
+                  <button onClick={() => setEditing({type:'services', name: s.name.replace(/@.*/,''), data: s})} className="p-1 rounded hover:bg-amber-950 text-zinc-500 hover:text-amber-400" title="Edit"><Save size={14} /></button>
+                  <button onClick={() => del('services', s.name)} className="p-1 rounded hover:bg-red-950 text-zinc-500 hover:text-red-400"><Trash2 size={14} /></button>
+                </>}
               </div>
             </div>
           </div>
         ))}</div>
+        {editing?.type === 'services' && <EditForm title={editing.name} endpoint={`/config/http/services/${editing.name}`} current={editing.data} onDone={() => setEditing(null)} />}
       </>}
 
       {/* Routes Tab */}
@@ -135,11 +141,15 @@ export function GatewayPage() {
               </div>
               <div className="flex items-center gap-2">
                 <span className={`text-[10px] px-2 py-0.5 rounded ${r.status === 'enabled' ? 'bg-emerald-950 text-emerald-400' : 'bg-red-950 text-red-400'}`}>{r.status}</span>
-                {r.provider === 'file' && <button onClick={() => del('routers', r.name)} className="p-1 rounded hover:bg-red-950 text-zinc-500 hover:text-red-400"><Trash2 size={14} /></button>}
+                {r.provider === 'file' && <>
+                  <button onClick={() => setEditing({type:'routers', name: r.name.replace(/@.*/,''), data: r})} className="p-1 rounded hover:bg-amber-950 text-zinc-500 hover:text-amber-400" title="Edit"><Save size={14} /></button>
+                  <button onClick={() => del('routers', r.name)} className="p-1 rounded hover:bg-red-950 text-zinc-500 hover:text-red-400"><Trash2 size={14} /></button>
+                </>}
               </div>
             </div>
           </div>
         ))}</div>
+        {editing?.type === 'routers' && <EditForm title={editing.name} endpoint={`/config/http/routers/${editing.name}`} current={editing.data} onDone={() => setEditing(null)} />}
       </>}
 
       {/* Middlewares Tab */}
@@ -166,10 +176,14 @@ export function GatewayPage() {
             </div>
             <div className="flex items-center gap-2">
               <span className="text-[10px] px-2 py-0.5 rounded bg-zinc-800 text-zinc-400">{m.type}</span>
-              {m.provider === 'file' && <button onClick={() => del('middlewares', m.name)} className="p-1 rounded hover:bg-red-950 text-zinc-500 hover:text-red-400"><Trash2 size={14} /></button>}
+              {m.provider === 'file' && <>
+                <button onClick={() => setEditing({type:'middlewares', name: m.name.replace(/@.*/,''), data: m})} className="p-1 rounded hover:bg-amber-950 text-zinc-500 hover:text-amber-400" title="Edit"><Save size={14} /></button>
+                <button onClick={() => del('middlewares', m.name)} className="p-1 rounded hover:bg-red-950 text-zinc-500 hover:text-red-400"><Trash2 size={14} /></button>
+              </>}
             </div>
           </div>
         ))}</div>
+        {editing?.type === 'middlewares' && <EditForm title={editing.name} endpoint={`/config/http/middlewares/${editing.name}`} current={editing.data} onDone={() => setEditing(null)} />}
       </>}
 
       {/* TLS Tab */}
@@ -194,6 +208,8 @@ export function GatewayPage() {
             </div>
           ))}
         </div>}
+        <button onClick={() => setForm('cert')} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-lg text-xs font-medium hover:bg-brand/20"><Plus size={14} />Upload Certificate</button>
+        {form === 'cert' && <CertUploadForm onDone={() => setForm(null)} />}
         {(!certs || (Array.isArray(certs) && certs.length === 0)) && <div className="bg-zinc-900 border border-dashed border-zinc-700 rounded-xl p-6 text-center">
           <Lock size={32} className="text-zinc-700 mx-auto mb-3" />
           <p className="text-zinc-400 text-sm">No certificates loaded</p>

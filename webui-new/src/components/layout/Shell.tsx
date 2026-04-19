@@ -28,6 +28,7 @@ const NAV: NavGroup[] = [
     { label: 'Multi-Cluster', path: '/clusters', icon: <MonitorDot size={18} /> },
     { label: 'Grafana', path: '/grafana', icon: <BarChart3 size={18} /> },
     { label: 'Users', path: '/users', icon: <Users size={18} /> },
+    { label: 'Settings', path: '/settings', icon: <Cpu size={18} /> },
   ]},
 ]
 

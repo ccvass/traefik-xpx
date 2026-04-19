@@ -11,6 +11,7 @@ import { SecurityPage, DistributedPage, APIMgmtPage } from '@/pages/Features'
 import { ClustersPage, GrafanaPage } from '@/pages/Operations'
 import { GatewayPage } from '@/pages/Gateway'
 import { UsersPage } from '@/pages/Users'
+import { SettingsPage } from '@/pages/Settings'
 
 export function App() {
   const [token, setToken] = useState(localStorage.getItem('token') || '')
@@ -35,6 +36,7 @@ export function App() {
             <Route path="/grafana" element={<GrafanaPage />} />
             <Route path="/gateway" element={<GatewayPage />} />
             <Route path="/users" element={<UsersPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
           </Routes>
         </Shell>
       </HashRouter>
