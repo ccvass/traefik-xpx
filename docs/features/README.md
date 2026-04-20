@@ -18,6 +18,7 @@
 - [Coraza WAF](WAF.md)
 - [GeoIP Blocking](GEOIP-BLOCKING.md)
 - [Bot Detection](BOT-DETECTION.md)
+- [Request/Response Transform](TRANSFORM.md)
 - [HashiCorp Vault](VAULT.md)
 - [IP Allow List](IP-ALLOWLIST.md)
 - [Pass TLS Client Cert (mTLS)](PASS-TLS-CLIENT-CERT.md)
